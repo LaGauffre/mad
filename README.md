@@ -1,37 +1,32 @@
-## Welcome to GitHub Pages
+## Modèles Aléatoire Discrets	
 
-You can use the [editor on GitHub](https://github.com/LaGauffre/mad/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+Ce répertoire regroupe les supports de cours, planches d'exercices et annales d'examen du cours de Modèle Aléatoires Discrets (MAD) dispensé aux M1 Actuariat et M1 Econométrie et Statistique à l'UNiversité Claude Bernard Lyon 1.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Ce cours propose une introduction aux processus stochastique en définissant les chaines de Markov, les martingales en temps discret et le processus de Poisson. 
 
-### Markdown
+### Support de cours
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Chapitre             | Support
+-----------------   | -------------
+Espérance conditionelle | [Slides](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
+Chaine de Markov | [Slides](/Slides/BFS/Lecture1/blockastics_lec_2.pdf)
+Martingale en temps discret | [Slides](/Slides/BFS/Lecture3/blockastics_lec_3.pdf)
+Martingale en temps discret | [Slides](/Slides/BFS/Lecture3/blockastics_lec_3.pdf)
 
-```markdown
-Syntax highlighted code block
+### Travaux dirigées
 
-# Header 1
-## Header 2
-### Header 3
+Séance             | Enoncé
+-----------------   | -------------
+1 | [Slides](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
+2 | [Slides](/Slides/BFS/Lecture1/blockastics_lec_2.pdf)
+3 | [Slides](/Slides/BFS/Lecture3/blockastics_lec_3.pdf)
+4 | [Slides](/Slides/BFS/Lecture3/blockastics_lec_3.pdf)
 
-- Bulleted
-- List
+### Annales d'examens
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/LaGauffre/mad/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Année            | Enoncé
+-----------------   | -------------
+2018-2019 | [Janvier](/Slides/BFS/Lecture1/blockastics_lec_1.pdf), [Juin](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
+2019-2020 | [Janvier](/Slides/BFS/Lecture1/blockastics_lec_1.pdf), [Juin](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
+2020-2021 | [Janvier](/Slides/BFS/Lecture1/blockastics_lec_1.pdf), [Juin](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
+2021-2022 | [Janvier](/Slides/BFS/Lecture1/blockastics_lec_1.pdf), [Juin](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
