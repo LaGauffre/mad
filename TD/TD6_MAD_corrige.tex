@@ -1,0 +1,318 @@
+\documentclass[11pt]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsopn, color}
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec}
+\usepackage{tipa}
+\usepackage{hyperref}
+
+
+
+% Style
+\setlength\parindent{0pt}
+\shadedsolutions
+
+% Define course info
+\def\semester{2019-2020}
+\def\course{Modèles Aléatoires Discrets M1}
+\def\name{P.-O. Goffard \& Rémy Poudevigne}
+%\def\quizdate{10/5, 10/6}
+\def\hwknum{}
+%\def\title{\MakeUppercase{Homework \hwknum -- quiz \quizdate }}
+\def\title{\MakeUppercase{TD 5: Chaine de Markov}}
+
+% Define commands
+\def\Bin{\operatorname{Bin}}
+\def\Geom{\operatorname{Geom}}
+\def\Pois{\operatorname{Pois}}
+\def\Exp{\operatorname{Exp}}
+\newcommand{\E}{\mathbb E}            % blackboard E
+\newcommand{\bP}{\mathbb P}            % blackboard P
+\newcommand{\Var}{\text{Var}}            % blackboard P
+\newcommand{\Om}{\Omega}            % blackboard P
+\newcommand{\om}{\omega}            % blackboard P
+\newcommand{\N}{\mathbb N}            % blackboard P
+\newcommand{\R}{\mathbb R}            % blackboard P
+\newcommand{\A}{\mathcal A}            % blackboard P
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \Z{\mathbb Z}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+\newcommand{\Esachant}[2]{\mathbb E\left[#1| #2\right]}
+\newcommand{\Varsachant}[2]{\text{Var}\left(#1| #2\right)}
+\newcommand{\Fcal}{\mathcal{F}}
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+\newcommand{\Cov}{\text{Cov}\ }
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand{\Pcal}{\mathcal{P}}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+\def \limsup{\underset{n\rightarrow+\infty}{\overline{\lim}}}
+\def \liminf{\underset{n\rightarrow+\infty}{\underline{\lim}}}
+\def\euro{\mbox{\raisebox{.25ex}{{\it =}}\hspace{-.5em}{\sf C}}}
+  \everymath{\displaystyle}
+% \newcommand{\limsup}{\overline{\lim}\,}            % blackboard P
+% \newcommand{\liminf}{\underline{\lim}\,}            % blackboard P
+
+\begin{document}
+
+% Heading
+{\center \textsc{\Large\title}\\
+	\vspace*{1em}
+	\course -- \semester\\
+	\name\\
+	\vspace*{2em}
+	\hrule
+\vspace*{2em}}
+\begin{questions}
+
+\question
+  Soit $X_n$ et $Y_n$ deux martingales de carré intégrable définies sur un espace de probabilité filtré $(\Omega,\Fcal,\Fcal_n,\P)$.
+  \begin{parts}
+   \part Montrer que pour tout $m \leq n$, on a $\E\left[X_m Y_n | \Fcal_m\right]=X_m Y_m$ p.s., et donc en particulier que $\E\left[X_m X_n | \Fcal_m\right]=X_m X_m$ p.s.
+   \begin{solution}
+	On sait que $X_m$ est $\mathcal{F}_m$-mesurable donc 
+	\[
+	\E\left[X_m Y_n | \Fcal_m\right]=X_m\E\left[ Y_n | \Fcal_m\right] \text{ p.s.}
+	\]
+	De plus $Y$ est une martingale et $m\leq n$ donc 
+	\[
+	\E\left[ Y_n | \Fcal_m\right]= Y_m \text{ p.s.}
+	\]
+	On en conclut que $\E\left[X_m Y_n | \Fcal_m\right]=X_m Y_m$ p.s. 
+   \end{solution}
+   \part Montrer que pour tout $m<n \leq p<q$, on a $\Cov(X_n-X_m,Y_q-Y_p)=0$.
+   \begin{solution}
+	On a :
+	\[
+	\Cov(X_n-X_m,Y_q-Y_p)=\E((X_n-X_m)(Y_q-Y_p))-\E(X_n-X_m)\E(Y_q-Y_p).
+	\]
+	On a 
+	\[
+	\E(X_n-X_m)=\E(\E(X_n-X_m|\mathcal{F}_m))=\E(X_m-X_m)=0.
+	\]
+	De même $\E(Y_q-Y_p)=0$. On a donc :
+	\[
+	\begin{aligned}
+	\Cov(X_n-X_m,Y_q-Y_p)=&\E((X_n-X_m)(Y_q-Y_p))\\
+	=&\E(\E((X_n-X_m)(Y_q-Y_p)|\mathcal{F}_p))\\
+	=&\E((X_n-X_m)\E((Y_q-Y_p)|\mathcal{F}_p)) \text{ car } (X_n-X_m) \text{ est } \mathcal{F}_m-\text{mesurable}\\
+	=&
+	\end{aligned}
+	\]
+   \end{solution}
+   \part Montrer que pour tout $n \in \N$, on a $\displaystyle{\E \left[(X_n-X_0)^2\right]=\sum_{k=1}^n \E\left[(X_k-X_{k-1})^2\right]}$.
+    \begin{solution}
+	On va raisonner par récurrence. Pour $n\in\{0,1\}$, $(X_n-X_0)^2=\sum\limits_{k=1}^n (X_k-X_{k-1})^2$ et donc $\E \left[(X_n-X_0)^2\right]=\sum_{k=1}^n \E\left[(X_k-X_{k-1})^2\right]$.\\
+	On suppose l'égalité vraie au rang $n$. On a :
+	\[
+	\begin{aligned}
+	\E \left[(X_{n+1}-X_0)^2\right]
+	=& \E \left[((X_{n+1}-X_n) + (X_n -X_0))^2\right]\\
+	=& \E \left[(X_{n+1}-X_n)^2 + (X_n -X_0)^2 + 2(X_{n+1}-X_n)(X_n -X_0)\right]\\
+	=& \E \left[(X_{n+1}-X_n)^2 + (X_n -X_0)^2\right] \text{ par l'exercice précédent}.\\
+	=& \E \left[(X_{n+1}-X_n)^2 + \sum_{k=1}^n(X_k-X_{k-1})^2\right]\\
+	=& \sum_{k=1}^{n+1} \E \left[(X_k-X_{k-1})^2\right].
+	\end{aligned}
+	\]
+   \end{solution}
+  \end{parts}  
+
+
+
+\question
+On considère l'espace de probabilité filtré $(\Omega,\Fcal,\Fcal_n,\P)$ où $\Omega= \N^*$, $\Fcal=\Pcal(\N^*)$, \\$\P(\{n\})=\frac{1}{n}-\frac{1}{n+1}$, 
+$\Fcal_n=\sigma\left(\{1\},...,\{n\},\left[n+1,+\infty\right[\right)$. On considère la suite de variables aléatoires réelles
+$X_n=(n+1) \Ind_{\left[n+1,+\infty \right[}$.
+\begin{parts}
+ \part 
+ \begin{itemize}
+     \item Montrer que pour la filtration $\Fcal_n$, $X_n$ est une martingale positive.
+     \item Vérifier que $X_n \rightarrow 0$ p.s.
+     \item $X_n$ converge-t-elle dans $\mathcal{L}^1$ ?
+ \end{itemize}
+     \begin{solution}
+		Pour tout $n\in\N$, $X_n\in\{0,n+1\}$ donc la variable $X_n$ est positive. Pour tout $i\in [\![1;n]\!]$,
+		\[
+		\E(X_{n+1}|\{i\})=0.
+		\]
+		On a également 
+		\[
+		\E(X_{n+1}|\left[n+1,+\infty\right[)=\frac{\left(\frac{1}{n+1}-\frac{1}{n+2}\right)\times 0 + \frac{1}{n+2}\times (n+2)}{\frac{1}{n+1}}=n+1.
+		\]
+		On a bien $\E(X_{n+1}|\Fcal_n)=X_n$ p.s.\\
+		Pour tout $i\in\N$, pour tout $n\geq i$, $X_n(i)=0$ donc $X_n\rightarrow 0$ p.s.\\
+		On a $\E\left(|X_n-0|\right)=\E\left(X_n\right)=1$ donc on n'a pas convergence dans $\mathcal{L}^1$.
+   \end{solution}
+ \part Pour tout $k\in \N^*$, quelle est la valeur de $\mathrm{sup}_{n\in \N} X_n(k)$ ? En déduire $\E\left[\mathrm{sup}_{n\in \N} X_n \right]$.
+     \begin{solution}
+		On a que le maximum est atteint pour $n=k-1$ et on a alors $X_{k-1}(k)=k$ donc $\mathrm{sup}_{n\in \N} X_n(k)=k$. On en déduit que :
+		\[
+		\begin{aligned}
+		\E\left[\mathrm{sup}_{n\in \N} X_n \right]*
+		=&\sum\limits_{k\geq 1} \left(\frac{1}{k}-\frac{1}{k+1}\right)k\\
+		=&\sum\limits_{k\geq 1} \frac{1}{k(k+1)}k\\
+		=&\sum\limits_{k\geq 1} \frac{1}{(k+1)}\\
+		=&\infty.
+		\end{aligned}
+		\]
+   \end{solution}
+\end{parts}
+
+
+\question
+ Soit $(Y_n)$ une suite de variables aléatoires réelles, positives, indépendantes, définies sur un espace de probabilité $(\Omega, \Fcal, \P)$ et de même espérance $1$. Pour tout $n\in \N$, on poste $\Fcal_n=\sigma\left(Y_0,...,Y_n\right)$ et $X_n=Y_0...Y_n$.
+ \begin{parts}
+  \part Montrer que $X_n$ est une $\Fcal_n$-martingale et que $\sqrt{X_n}$ est une $\Fcal_n$-surmartingale.
+      \begin{solution}
+   \end{solution}
+  \part Montrer que le produit infini $\displaystyle{\prod_{k=0}^{+\infty} \E\left[\sqrt{Y_k}\right]}$ converge dans $\R_+$, on note $l$ sa limite.
+      \begin{solution}
+   \end{solution}
+  \part On suppose que $l=0$. Montrer que $\sqrt{X_n} \rightarrow 0$ p.s. La martingale $\left(X_n\right)$ est-elle régulière ?
+      \begin{solution}
+   \end{solution}
+  \part On suppose que $l>0$. Montrer que $\left(\sqrt{X_n}\right)$ est une suite de Cauchy dans $L^2$. En déduire que $\left(X_n\right)$ est régulière.
+      \begin{solution}
+   \end{solution}
+  \part \underline{Application :} Soit $P$ et $Q$ deux probabilités distinctes sur un ensemble dénombrable $E$ et $\left(Z_n\right)$ une suite de variables aléatoires indépendantes à valeurs dans $E$ de même loi $Q$.\\
+  On suppose que pout tout $x\in E$, on a $Q(x)>0$.\\
+  On pose $X_n=\frac{P(Z_0)}{Q(Z_0)}...\frac{P(Z_n)}{Q(Z_n)}$.\\
+  Déduire de ce qui précède que $X_n \rightarrow 0$ p.s.
+      \begin{solution}
+   \end{solution}
+ \end{parts}
+
+
+
+\question
+  On considère une variable aléatoire $N$ à valeurs dans $\mathbb N$, et une suite de variables aléatoires indépendantes et de même loi $(X_k)_{k\geq 1}$, indépendante de $N$.\\
+On pose 
+\[ 
+Y=\sum_{k=1}^{N} X_k\,.
+\]
+\begin{parts}
+\part Déterminer $\Esachant{Y}{N}$, puis $\E \left[Y\right]$.
+\begin{solution}
+On a:
+\[
+\begin{aligned}
+\Esachant{Y}{N} & = \Esachant{\sum_{i=1}^{N} C_i}{N} \\
+& = \sum_{i=1}^{N}\,\Esachant {C_i}{N} \\
+& = \sum_{i=1}^{N}\,\E(C_1)=N\E(C_1),
+\end{aligned}
+\]
+où dans l'avant dernière égalité on utilise le fait que  les $C_i$ sont indépendantes de $N$. On obtient donc que
+\[
+\E(Y)=\E\left(\Esachant{Y}{N}\right)=\E(N)\E(C_1).
+\]
+\end{solution}
+\part Déterminer $\Varsachant{Y}{N}$, puis $\Var (Y)$.
+\begin{solution}
+Rappelons que
+\[
+\Varsachant{Y}{N}=\Esachant{(Y-\Esachant{Y}{N})^2}{N},
+\]
+et que
+\[
+\Var\,Y=\E(\Varsachant{Y}{N})+\Var(\Esachant{Y}{N}).
+\]
+On obtient
+\[
+\begin{aligned}
+\Varsachant{Y}{N}
+& = \Esachant{Y^2}{N}-\Esachant{Y}{N}^2 \\
+& = \Esachant{Y^2}{N}-\Esachant{Y}{N}^2 \\
+& = \cdots = N\,\Var (C_1).
+\end{aligned}
+\]
+Puis $\Var (Y)=\cdots = \E(N)\,\Var (C_1)+\E(C_1)^2\Var (N)$
+   \end{solution}
+\part Montrer que $L_S=G_N \circ L_X$ où $L_Z$ est la transformée de Laplace de la variable aléatoire $Z$ et $G_Z$ est sa fonction génératrice des probabilités.
+  \begin{solution}
+	On a pour tout $\lambda\in\R$:
+	\[
+	\begin{aligned}
+	\E\left(e^{\lambda Y}|N\right)=&
+	\E\left(e^{\lambda \sum\limits_{i=1}^n X_i}|N\right)\\
+	=&\E\left(\prod\limits_{i=1}^n e^{\lambda  X_i}|N\right)\\
+	=&\prod\limits_{i=1}^n \E\left( e^{\lambda  X_i}|N\right)\\
+	=& \E\left( e^{\lambda  X_1}\right)^N.
+	\end{aligned}
+	\]
+	On trouve donc :
+	\[
+	\E\left(e^{\lambda Y}\right)=\E\left(\E\left(e^{\lambda Y}|N\right)\right)
+	=\E\left(\E\left( e^{\lambda  X_1}\right)^N\right).
+	\]
+	On a bien $L_S=G_N \circ L_X$.
+  \end{solution}
+  \end{parts}
+
+
+
+
+\question
+ Soit $X_k$ des v.a. i.i.d. de loi exponentielle de paramètre $\theta$ et $\displaystyle{S= \sum_{k=1}^N X_k}$ avec la convention $S=0$ si $N=0$. On suppose que $N$ suit une loi binomiale négative (ou loi de P\'{o}lya) de paramètres $r$ et $p$ avec $r$ entier. C'est-à-dire que pour tout $n\in\N$,
+\[
+\bP(N=n)=\frac{\Gamma(r+n)}{n!\Gamma(r)}p^r(1-p)^n.
+\]
+ \begin{parts}
+  \part \begin{itemize}
+         \item Soit $\theta, x \in \R_{+}^*$. On considère la suite $I_k$ définie pour $k \in \N ^*$ par :
+         $$I_k=\int_0^x t^{k-1} \exp(\theta t) \ dt\ .$$
+         Montrer que pour tout $k \in \N^*$, on a : 
+         $$\frac{\theta^k}{(k-1)!} I_k=1-\exp(\theta x) \sum_{j=0}^{k-1} \frac{(\theta x)^j}{j!} \ .$$
+         \item Déterminer la fonction de répartition de $\displaystyle{S_n= \sum_{k=1}^n X_k}$.
+        \end{itemize}
+  \begin{solution}
+  \end{solution}
+  \part Déterminer une expression (avec une somme infinie) de la fonction de répartition de $S$.
+  \begin{solution}
+  \end{solution}
+  \part 
+  \begin{itemize}
+   \item Déterminer la fonction génératrice des probabilités d'une v.a. de loi binomiale négative $\text{Neg-Bin}(r,p)$ et celle d'une v.a. de loi binomiale $\text{Neg-Bin}(r,1-p)$. Déterminer la fonction génératrice des moments d'une v.a. de loi exponentielle.
+   \item En déduire que la composée d'une loi $\text{Neg-Bin}(r,p)$ par la loi $\text{Exp}(\theta)$ a même fonction génératrice des moments que la composée d'une loi $\text{Bin}(r,1-p)$ par la loi $\text{Exp}(p \theta)$.
+  \end{itemize}
+   \begin{solution}
+   \end{solution}
+  \part En déduire une expression simple (avec une somme finie) de la fonction de répartition de $S$.
+   \begin{solution}
+   \end{solution}  
+ \end{parts}
+
+
+
+\end{questions}
+\end{document}

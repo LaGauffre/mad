@@ -1,0 +1,2 @@
+\beamer@sectionintoc {1}{Processus de Poisson}{2}{0}{1}
+\beamer@sectionintoc {2}{Processus de Poisson composé}{19}{0}{2}

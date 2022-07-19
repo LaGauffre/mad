@@ -1,0 +1,245 @@
+\documentclass[11pt, answers]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsopn, color}
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec}
+\usepackage{tipa}
+\usepackage{hyperref}
+
+
+
+% Style
+\setlength\parindent{0pt}
+\shadedsolutions
+
+% Define course info
+\def\semester{2019-2020}
+\def\course{Modèles Aléatoires Discrets M1}
+\def\name{P.-O. Goffard \& Rémy Poudevigne}
+%\def\quizdate{10/5, 10/6}
+\def\hwknum{}
+%\def\title{\MakeUppercase{Homework \hwknum -- quiz \quizdate }}
+\def\title{\MakeUppercase{TD 6: Processus de Poisson}}
+
+% Define commands
+\def\Bin{\operatorname{Bin}}
+\def\Geom{\operatorname{Geom}}
+\def\Pois{\operatorname{Pois}}
+\def\Exp{\operatorname{Exp}}
+\newcommand{\E}{\mathbb E}            % blackboard E
+\newcommand{\bP}{\mathbb P}            % blackboard P
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\text{Var}}            % blackboard P
+\newcommand{\Om}{\Omega}            % blackboard P
+\newcommand{\om}{\omega}            % blackboard P
+\newcommand{\N}{\mathbb N}            % blackboard P
+\newcommand{\R}{\mathbb R}            % blackboard P
+\newcommand{\A}{\mathcal A}            % blackboard P
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \Z{\mathbb Z}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+
+
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+\def \limsup{\underset{n\rightarrow+\infty}{\overline{\lim}}}
+\def \liminf{\underset{n\rightarrow+\infty}{\underline{\lim}}}
+\def\euro{\mbox{\raisebox{.25ex}{{\it =}}\hspace{-.5em}{\sf C}}}
+  \everymath{\displaystyle}
+% \newcommand{\limsup}{\overline{\lim}\,}            % blackboard P
+% \newcommand{\liminf}{\underline{\lim}\,}            % blackboard P
+
+\begin{document}
+
+% Heading
+{\center \textsc{\Large\title}\\
+	\vspace*{1em}
+	\course -- \semester\\
+	\name\\
+	\vspace*{2em}
+	\hrule
+\vspace*{2em}}
+\begin{questions}
+\question
+  Soit $X_1$ et $X_2$ des variables aléatoires indépendantes de lois exponentielles de paramètres $\lambda_1$ et $\lambda_2$ respectivement.
+  \begin{parts}
+  \part Quelle est la loi de $Y=\min\left( X_1, X_2\right)$?
+  \begin{solution}
+Le calcul de la loi du minimum se fait souvent de la manière suivante: on remarque que $Y> x$ si et seulement si $X_1> x$ et $X_2> x$, pour tout $x\in\R$. On a donc, pour $x\leq0$:
+\[
+\begin{aligned}
+\Prob(Y\leq x)
+& = 1- \Prob(Y>x) \\
+& = 1- \Prob(X_1>x\,;\,X_2>x) \\
+& = 1- \Prob(X_1>x)\Prob(X_2>x),
+\end{aligned}
+\]
+où dans la dernière inégalité on a utilisé le fait que $X_1$ et $X_2$ étaient indépendants. En utilisant le fait que pour une variable aléatoire $X$ de loi exponentielle de paramètre $\lambda$, on a $\Prob(X>x)=e^{-\lambda x}$, on obtient:
+\[\Prob(Y\leq x)=1-e^{-(\lambda_1+\lambda_2)}.\]
+On reconnait la fonction de répartition d'une variable aléatoire de loi exponentielle de paramètre $\lambda_1+\lambda_2$.
+
+  \end{solution}
+  \part Calculer $\P( Y=X_1 )$.
+   \begin{solution}
+On a $\Prob(Y=X_1)=\Prob(X_1\leq X_2)$ d'où
+\[
+\begin{aligned}
+\Prob(Y=X_1)
+& = \int_{x_1=0}^{+\infty}\int_{x_2=0}^{+\infty}\lambda_1e^{-\lambda_1 x_1}\lambda_2e^{-\lambda_2 x_2}1_{x_1\leq x_2}dx_1 dx_2  \\
+& = \int_{x_1=0}^{+\infty}\int_{x_2=x_1}^{+\infty}\lambda_1e^{-\lambda_1 x}\lambda_2e^{-\lambda_2 x}dx_1 dx_2  \\
+& = \int_{x_1=0}^{+\infty}\,\lambda_1e^{-\lambda_1 x_1}e^{-\lambda_2 }dx_1 \\
+& = \frac{\lambda_1}{\lambda_1+\lambda_2}.
+\end{aligned}
+\]
+Par le même calcul on trouve que $\Prob(Y=X_2)=\lambda_2/(\lambda_1+\lambda_2)$. On remarque que l'on a bien $\Prob(Y=X_1)+\Prob(Y=X_2)=1$.
+  \end{solution}
+  \end{parts} 
+
+
+\question
+  Dans une station de taxi, il y a des voitures de marque A et B, qui arrivent suivant des processus de Poisson indépendants d'intensité 10 et 15 par heure respectivement.
+  \begin{parts}
+  \part Soit $T$ la minute d'arrivée du premier taxi. Quelle est la loi de $T$ ? Quelle est la probabilité que le premier taxi arrivé soit de la marque A ?
+  \begin{solution}
+	Notons $T_1$ et $T_2$ les heures d'arrivées des marques $A$ et $B$ respectivement. $T_1$ et $T_2$ sont donc de loi exponentielle de paramètres $10$ et $15$ respectivement. Par définition, $T=\min(T_1,T_2)$. D'après l'exercice précédent, $T$ suit donc une loi exponentielle de paramètre $10+15=25$. Toujours d'après l'exercice précédent, la probabilité pour que le premier taxi soit de marque $A$ est $10/25=2/5$.
+  \end{solution}
+  \part Si le premier taxi arrivé est de marque A, quelle est la loi du temps qu'il faut encore attendre (après l'arrivée de ce taxi) avant l'arrivée du premier taxi de marque B ?
+  \begin{solution}
+	On montre cela de la même manière que l'on montre la propriété d'être sans mémoire de la loi exponentielle: par la formule de Bayes, on a
+\begin{align*}
+\Prob(T_2\geq x+T_1\,|\,T_2\geq T_1)
+& = \frac{\Prob(T_2\geq x+T_1)}{\Prob(T_2\geq T_1)}\,\Prob(T_2\geq T_1\,|\, T_2\geq x+T_1) \\
+& = \frac{\Prob(T_2\geq x+T_1)}{\Prob(T_2\geq T_1)}.
+\end{align*}
+On calcule donc $\Prob(T_2\geq x+T_1)$. On pose $\lambda_1=10$ et $\lambda_2=15$. On a alors
+\begin{align*}
+\Prob(T_2\geq x+T_1) & = \int_{y=0}^{+\infty}\, \lambda_1 e^{-\lambda_1 y}\Prob(T_2\geq x+y)dy \\
+& = \lambda_1e^{-\lambda_2x}\int_{y=0}^{+\infty}\, e^{-(\lambda_1+\lambda_2 y}dy \\
+& =\cdots = \frac{\lambda_1}{\lambda_1+\lambda_2}e^{-\lambda_2 x}. 
+\end{align*}
+On retrouve que $T_2$, sachant qu'il n'y avait pas de taxi B avant le temps aléatoire $T_1$, suit toujours une loi exponentielle de paramètre $15$. 
+  \end{solution}
+  \part Montrer que les dates d'arrivée des taxis (quelle que soit leur marque) forment un processus de Poisson dont on donnera l'intensité.
+  \begin{solution}
+	Notons $N_t^1$ et $N_t^2$ le nombre de taxis $A$ où $B$ arrivés avant la date $t$. Ce sont donc deux processus de Poisson d'intensité $10$ et $15$ respecivement. On nous demande de calculer la loi de $N_t=N_t^1+N_t^2$. On a, pour tout entier $k\geq0$:
+\begin{align*}
+\Prob(N_t=k)
+& = \sum_{l=0}^k\, \Prob(N_t^1=l\,;\,N_t^2=k-l) \\
+& = \sum_{l=0}^k\, \Prob(N_t^1=l)\,\Prob(N_t^2=k-l) \\
+& = e^{-(\lambda_1+\lambda_2)t}\, \sum_{l=0}^k\, \frac{\lambda_1^l}{l!}\frac{\lambda_2^{k-l}}{(k-l)!} \\
+& = \frac{e^{-(\lambda_1+\lambda_2)t}}{k!}\, \sum_{l=0}^k\, C_k^l\,(\lambda_1 t)^l(\lambda_2 t)^{k-l} \\
+& = e^{-(\lambda_1+\lambda_2)t}\,\frac{(\lambda_1+\lambda_2)^k}{k!}.
+\end{align*}
+On trouve que $N_t$ est un processus desuit une loi de Poisson de paramètre $25$. Pour montrer que c'est bien un processus de Poisson, il nous faut donc montrer que les accroissements sont indépendants et que les trajectoires sont continues à droite. Ce dernier point est direct vu la définition de $N_t$ comme la somme de deux processus de Poisson. Montrons que les accroissements sont indépendants. Soient $I$ et $J$ deux intervalles disjoints. Montrons que pour tout entier $k,l\geq0$:
+\[\Prob(N_I=k\,;\,N_J=l)=\Prob(N_I=k)\,\Prob(N_J=l).\]
+Pour cela on conditionne par les valeurs possibles de $N^1$ et $N^2$ et on applique la formule des probabilités totales:
+\begin{align*}
+\Prob(N_I=k\,;\,N_J=l)
+& = \sum_{i=0}^k\sum_{j=0}^l\, \Prob(N_I^1=i\,;\,N_I^2=k-i\,;\,N_J^1=j\,;\,N_J^2=l-j) \\
+& = \sum_{i=0}^k\sum_{j=0}^l\, \Prob(N_I^1=i\,;\,N_I^2=k-i)\,\Prob(N_J^1=j\,;\,N_J^2=l-j) \\
+& = \left(\sum_{i=0}^k\, \Prob(N_I^1=i\,;\,N_I^2=k-i)\right)\,\left(\sum_{j=0}^l\,\Prob(N_J^1=j\,;\,N_J^2=l-j)\right) \\
+& = \Prob(N_I=k)\,\Prob(N_J=l).
+\end{align*}
+On a utilisé pour la deuxième égalité l'indépendance des variables $N^1_I$, $N_J^1$, $N_I^2$, $N_J^2$.
+  \end{solution}
+  \end{parts}
+
+
+\question
+  On suppose que les dates des accidents des assuré-es de la compagnie \emph{JojoTranquille} forment un processus de Poisson d'intensité $\lambda$. Pour chaque accident, l'assuré-e fera une déclaration à son assurance avec une probabilité $p\in]0,1[$, la décision étant prise de manière indépendante des autres accidents et des autres assuré-es.\\
+  Pour tout intervalle de temps $I\subset\mathbb R$, on note $N^{d}_I$ (respectivement $N^{nd}_I$) le nombre d'accidents déclarés (respectivement non-déclarés) dans cet intervalle de temps. On note enfin $N_I=N^d_I+N^{nd}_I$.
+  \begin{parts}
+  \part Pour $n\in\mathbb N$, quelle est la loi de $N^{d}_I$ conditionnellement à $N_I=n$ ?
+  \begin{solution}
+	C'est une loi Binomiale de paramètre $(n,p)$.
+  \end{solution}
+  \part Quelle est la loi de $N^{d}_I$ ?
+  \begin{solution}
+	D'après la formule des probabilités totales, on a
+\begin{align*}
+\Prob(N_I=k) & = \sum_{n=0}^{+\infty}\, \Prob(N_I=k\,|\,N_I^0=n)\,\Prob(N_I^0=n) \\
+& = \sum_{n=k}^{+\infty}\, C_n^k p^k(1-p)^{n-k}\times\, e^{-\lambda|I|}\frac{(\lambda|I|)^n}{n!} \\
+& =  e^{-\lambda|I|}\,\sum_{l=0}^{+\infty}\, C_{k+l}^k p^k(1-p)^{l}\frac{(\lambda|I|)^{k+l}}{(k+l)!} \\
+& = \cdots = e^{-p\lambda|I|}\,\frac{(p\lambda|I|)^{k}}{k!}
+\end{align*}
+$N_I$ suit donc une loi de Poisson de paramètre $p\lambda$.
+  \end{solution}
+  \part Montrer que les dates des accidents déclarés forment un processus de Poisson dont on donnera l'intensité.
+  \begin{solution}
+	De plus, les accroissements de $N_t$ sont indépendants, car ceux de $N_I^0$ le sont (on peut le prouver directement en conditionnant par les valeurs de $N_I^0$ et $N_J^0$). $N_t$ est donc un processus de Poisson d'intensité $p\lambda$.	
+  \end{solution}
+  \part Les variables $N^{d}_I$ et $N^{nd}_I$ sont-elles indépendantes ?
+  \begin{solution}
+Faisont le calcul. D'une part on a 
+\[
+\begin{aligned}
+\Prob(N_I=k\,;\,N_I'=l)=&\Prob\left(N_I=k\,;\,N_I'=l\,|\, N^0_I=k+l\right)\\
+=&\Prob(N^0_I=k+l)\\
+=&C_k^{k+l}p^k(1-p)^{k+l}\,\frac{(\lambda|I|)^{k+l}}{(k+l)!}.
+\end{aligned}
+\]
+D'autre part, on a 
+\[\Prob(N_I=k)\,\Prob(N_I'=l)=\cdots=C_k^{k+l}p^k(1-p)^{k+l}\,\frac{(\lambda|I|)^{k+l}}{(k+l)!}.\]
+Les deux variables sont donc bien indépendantes.
+  \end{solution}
+  \end{parts}
+
+
+\question
+  Montrer que si on transforme les dates d'un processus de Poisson d'intensité $\lambda$ sur $]0,T[$ par l'application $t\mapsto T-t$, alors on obtient toujours un processus de Poisson d'intensité $\lambda$ sur $]0,T[$.
+  \begin{solution}
+	Notons $N_t$ les processus de Poisson d'intensité $\lambda$ et $N_t'$ le processus que l'on obtient par le changement de temps $t\mapsto T-t$. Montrons que
+\[N_t'=N_T-N_{T-t}=N_{[T-t,T]}.\]
+Soit $(T_i)_{i\geq1}$ une suite de v.a.i.i.d. de loi exponentielle de paramètre $\lambda$. Posons $S_i=T_1+\cdots +T_i$ pour tout $i\geq1$, de tel sorte que
+\[N_t=\sum_{i=1}^{+\infty}\,\Ind_{\{0\leq S_i\leq t\}}.\]
+On a alors
+\[N_t'=\sum_{i=1}^{+\infty}\,\Ind_{\{0\leq S_i'\leq t\}},\]
+où $S_i'$ est donné par $S_i'=T-S_i$ pour tout $i\geq1$. Comme $\{0\leq S_i'\leq t\}=\{T-t\leq S_i\leq T\}$, on obtient bien que $N_t'=N_{[T-t,T]}$.\\
+Le résultat est maintenant évident: on vérifie bien que pour tous intervalles disjoints $I$ et $J$ dans $[0,T]$, $N_I'$ et $N_J'$ sont indépendants et que $N_I'$ suit une loi de Poisson de paramètre $\lambda|I|$.
+  \end{solution}
+
+\question
+  On modélise les dates $T_i$ des sinistres déclarés par les assuré-es d'une compagnie d'assurance par un processus de Poisson d'intensité $\lambda>0$.\\
+  On considère une date $t>0$, et on note $A_t$ (respectivement $B_t$) le temps qui sépare la date $t$ du sinistre déclaré juste avant (respectivement après) $t$.\\
+  Quelle est la loi de $B_t$ ? Et celle de $A_t$ ? Quelle est l'espérance de $A_t+B_t$ ?
+  \begin{solution}
+	Si on se place au temps $T$ et qu'on se demande quand était le dernier accident, on fait la transformation $T-t$ donc d'après l'exercice précédent, $A_T$ suit une loi exponentielle de paramètre $\lambda$. De même, si on se place au temps $t$, sans savoir quand à eu le dernier accident, et qu'on se demande quand sera le prochaine, alors par la propriété d'être sans mémoire de la loi exponentielle $B_T$ suit elle aussi une loi exponentielle de paramètre $\lambda$. En conséquence, $A_T+B_T$ a une espérance de $2\lambda$.\\
+Cela est paradoxale, car on obtient qu'en moyenne il s'écoule $2\lambda$ unité de temps entre deux accidents, alors que le modèle nous dit que c'est en réalité $\lambda$. On appelle cela le \emph{paradoxe de l'autobus} (on attend en moyenne 5 min son autobus alors qu'il y en a tous les 5 min). Ce paradoxe est vraiment lié au choix de la loi exponentielle pour modéliser les temps entre deux accidents.
+  \end{solution}
+
+\end{questions}
+\end{document}

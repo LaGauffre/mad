@@ -1,0 +1,1665 @@
+\documentclass[8pt,notheorems]{beamer}
+\usetheme{Copenhagen}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{beamerthemesplit}
+\usepackage{graphicx}
+\usepackage{tkz-graph}
+\usepackage{color}
+\usepackage{listings}
+
+\usepackage{amsmath,amsfonts,amsthm,t1enc}
+\usepackage{fourier}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows}
+%%%<
+\usepackage{verbatim}
+%%%>
+\usetikzlibrary{automata,arrows,positioning,calc}
+\setbeamertemplate{footline}{\hfill \insertframenumber/\inserttotalframenumber}
+% \setbeamertemplate{headline}{}
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+\newcommand{\Exp}{\mathbb{E}}
+
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+
+\setbeamertemplate{theorem}[ams style]
+\setbeamertemplate{theorems}[numbered]
+%\makeatletter
+%\def\th@mystyle{%
+%    \normalfont % body font
+%    \setbeamercolor{block title example}{bg=orange,fg=white}
+%    \setbeamercolor{block body example}{bg=blue!20,fg=black}
+%    \def\inserttheoremblockenv{block}
+%  }
+%\makeatother
+%\theoremstyle{mystyle}
+
+\makeatletter
+    \ifbeamer@countsect
+      \newtheorem{theorem}{\translate{Theorem}}[section]
+    \else
+      \newtheorem{theorem}{\translate{Theoreme}}
+    \fi
+    \newtheorem{corollary}{\translate{Corollaire}}
+    \newtheorem{prop}{\translate{Proposition}}
+    \newtheorem{lemma}{\translate{Lemme}}
+    \newtheorem{problem}{\translate{Probleme}}
+    \newtheorem{solution}{\translate{Solution}}
+
+    \theoremstyle{definition}
+    \newtheorem{definition}{\translate{Definition}}
+    \newtheorem{definitions}{\translate{Definitions}}
+
+    \theoremstyle{example}
+    \newtheorem{example}{\translate{Exemple}}
+    \newtheorem{remark}{\translate{Remarque}}
+    \newtheorem{examples}{\translate{Examples}}
+
+\makeatletter
+\def\th@mystyle{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange,fg=white}
+    \setbeamercolor{block body example}{bg=orange!20,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{mystyle}
+\newtheorem{fact}{Fact}
+
+
+
+
+
+    % Compatibility
+    \newtheorem{Beispiel}{Beispiel}
+    \newtheorem{Beispiele}{Beispiele}
+    \theoremstyle{plain}
+    \newtheorem{Loesung}{L\"osung}
+    \newtheorem{Satz}{Satz}
+    \newtheorem{Folgerung}{Folgerung}
+    \newtheorem{Fakt}{Fakt}
+    \newenvironment{Beweis}{\begin{proof}[Beweis.]}{\end{proof}}
+    \newenvironment{Lemma}{\begin{lemma}}{\end{lemma}}
+    \newenvironment{Proof}{\begin{proof}}{\end{proof}}
+    \newenvironment{Theorem}{\begin{theorem}}{\end{theorem}}
+    \newenvironment{Problem}{\begin{problem}}{\end{problem}}
+    \newenvironment{Corollary}{\begin{corollary}}{\end{corollary}}
+    \newenvironment{Example}{\begin{example}}{\end{example}}
+    \newenvironment{Examples}{\begin{examples}}{\end{examples}}
+    \newenvironment{Definition}{\begin{definition}}{\end{definition}}
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+% ============================================================
+% Title
+% ============================================================
+
+\title[]{MAD M1 Actuariat/ES}
+\subtitle{Chapitre II: Chaine de Markov}
+\author{Pierre-Olivier Goffard}
+\institute{
+	   Université de Lyon 1\\
+	ISFA\\
+	   \texttt{pierre-olivier.goffard@univ-lyon1.fr}
+	  }
+\date{
+ISFA\\
+\today}
+\lstset{language=SAS}
+\begin{document}
+
+\frame{\titlepage}
+
+
+% ============================================================
+\section{Définitions et premieres propriétés}
+\subsection{Définition}
+\begin{frame}[allowframebreaks]
+\underline{I. Définitions et premieres propriétés}\\
+\underline{1. Chaine de Markov homogène et matrice stochastique}\\
+Soit $(X_n)_{n\in\mathbb{N}}$ un processus stochastique, à valeurs dans un espace d'état fini ou dénombrable $E$.
+\begin{example}[A propos de l'espace d'état]
+E peut-être
+\begin{itemize}
+\item $\{a,b,c,d\}$
+\item $\mathbb{N}$ ou $\mathbb{Z}$
+\end{itemize}
+\end{example}
+\begin{definition}[Chaine de Markov]
+Le processus $(X_n)_{n\in\mathbb{N}}$ est une chaine de Markov si
+$$
+\mathbb{P}(X_{n+1}=x_{n+1}|X_{n}=x_{n},\ldots,X_{1}=x_{1},X_{0}=x_{0})=\mathbb{P}(X_{n+1}=x_{n+1}|X_{n}=x_{n}),
+$$
+pour tout $n\in\mathbb{N}$ et tout $(x_{0},x_1,\ldots,x_{n+1})\in E^{n+2}$ tel que
+$$
+\mathbb{P}(X_{n}=x_{n},\ldots,X_{1}=x_{1},X_{0}=x_{0})>0.
+$$
+\end{definition}
+La loi conditionnelle de la valeur future $X_{n+1}$ du processus ne dépend pas de tout le passé $X_0,\ldots, X_n$ mais simplement de la valeur présente $X_n$. Il s'agit de la propriété de Markov. Nous étudierons dans ce cours principalement dans ce cours des chaines de Markov homogène pour lesquelles les probabilités de transition d'un état $ X_{n}= x_n\in E$ vers un état $X_{n+1} = x_{n+1}$ ne dépendront pas de l'instant $n\in\N$ considéré. On pourra caractériser la loi du processus via sa loi initiale
+$$
+\mu(x) = \P(X_0 = x),\text{ pour }x\in E\text{ (loi de $X_0$)}.
+$$
+qui vérifie $\sum_{x\in E}\mu(x)=1$ et sa matrice de transition $\mathbf{Q}$ de terme générale
+$$
+Q(x,y) = \mathbb{P}(X_{n+1}= y|X_n = x), \text{ pour tout }n\in\N\text{ et }(x,y)\in E^2.
+$$
+Pour une chaine de Markov non-homogène nous introduirions une suite de matrice de transition $(\mathbf{Q}_n)_{n\in\N}$ indicée sur le temps.
+\begin{definition}[Matrice stochastique et chaine de Markov homogène]
+\begin{enumerate}
+\item Une matrice $(Q(x,y))_{(x,y)\in E^{2}}$ est dite stochastique si
+$$
+\begin{cases}
+Q(x,y)\geq0,&\text{ }(x,y)\in\mathbb{E}^2\\
+\sum_{y\in E}Q(x,y)=1,&\text{ }x\in\mathbb{E}
+\end{cases},\text{ pour tout }n\geq1.
+$$
+\item Une chaine de Markov $(X_n)_{n\in\mathbb{N}}$ est homogène si
+$$
+\mathbb{P}(X_n=y|X_{n-1}=x)=Q(x,y),\text{ pour tout } (n,x,y)\in\mathbb{N}\times E^{2}.
+$$
+Les probabilités de transitions sont dites stationnaires, et la matrice $(Q(x,y))_{(x,y)\in E^{2}}$ est appelée matrice de transtion.
+\end{enumerate}
+\end{definition}
+\end{frame}
+\begin{frame}[allowframebreaks]
+La notion de matrice stochastique est équivalente a la notion de probabilité de transition (noyau de transition) de $E$ dans $E$, avec
+$$
+\nu(x,A) = \sum_{y\in A}Q(x,y),\text{ }x\in E,A\subset E.
+$$
+Inversement, on a $Q(x,y) = \nu(x,\{y\})$.
+\begin{prop}
+Soit $(X_n)_{n\in\N}$ une chaine de Markov homogène de loi initiale $\mu$ et de matrice de transition $\mathbf{Q}$. On a
+$$
+\P(X_0 = x_0,X_1 = x_1,\ldots, X_n = x_n) = \mu(x_0)Q(x_0,x_1)\ldots Q(x_{n-1},x_n).
+$$
+En particulier, on a (sous réserve que $\P(X_0 = x_0)>0$),
+$$
+\P(X_n = x_n|X_0 = x_0) = Q^{n}(x_0, x_n),
+$$
+où $Q^{n}(x_0, x_n)$ est le terme générale de la matrice $\mathbf{Q}^{n}$, et
+$$
+\P(X_n = x_n) =  \boldsymbol{\mu} Q^{n}(\text{ . } , x_n),
+$$
+où $\boldsymbol{\mu}$ est un vecteur ligne donnant les probabilités de la loi initiale et $Q^{n}(\text{ . } , x_n)$ est le vecteur colonne de la matrice $Q^{n}$ donnant les probabilité de transition vers l'état $x_n$.
+\end{prop}
+\underline{preuve:}\\
+On conditionne en cascade avec
+\begin{eqnarray*}
+\P(X_0 = x_0, \ldots, X_{n-1} = x_{n-1}, X_n = x_n) &=& \P(X_n = x_n|X_{n-1} = x_{n-1}\ldots, X_{1} = x_{1}, X_0 = x_0)\\
+&\times&\P(X_{n-1} = x_{n-1}\ldots, X_{1} = x_{1}, X_0 = x_0)\\
+&=& \P(X_n = x_n|X_{n-1} = x_{n-1})\\
+&\times&\P(X_{n-1} = x_{n-1}\ldots, X_{1} = x_{1}, X_0 = x_0)\\
+&=& Q(x_{n-1},x_n)P(X_{n-1} = x_{n-1}\ldots, X_{1} = x_{1}, X_0 = x_0)\\
+&\vdots&\\
+&=&\P(X_0= x_0)Q(x_0,x_1)\ldots Q(x_{n-1}, x_n)\\
+&=&\mu(x_0)Q(x_0,x_1)\ldots Q(x_{n-1}, x_n).
+\end{eqnarray*}
+En ce qui concerne la seconde assertion, on conditionne par rapport à tout les chemins possibles menant de $x_0$ à $x_n$ en $n$ étapes,
+\begin{eqnarray*}
+\P(X_n = x_n|X_0 = x_0) &=& \sum_{(x_1,\ldots, x_{n-1})\in E^{n-1}}\P(X_n = x_n, X_{n-1} = x_{n-1},\ldots, X_1 = x_1|X_0 = x_0) \\
+&=& \sum_{(x_1,\ldots, x_{n-1})\in E^{n-1}}Q(x_0,x_1)\ldots Q(x_{n-1}, x_n)\\
+&=&Q^{n}(x_0,x_n).
+\end{eqnarray*}
+Pour la dernière assertion, on conditionne par rapport aux valeurs possibles de l'état initial
+\begin{eqnarray*}
+\P(X_n = x_n) &=& \sum_{x_0\in E}\P(X_n = x_n|X_0 = x_0)\P(X_0 = x_0)\\
+&=& \sum_{x_0\in E}\mu(x_0)Q^n(x_0,x_n)\\
+&=& \boldsymbol{\mu}Q^n(\text{ . },x_n)
+\end{eqnarray*}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}[Espace d'état fini]
+Une chaine de Markov homogène $(X_n)_{n\in\mathbb{N}}$ sur un espace d'état fini $E=\{1,\ldots,K\}$ l'espace d'état (fini) est entièrement déterminée par la donnée de
+\begin{itemize}
+\item sa loi initiale $\mu(.)$
+\item sa matrice de transition
+$$
+\mathbf{Q}=\left(\begin{array}{ccc}
+Q(1,1)&\ldots&Q(1,K)\\
+\vdots&\ddots&\vdots\\
+Q(K,1)&\ldots&Q(K,K)\\
+\end{array}
+\right)
+$$
+\end{itemize}
+\end{example}
+On associe souvent à la matrice de transition d'une chaine de Markov (homogène, sur un espace d'état fini) un graphe étiqueté et orienté.
+ \end{frame}
+ \begin{frame}[allowframebreaks]
+\begin{example}[(La chaine météo)]
+Soit $(X_n)_{n\in\mathbb{N}}$ un processus à valeur dans l'espace d'état $\{\text{soleil},\text{ pluie}\}$ indiquant le temps qu'il fait heure par heure. On suppose que
+\begin{itemize}
+\item S'il fait beau maintenant alors on est sur qu'il fait beau l'heure d'après à $75\%$
+\item S'il pleut maintenant alors on est sur qu'il pleut l'heure d'après à $45\%$
+\end{itemize}
+La matrice de transition est donnée par
+$$
+\mathbf{Q}=\left(\begin{array}{cc}
+0.75&0.25\\
+0.55&0.45\\
+\end{array}
+\right)
+$$
+et le graphe associé est
+ \begin{center}
+\begin{tikzpicture}[->, >=stealth', auto, semithick, node distance=3cm]
+\tikzstyle{every state}=[fill=white,draw=black,thick,text=black,scale=0.8]
+\node[state]    (1)                     {$\text{Soleil}$};
+\node[state]    (2)[right of=1]   {$\text{pluie}$};
+\path
+(1) edge[loop left]     node{$0.75$}         (1)
+    edge[bend left]     node{$0.25$}     (2)
+(2) edge[bend left]      node{$0.45$}      (1)
+ edge[loop right]      node{$0.55$}      (2);
+
+
+\end{tikzpicture}
+\end{center}
+\end{example}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}[La marche aléatoire sur $\mathbb{Z}$]
+Soit $(\xi_n)_{n\in\mathbb{N}}$ une suite de variable aléatoire i.i.d. distribuées comme $\xi$ de loi de probabilité
+$$
+\mathbb{P}(\xi=1)=p\text{, et } \mathbb{P}(\xi=-1)=1-p.
+$$
+Le processus $(X_n)_{n\in\mathbb{N}}$ définit par
+$$
+X_n= x_0 + \sum_{i=1}^{n}\xi_i, \text{ pour $n\geq1$, avec }x_0\in\mathbb{Z},
+$$
+est une chaine de Markov homogène de matrice de transition
+$$
+Q(x,y)=
+\begin{cases}
+p&\text{ si }y=x+1\\
+1-p&\text{ si }y=x-1\\
+0&\text{ sinon }\\
+\end{cases}
+$$
+\end{example}
+\begin{example}
+Si $(X_n)_{n\in \N}$ est une suite de variables aléatoires iid sur $E$ de loi $\mu$alors
+$$
+Q(x,y) = \mu(y),\text{ pour tout }x,y\in E.
+$$
+\end{example}
+ \end{frame}
+ \subsection{Propriété de Markov simple}
+ \begin{frame}[allowframebreaks]
+ \underline{2. Propriété de Markov simple}
+ \begin{prop}
+ Soit $(X_n)_{n\in \N}$ une chaine de Markov homogène de matrice de transition $\mathbf{Q}$ et $f:E \mapsto \mathbb{R}$ une fonction. On a
+ $$
+ \E(f(X_{n+1})|X_{0},\ldots, X_n) = \E(f(X_{n+1})|X_n) := \mathbf{Q}f(X_n).
+ $$
+ \end{prop}
+ \underline{preuve:}\\
+ On a
+ \begin{eqnarray*}
+ \E(f(X_{n+1})|X_{0},\ldots, X_n) &=& \sum_{y\in E} f(y)\P(X_{n+1}=y|X_{0},\ldots, X_n)\\
+ &=& \sum_{y\in E} f(y)\P(X_{n+1}=y| X_n) \\
+ &=& \begin{cases}
+ \E(f(X_{n+1})|X_n)&\\
+ \sum_{y\in E} Q(X_n,y)f(y) & : = \mathbf{Q}f(X_n)
+ \end{cases}
+ \end{eqnarray*}
+\begin{prop}[Protocole générateur de chaine de Markov]
+Soit $(U_n)_{n\in\mathbb{N}}$ une suite de variables aléatoires i.i.d.,
+\begin{itemize}
+\item à valeur dans un ensemble $G$,
+\item distribuées comme $U$,
+\item indépendantes de $X_0$,
+\end{itemize}
+et une application $F:E\times G\mapsto E$ mesurable. Le processus $(X_n)_{n\in\mathbb{N}}$ définit par
+$$
+X_{n+1}=F(X_n,U_{n+1})
+$$
+est une chaine de Markov homogène.
+\end{prop}
+\underline{preuve:}\\
+Soit $n\in\mathbb{N}$ et $x_0,\ldots,x_{n+1}\in E$. Posons $A_n=\{X_0=x_0,\ldots,X_n=x_n\}$, alors on a
+\begin{eqnarray*}
+\mathbb{P}(X_{n+1}=x_{n+1}|A_n)&=&\mathbb{P}[F(X_n,U_{n+1}))=x_{n+1}|A_n]\\
+&=&\mathbb{P}[F(x_n,U_{n+1}))=x_{n+1}|A_n]\\
+&=&\mathbb{P}[F(x_n,U_{n+1}))=x_{n+1}]\\
+&=&\mathbb{P}[F(x_n,U))=x_{n+1}].\\
+\end{eqnarray*}
+Le processus $(X_n)_{n\in\mathbb{N}}$ est une chaine de Markov homogène de matrice de transition
+$$
+Q(x,y)=\mathbb{P}(F(x,U)=y),\text{ }\forall (x,y)\in E^{2}.
+$$
+$\square$
+ \end{frame}
+ \begin{frame}[allowframebreaks]
+\begin{example}[Inventaire]
+Entre deux instants, une usine fabrique $q\in\N^{\ast}$ pièces. Les clients achètes $D_{n+1}$ entre les instants $n$ et $n+1$. On suppose que $(D_n)_{n\in\N}$ forme une suite de variables aléatoires discrètes i.i.d. On note
+$$
+X_{n+1}=max(X_n+q-D_{n+1},0)=F(X_n,D_{n+1}), \text{ }n\in\N.
+$$
+le nombre de pièces en stock. $(X_n)_{n\in\N}$ est une chaine de Markov homogène de transition
+$$
+\begin{cases}
+Q(x,0)=\mathbb{P}(D_1\geq x+q),&\\
+Q(x,y)=\mathbb{P}(D_1=x+q-y),&\text{ }0<y<x+q.\\
+\end{cases}
+$$
+\end{example}
+\begin{example}[Marche aléatoire sur $\mathbb{Z}^d$]
+Soient $X_0, \xi_1, \xi_2,\ldots$ des variables aléatoires iid à valeurs dans $\mathbb{Z}^d$ de loi $\mu$. La marche aléatoire sur $\mathbb{Z}^d$ est définit par
+$$
+X_{n} = X_0 + \sum_{k = 1}^{n}\xi_k = X_{n-1} + \xi_n = F(X_{n-1} , \xi_n).
+$$
+Il s'agit d'une chaine de Markov homogène dont la matrice de transition vérifie
+$$
+Q(x,y) = \mu(y-x),\text{ pour tout }x,y\in E.
+$$
+En effet,
+\begin{eqnarray*}
+\P(X_{n+1} = y|X_{n} = x) &=& \P(X_n + \xi_{n+1} = y |X_{n} = x)\\
+&=& \P(x + \xi_{n+1} = y)\\
+&=&\P( \xi_{n+1} = y-x) = \mu(y-x).
+\end{eqnarray*}
+\end{example}
+\end{frame}
+\subsection{Propriété de Markov forte}
+\begin{frame}[allowframebreaks]
+\underline{3. Propriétés de Markov forte}
+\begin{definition}[Filtration]
+Soit $(\Omega,\mathcal{F},\mathbb{P})$ un espace probabilisé. Une filtration $(\mathcal{F}_n)_{n\in\N}$ est une suite de sous-tribus de $\mathcal{F}$ telle que $\mathcal{F}_n\subset\mathcal{F}_{n+1}$
+\end{definition}
+\begin{example}
+La filtration $\mathcal{F}_n=\sigma(X_0,X_1,\ldots,X_n)$ est la filtration naturelle de $(X_n)_{n\in\N}$. Ce sont les tribus engendré par toutes les trajectoires passées de $(X_n)_{n\in\N}$.
+\end{example}
+\begin{definition}[Temps d'arrêt]
+Un temps d'arrêt $\tau:\Omega\mapsto \overline{\mathbb{R}}_+ = \mathbb{R}\cup\{+\infty\}$ est une variable aléatoire telle que $\{\tau\leq n \}\in \mathcal{F}_n$ pour tout $n\in\N$
+\end{definition}
+\begin{example}
+L'instant
+$$
+T_x = \inf\{n\geq 0\text{ , }X_n = x\},\text{ pour }x\in E,
+$$
+qui correspond au temps d'atteinte de l'état $x$ est un temps d'arrêt. On peut écrire
+$$
+\{T_x = k\} = \bigcup_{j = 0}^{k-1}\{X_j \neq x\}\cap \{X_k = x\}.
+$$
+\end{example}
+\end{frame}
+\begin{frame}[allowframebreaks]
+On note $\P_x$ et $\E_x$ la mesure de probabilité et l'espérance conditionellement à l'évènement $\{X_0 = x\}$, soit
+$$
+\P_x(X_n = y) = \P(X_n = y|X_0 = X)\text{ et }\E_x(X_n) = \E(X_n|X_0 = x).
+$$
+\begin{theorem}[Propriété de Markov forte]
+Soit $(X_n)_{n\in N}$ une chaine de Markov homogène et $\tau$ un $\mathcal{F}_n\text{-temps d'arrêt}$ alors, conditionellement à l'évènement $\{\tau<\infty\}$, le processus $(\widehat{X}_n=X_{\tau+n})_{n\in\N}$ est une chaine de Markov homogène de loi initiale $\widehat{\mu}\overset{\mathcal{D}}{=}X_{\tau}$ et de même probabilités de transition que $(X_n)_{n\in\N}$
+\end{theorem}
+\underline{preuve:}\\
+Soit $p\in\N^{\ast}$ et $(x,x_1,\ldots, x_p)\in E^{p+1}$. On a
+\begin{eqnarray*}
+&&\Pr(X_{\tau+1}=x_1,\ldots, X_{\tau+p}=x_p|X_\tau=x,\tau<\infty)\\
+&=&\sum_{k=0}^{\infty}\Pr(X_{\tau+1}=x_1,\ldots, X_{\tau+p}=x_p,\tau=k|X_\tau=x,\tau<\infty)\\
+ &=&\sum_{k=0}^{\infty}\Pr(X_{k+1}=x_1,\ldots, X_{k+p}=x_p,\tau=k|X_\tau=x,\tau<\infty)\\
+ &=&\sum_{k=0}^{\infty}\Pr(X_{k+1}=x_1,\ldots, X_{k+p}=x_p|\tau=k,X_\tau=x,\tau<\infty)\Pr(\tau=k|X_\tau=x,\tau<\infty)\\
+&=&\sum_{k=0}^{\infty}\Pr(X_{k+1}=x_1,\ldots, X_{k+p}=x_p|\tau=k,X_\tau=x,\tau<\infty)\Pr(\tau=k|X_\tau=x,\tau<\infty)\\
+&=&\sum_{k=0}^{\infty}\Pr(X_{k+1}=x_1,\ldots, X_{k+p}=x_p|\tau=k,X_k=x,\tau<\infty)\Pr(\tau=k|X_\tau=x,\tau<\infty)\\
+&=&\Pr_x(X_{1}=x_1,\ldots, X_{p}=x_p)\sum_{k=0}^{\infty}\Pr(\tau=k|X_\tau=x,\tau<\infty)\\
+&=&\Pr_x(X_{1}=x_1,\ldots, X_{p}=x_p)
+\end{eqnarray*}
+$\square$
+\end{frame}
+\begin{frame}[allowframebreaks]
+
+\begin{prop}[Analyse à un pas]
+Soit $\tau_A=\inf\{n\geq0\text{ ; }X_n\in A\}$, avec $A\subset E$ tel que $\E_x(\tau_A)<\infty$ pour tout $x\in E$. Soit $x\in E$ et $n\geq1$, alors
+\begin{enumerate}
+\item
+$$
+\Pr_x(\tau_A=n)=
+\begin{cases}
+0,&\text{ }x\in A,\\
+\sum_{y\in E}Q(x,y)\Pr_y(\tau_A=n-1),&x\notin A.
+\end{cases}
+$$
+\item
+$$
+\E_x(\tau_A)=
+\begin{cases}
+0,&\text{ }x\in A,\\
+1+\sum_{y\in E}Q(x,y)\E_y(\tau_A),&x\notin A.
+\end{cases}
+$$
+\end{enumerate}
+\end{prop}
+\underline{preuve:}\\
+\begin{enumerate}
+    \item Si $x\in A$ alors $\tau_A = 0$ $\P_x$-p.s. donc
+    $\Pr_x(\tau_A=n)=0\text{ pour }n\geq1\text{ et }\Pr_x(\tau_A=0)=1$.
+    Supposons $n = 1$ alors
+    \begin{eqnarray*}
+        \P_x(\tau_A=1)&=&\P(\tau_A=1|X_0=x)\\
+        &=&\sum_{y\in E} \P(\tau_A=1, X_1=y|X_0=x)\\
+        &=&\sum_{y\in A} \P(\tau_A=1, |X_1=y,X_0=x)Q(x,y) \\
+        &+& \sum_{y\in E/A} \P(\tau_A=1|X_1=y,X_0=x)Q(x,y)\\
+        &=&\sum_{y\in A} 1\times  Q(x,y) + 0.\\
+    \end{eqnarray*}
+    On remplace $1$ par $\Pr_y(\tau_A=0)$ (=1 si $y\in A$), il vient
+    $$
+    \P_x(\tau_A=1)= \sum_{y\in A} \Pr_y(\tau_A=0)\times  Q(x,y)
+    $$
+    quite à ajouter $0$ on a
+    \begin{eqnarray*}
+    \P_x(\tau_A=1)&=& \sum_{y\in A} \Pr_y(\tau_A=0)\times  Q(x,y) + 0\\
+     &=&\sum_{y\in A} \Pr_y(\tau_A=0)\times  Q(x,y)\\
+     &+& \sum_{y\in E/A} \Pr_y(\tau_A=0)\times  Q(x,y)
+    \end{eqnarray*}
+    puisque $\Pr_y(\tau_A=0) = 0$ si $y\in E/A$. On vérifie bien que
+    $$
+    \Pr_x(\tau_A=n)=\sum_{y\in E}Q(x,y)\Pr_y(\tau_A=n-1)\text{ pour }n = 1.
+    $$
+    Supposons $n>1$ alors
+    \begin{eqnarray*}
+    \P_x(\tau_A=n)&=&\P(\tau_A=n|X_0=x)\\
+    &=&\sum_{y\in E} \P(\tau_A=n, X_1=y|X_0=x)\\
+    &=&\sum_{y\in A} \P(\tau_A=n |X_1=y,X_0=x)Q(x,y) \\
+    &+& \sum_{y\in E/A} \P(\tau_A=n|X_1=y,X_0=x)Q(x,y)\\
+    &=& 0+ \sum_{y\in E/A} \P(\tau_A=n|X_1=y,X_0=x)Q(x,y)\\
+    &=&  \sum_{y\in E/A} \P\left(\bigcap_{i = 0}^{n-1}\{X_i\notin A\}\cap\{X_n\in A\}|X_1=y,X_0=x\right)Q(x,y)\\
+    \end{eqnarray*}
+    Sachant $\{X_0 = x\}$ l'évènement $\{X_0 \notin A\}$ est presque sûr. On a donc
+     $$
+     \P_x(\tau_A=n)=  \sum_{y\in E/A} \P\left(\bigcap_{i = 1}^{n-1}\{X_i\notin A\}\cap\{X_n\in A\}|X_1=y\right)Q(x,y)
+     $$
+     On perd le conditionnement par rapport à $X_0$ car sachant $X_1$
+     $$
+     \bigcap_{i = 1}^{n-1}\{X_i\notin A\}\cap\{X_n\in A\}\text{ est indépendant de } X_0.
+     $$
+     Puis on remarque que comme $(X_n)_n\in \N$ est une CMH alors
+     $$
+     [(X_1, X_2,\ldots, X_n)|X_1  =y]\overset{\mathcal{D}}{=}[(X_0, X_1,\ldots, X_{n-1})|X_0 = y].
+     $$
+     Cela permet d'écrire
+    \begin{eqnarray*}
+    \P_x(\tau_A=n)&=&\sum_{y\in E/A} \P_y\left(\bigcap_{i = 0}^{n-2}\{X_i\notin A\}\cap\{X_{n-1}\in A\}\right)Q(x,y)\\
+    &=&\sum_{y\in E/A} \P_y\left(\tau_A = n-1\right)Q(x,y) + 0\\
+    &=&\sum_{y\in E} \P_y\left(\tau_A = n-1\right)Q(x,y).
+    \end{eqnarray*}
+    \item Si $x\in A$ alors $\E_x(\tau_A)=0$ et sinon
+\begin{eqnarray*}
+\E_x(\tau_A)&=&\sum_{n=0}^{+\infty}n\times\P_x(\tau_A=n)\\
+&=&\sum_{n=1}^{+\infty}n\sum_{y\in E}\P_y(\tau_A=n-1)Q(x,y)\\
+&=&\sum_{y\in E}Q(x,y)\sum_{n=0}^{\infty}(n+1)\P_y(\tau_A=n)\\
+&=&\sum_{y\in E}Q(x,y)(1+ \E_y(\tau_A))\\
+&=&1+\sum_{y\in E}Q(x,y)\E_y(\tau_A).
+\end{eqnarray*}
+
+\end{enumerate}
+$\square$
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}
+On lance une pièce jusqu'à obtenir face deux fois de suite. On note $(X_n)_{n\in \N}$ le nombre de face consécutifs.
+\begin{enumerate}
+\item Donner l'espace d'état, la matrice de transition et le graph.
+\item Donner le nombre moyen de lancer nécessaires à l'obtention de deux faces consécutifs.
+\end{enumerate}
+\end{example}
+% \underline{Solution:}\\
+% \begin{enumerate}
+% \item L'espace d'état est $E = \{0,1,2\}$
+% $$
+% \mathbf{Q}=\left(\begin{array}{ccc}
+% 1/2&1/2&0\\
+% 1/2&0&1/2\\
+% 0&0&1
+% \end{array}\right)
+% $$
+% \item On note $\tau_2 = \inf\{n\geq0\text{ ; }X_n = 2\}$. On note que $\E_2(\tau_2) = 0$ et on résout le système
+% $$
+% \begin{cases}
+% \mathbb{E}_0=1+\frac{\mathbb{E}_0(\tau_2)}{2}+\frac{\mathbb{E}_1(\tau_2)}{2}\\
+% \mathbb{E}_1=1+\frac{\mathbb{E}_0(\tau_2)}{2}\\
+% \end{cases}
+% $$
+% \end{enumerate}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}
+Soit $\{X_t\text{ ; }t\in\mathbb{N}\}$ une chaine de Markov homogène d'espace d'état
+$\{1,2,3,4\}$ et de matrice de transition,
+ $$\mathbf{P}=\left(\begin{array}{cccc}
+$1$&$0$&0&0\\
+$1/10$&$3/10$&5/10&1/10\\
+$2/10$&$1/10$&6/10&1/10\\
+$0$&$0$&0&1\\
+\end{array}
+\right)$$
+\begin{enumerate}
+\item Soit $A=\{1,4\}$, donner $\mathbb{E}_x(\tau_A)$ pour $x\in E$
+\item On définit
+$$
+\text{F='Absorption dans l'état $4$'}
+$$
+et
+$$
+G=\text{"L'état $2$ est visité juste avant l'absorbtion"}
+$$
+Calculer $\mathbb{P}_x(F)$ et $\mathbb{P}_x(G)$ pour $x\in \{1,2,3,4\}$.
+\end{enumerate}
+\end{example}
+\underline{Solution:}\\
+\begin{enumerate}
+\item On a $\E_{1}(\tau_A)=\E_{4}(\tau_A)=0$ et on résout le système
+$$
+\begin{cases}
+\E_{0}(\tau_A)=1+\frac{3}{10}\E_{0}(\tau_A)+\frac{5}{10}\E_2(\tau_A)\\
+\E_{2}(\tau_A)=1+\frac{1}{10}\E_{0}(\tau_A)+\frac{6}{10}\E_2(\tau_A)
+\end{cases}
+$$
+\item On a $\mathbb{P}_{1}(F)=0$ et $\mathbb{P}_{4}(F)=1$. On note que pour $x\in \{1,2\}$, on a
+$$
+\mathbb{P}_{x}(F) = \sum_{y\in E}\P_y(F)Q(x,y).
+$$
+On résout donc le sytème
+$$
+\begin{cases}
+\mathbb{P}_{0}(F)=\frac{1}{10}+\frac{3}{10}\mathbb{P}_{0}(F)+\frac{5}{10}\mathbb{P}_{2}(F)\\
+\mathbb{P}_{2}(F)=\frac{1}{10}+\frac{1}{10}\mathbb{P}_{0}(F)+\frac{6}{10}\mathbb{P}_{2}(F).
+\end{cases}
+$$
+On effectue le même raisonnement pour $\mathbb{P}_{x}(G)$.
+\end{enumerate}
+
+\begin{color}{blue}
+Exemple Python!
+\end{color}
+\end{frame}
+
+
+
+
+\section{Transience, récurrence et irréductibilité}
+\subsection{Etats accessibles, communiquants, classes ouvertes/fermées, chaine irréductible}
+\begin{frame}[allowframebreaks]
+\underline{III. Irréductibilité, périodicité, transience, et récurrence}\\
+\underline{1. Etats accessibles, communiquants, classes ouvertes/fermées, chaine irréductible}
+Soit $(X_n)_{n\in\N}$ une chaine de Markov homogène d'espace d'état $E$ et de matrice de transition $\mathbf{Q}$.
+\begin{definition}[$x\leadsto y$]
+L'état $y\in E$ est accessible depuis l'état $x\in E$ s'il existe $n\in\N$ tel que
+$$
+Q^{n}(x,y)>0.
+$$
+\end{definition}
+\begin{prop}[La relation d'accessibilité]
+Soient $x,y,z\in E$,
+\begin{itemize}
+\item $x\leadsto x$,
+\item Si $x\leadsto y$ et $y\leadsto z$ alors $x\leadsto z$.
+\end{itemize}
+\end{prop}
+Sur le graph, cela signifie qu'il existe un chemin de $x$ à $y$.
+\begin{definition}[Etats communiquants]
+Soient $x,y\in E$. Si $x\leadsto y$ et $y\leadsto x$ alors $x$ et $y$ communiquent. On note $x\leftrightarrow y$.
+\end{definition}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{definition}[Classes d'équivalence]
+Une classe d'équivalence est un sous-ensemble $\mathcal{C}_x\subset E$ formé d'états communiquant avec $x\in E$. Formellement
+$$
+\mathcal{C}_x=\{y\in E\text{ ; }x\leftrightarrow y\}
+$$
+\end{definition}
+\begin{remark}
+\begin{enumerate}
+\item On parle de classe d'équivalence car la relation de communication est symétrique, réflexive, et transitive.
+\item l'ensemble des classes d'équivalence forme une partition de l'espace d'état. Ce sont les classes irréductibles de la chaine de Markov.
+\end{enumerate}
+\end{remark}
+\begin{definition}[Irréductibilité]
+La chaine de Markov $(X_n)_{n\in\N}$ est irréductible si pour tout $(x,y)\in E^{2}$, il existe $n\in\N$ tel que
+$$Q^{n}(x,y)=\mathbb{P}(X_n=y|X_0=x)>0.$$
+\end{definition}
+\begin{remark}
+Dans une chaine irréductible tout les états communiquent. L'espace d'état est une classe d'équivalence.
+\end{remark}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{definition}[Classe d'équivalence ouverte/fermée]
+Une classe (d'équivalence) $\mathcal{C}$ est
+\begin{itemize}
+\item ouverte si pour tout $x\in \mathcal{C}$ il existe $y\in E/\mathcal{C}$ et $n\in\N$ tels que $Q^{n}(x,y)>0$,
+\item fermée sinon.
+\end{itemize}
+\end{definition}
+\begin{example}
+Soit $(X_n)_{n\in\N}$ une chaine de Markov homogène d'espace d'état $\{1,2,3,4\}$ et de matrice de transition
+\begin{equation*}
+\mathbf{Q}=
+\left(\begin{array}{cccc}
+$1/2$&$1/2$&$0$&$0$\\
+$1/2$&$1/2$&$0$&$0$\\
+$1/4$&$1/4$&$1/4$&$1/4$\\
+$0$&$0$&$0$&$1$\\
+\end{array}
+\right)
+\end{equation*}
+\begin{enumerate}
+\item Combien de classe d'équivalence?
+\item $(X_n)_{n\in\N}$ est-elle une chaine irréductible?
+\item Distinguer les classes ouvertes et fermées.
+\end{enumerate}
+\end{example}
+\begin{remark}
+On peut définir une sous-chaine de Markov irréductible à partir d'une classe fermée.
+\end{remark}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{definition}[La périodicité d'un état]
+La période d'un état $x\in E$ est défini par
+\begin{eqnarray*}
+d(x)&=&\text{pgcd}\{n\in\mathbb{N^{*}}\text{ ; }Q^{n}(x,x)\}\\
+&=&\text{pgcd}\{\text{Longueur des trajectoires menant de $x$ à $x$}\}
+\end{eqnarray*}
+Si $d(x)=1$ alors $x$ est un état apériodique.
+\end{definition}
+\begin{remark}
+\begin{enumerate}
+\item Si $Q(x,x)>0$ alors $x$ est apériodique.
+\item Si $x\leftrightarrow y$ alors $d(x)=d(y)$
+\item Soit $\mathcal{C}$ une classe d'équivalence, alors la période d'un état $x\in\mathcal{C}$ est la période de la classe d'équivalence $\mathcal{C}$.
+\end{enumerate}
+\end{remark}
+\begin{example}
+Soit $\{X_n\}_{n\in\N}$ une chaine de Markov homogène $\{1,2,3,4\}$ de matrice de transition
+\begin{equation*}
+\mathbf{Q}=
+\left(\begin{array}{cccc}
+0&0&1/2&1/2\\
+1&0&0&0\\
+0&1&0&0\\
+0&1&0&0\\
+\end{array}
+\right),
+\end{equation*}
+\begin{enumerate}
+\item Chaine irréductible? Combien de classes d'équivalence? Ouvertes ou fermées?
+\item Donner la période de chaque état?
+\end{enumerate}
+\end{example}
+\end{frame}
+\subsection{Etats récurrents, états transitoires}
+\begin{frame}[allowframebreaks]
+\underline{2. Etats récurrents, états transitoires}\\
+Soit $(X_{n})_{n\in\N}$ une chaine de Markov homogène d'espace d'état $E$. On notera la probabilité et l'espérance conditionnelle de $X_n$ sachant $X_0=x$ de la façon suivante
+$$
+\mathbb{P}(X_n=y|X_0=x)=\mathbb{P}_{x}(X_n=y)\text{, }y\in E,\text{ et }\mathbb{E}(X_n|X_0=x)=\mathbb{E}_{x}(X_n).
+$$
+\begin{definition}[$T_x$, $S_x$, et $N_x$]
+Soit $x\in E$, on note
+\begin{enumerate}
+\item $S_x=\inf\{n\geq 1\text{ ; }X_n=x\}$ est le temps de retour à l'état $x$ (en supposant que $X_0=x$),
+\item $N_x=\sum_{n=1}^{+\infty}\mathbb{I}_{\{X_n=x\}}$ le nombre de passage par l'état $x$ (sans compter le point de départ).
+\end{enumerate}
+\end{definition}
+\begin{definition}[Etat récurrent/transitoire]
+\begin{enumerate}
+\item Un état $x\in E$ est récurrent si
+$$
+\mathbb{P}_x(S_x<\infty)=1
+$$
+\item Un état $x\in E$ est transitoire
+$$
+\mathbb{P}_x(S_x=\infty)>0
+$$
+\end{enumerate}
+Un état est transitoire lorsqu'il n'est pas récurrent.
+\end{definition}
+\end{frame}
+\begin{frame}[allowframebreaks]
+Si $x\in E$ est un état récurrent, alors on est sur que la chaine repassera par $x$. Si $x$ est transitoire alors il existe un évènement, de probabilité non nulle, pour lequel la chaine ne repasse pas par $x$.
+\begin{theorem}[Caractérisation de la récurrence]
+
+\begin{enumerate}
+\item $x\in E$ est récurrent $\Leftrightarrow$ $\mathbb{P}_{x}(N_x=\infty)=1$ et $\sum_{n=1}^{+\infty} Q^{n}(x,x)=\infty$
+\item $x\in E$ est transitoire $\Leftrightarrow$ $\mathbb{P}_{x}(N_x<\infty)=1$ et $\sum_{n=1}^{+\infty} Q^{n}(x,x)<\infty$. De plus, on a
+$$
+\mathbb{P}_x(N_x=k)=\mathbb{P}_x(S_x=\infty)\left[1-\mathbb{P}_x(S_x=\infty)\right]^{k}, k=0,1,2\ldots,\text{ (Distribution géométrique)}.
+$$
+\end{enumerate}
+\end{theorem}
+\underline{preuve:}\\
+On commence par remarquer que pour $x,y\in E$,
+$$
+\mathbb{E}_y(N_x)=\mathbb{E}_y\left(\sum_{n=1}^{+\infty}\mathbb{I}_{\{X_n=x\}}\right)=\sum_{n=1}^{+\infty}\mathbb{E}_y(\mathbb{I}_{\{X_n=x\}})=\sum_{n=1}^{+\infty}\mathbb{P}_y(X_n=x)=\sum_{n=1}^{+\infty}Q^{n}(y,x).
+$$
+Posons $F_{n}=\{X_n=x\text{, }X_m\neq x\text{ ; }m\geq n+1\}$ et $G=\{X_n\neq x\text{ ; }n\geq1\}$, on a
+ $$
+ \{N_x<\infty\}=G\cup\bigcup_{n=1}^{+\infty}F_n.
+ $$
+Comme les évènements ci-dessus sont disjoints alors
+\begin{equation}\label{eq:PNx}
+\mathbb{P}_{x}(N_x<\infty)=\mathbb{P}_{x}(G)+\sum_{n=1}^{+\infty}\mathbb{P}_{x}(F_n).
+\end{equation}
+Or
+\begin{eqnarray*}
+\mathbb{P}_{x}(F_n)&=&\mathbb{P}_{x}(X_n=x\text{, }X_m\neq x\text{ ; }m\geq n+1)\\
+&=&\mathbb{P}(X_n=x\text{, }X_m\neq x\text{ ; }m\geq n+1|X_0=x)\\
+&=&\mathbb{P}(X_m\neq x\text{ ; }m\geq n+1|X_n=x,X_0=x)\mathbb{P}(X_n=x|X_0=x)\\
+&=&\mathbb{P}(X_m\neq x\text{ ; }m\geq n+1|X_n=x)\mathbb{P}_x(X_n=x)\text{ (propriété de Markov)}\\
+&=&\mathbb{P}_x(X_n\neq x\text{ ; }n\geq 1)\mathbb{P}_x(X_n=x)\text{ (Homogénéité)}\\
+&=&\mathbb{P}_x(G)Q^{n}(x,x)\\
+\end{eqnarray*}
+En substituant dans l'équation \eqref{eq:PNx}, il vient
+\begin{equation*}
+\mathbb{P}_{x}(N_x<\infty)=\mathbb{P}_{x}(G)\left[1+\sum_{n=1}^{+\infty}Q^{n}(x,x)\right]=\mathbb{P}_{x}(G)\left[1+\mathbb{E}_x(N_x)\right]
+\end{equation*}
+\begin{itemize}
+\item Si $x$ est récurrent alors $\mathbb{P}_{x}(G)=0$, par suite $\mathbb{P}_{x}(N_x<\infty)=0$, $\mathbb{P}_{x}(N_x=\infty)=1$. Cela implique $\mathbb{E}_x(N_x)=\sum_{n=1}^{+\infty}Q^{n}(x,x)=\infty$. \\
+\item Si $x$ est transitoire alors $\mathbb{P}_{x}(G)>0$ et
+$$
+\mathbb{E}_x(N_x)=\frac{\mathbb{P}_{x}(N_x<\infty)}{\mathbb{P}_{x}(G)}-1<\infty
+$$
+ce qui implique que $\sum_{n=1}^{+\infty}Q^{n}(x,x)<\infty$ et $\mathbb{P}_{x}(N_x<\infty)=1$
+\end{itemize}
+Supposons que $x$ soit transitoire. Pour montrer que $N_x$ suit une loi géométrique, nous avons besoin du lemme suivant
+\begin{lemma}
+$$
+\mathbb{P}_x(N_x=0)=\mathbb{P}(S_x=\infty)\text{ et }\mathbb{P}_x(N_x=k|S_x<\infty)=\mathbb{P}_x(N_x=k-1), \text{ pour }k\geq1.
+$$
+\end{lemma}
+\underline{preuve:}\\
+L'égalité $\mathbb{P}_x(N_x=0)=\mathbb{P}(S_x=\infty)$ est évidente au vu de la définition de $S_x$. Nous avons
+\begin{eqnarray*}
+\mathbb{P}_x(N_x=k|S_x<\infty)&=&\mathbb{P}_x(N_x=k|S_x<\infty,X_0=x)\\
+&=&\mathbb{P}\left(\sum_{i=1}^{+\infty}\mathbb{I}_{X_i = x}=k\big\rvert S_x<\infty,X_{S_x}=x,X_0=x\right)\\
+&=&\mathbb{P}\left(1+\sum_{i=S_x+1}^{+\infty}\mathbb{I}_{X_i = x}=k\big \rvert S_x<\infty,X_{S_x}=x\right)\\
+&=&\mathbb{P}\left(1+\sum_{i=S_x+1}^{+\infty}\mathbb{I}_{X_i = x}=k\big\rvert S_x<\infty,X_{S_x}=x\right)\\
+&=&\mathbb{P}_x(N_x=k-1)
+\end{eqnarray*}
+$\square$\\
+Par application du lemme, il vient
+\begin{eqnarray*}
+\mathbb{P}_x(N_x=k)&=&\mathbb{P}_x(N_x=k|S_x<\infty)\mathbb{P}_x(S_x<\infty)\\
+&=&\mathbb{P}_x(N_x=k-1)\mathbb{P}_x(S_x<\infty)\\
+&=&\mathbb{P}_x(N_x=k-1|S_x<\infty)\mathbb{P}_x(S_x<\infty)^{2}\\
+&=&\mathbb{P}_x(N_x=k-2)\mathbb{P}_x(S_x<\infty)^{2}\\
+&=&\ldots\\
+&=&\mathbb{P}_x(N_x=0)\mathbb{P}_x(S_x<\infty)^{k}.\\
+&=&\mathbb{P}_x(S_x=\infty)\mathbb{P}_x(S_x<\infty)^{k}.\\
+\end{eqnarray*}
+$\square$
+\begin{corollary}
+Si la chaine de Markov $(X_n)_{n\in\N}$ est irréductible alors soit
+\begin{itemize}
+\item Tous les états sont récurrents et
+$$
+\P_x(N_y = \infty, \text{ }\forall y\in E)=1
+$$
+\item Tous les états sont transitoires et
+$$
+\P_x(N_y < \infty, \text{ }\forall y\in E)=1
+$$
+\end{itemize}
+Si l'espace d'état $E$ est fini alors tous les états sont récurrents.
+\end{corollary}
+\underline{preuve:}\\
+Comme $x\leftrightarrow y$ alors il existe $n_1, n_2\in\N$ tels que
+$$
+Q^{n_1}(x,y)>0\text{ et }Q^{n_2}(y,x)>0
+$$
+Comme
+$$
+Q^{n_1+n + n_2}(x,x)\geq Q^{n_1}(x,y)Q^{n}(y,y)Q^{n_2}(y,x)\text{ et }Q^{n_2+n + n_1}(y,y)\geq Q^{n_2}(y,x)Q^{n}(x,x)Q^{n_1}(x,y),
+$$
+alors $\sum_{n\geq 1}Q^{n}(x,x)$ et $\sum_{n\geq 1}Q^{n}(y,y)$ sont de même nature et partant
+\begin{itemize}
+\item Si $x$ est récurrent alors $y$ aussi
+\item Si $x$ est transitoire alors $y$ aussi
+\end{itemize}
+Supposons $x$ récurrent alors
+\begin{eqnarray*}
+\P_x(N_y =\infty)=\P_x(N_y =\infty| S_y<\infty)\P_x(S_y<\infty)
+\end{eqnarray*}
+or $\P_x(S_y<\infty)=1$, en effet on peut remarquer que
+\begin{eqnarray*}
+0 = \P_y(N_y<\infty)&>&\P_y(S_y = \infty, S_x < \infty)\\
+&=&\P_x(S_y = \infty)\P_y(S_x < \infty).
+\end{eqnarray*}
+Comme $\P_y(S_x < \infty) = \sum_{k\geq1}Q^k(y,x)>0$ alors $\P_x(S_y = \infty)=0$ puis $\P_x(S_y < \infty) = 1$. On en déduit que
+\begin{eqnarray*}
+\P_x(N_y =\infty)&=&\P_x(N_y =\infty| S_y<\infty)\\
+&=&\P_x(1+\sum_{k = S_y+1}^{\infty}\mathbb{I}_{\{X_k = y\}} = \infty| S_y<\infty, X_{S_y} = y)\\
+&=&\P_y\left(\sum_{k = 1}^{\infty}\mathbb{I}_{\{X_k = y\}} = \infty\right) =\P_y\left(N_y= \infty\right)  = 1.
+\end{eqnarray*}
+Suppossons que $x$ soit transitoire alors il existe $n,r\in \N$ tels que
+$$
+Q^{n}(x,y)>0\text{ et } Q^{r}(y,x)>0
+$$
+puis
+$$
+Q^{n+r}(x,x)\geq Q^{n}(x,y)Q^{r}(y,x)
+$$
+comme $\sum_{n = 1}^{+\infty} Q^{n+r}(x,x) <\infty$ alors $\sum_{n = 1}^{+\infty} Q^{n}(x,y) <\infty$ et $\E_x(N_y) <\infty$, ce qui implique $\P_x(N_y <\infty)=1$.\\
+
+Enfin supposons que l'espace d'état $E$ soit fini. Supposons que $x$ soit transitoire alors $\sum_{y\in E} \sum_{n= 1}^{\infty} Q^{n}(x,y) <\infty$, cela est absurde car
+$$
+\sum_{y\in E} \sum_{n= 1}^{\infty} Q^{n}(x,y) = \sum_{n= 1}^{\infty} \sum_{y\in E}  Q^{n}(x,y) = \sum_{n = 1}^{\infty} 1 =\infty
+$$
+
+$\square$
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Mesure invariante et récurrence positive}
+\begin{frame}[allowframebreaks]
+\underline{III. Mesure invariante et récurrence positive}\\
+Soit $(X_n)_{n\in \N}$ une chaine de Markov homogène sur une espace d'état $E$ et de matrice de transition $\mathbf{Q}$.
+\begin{definition}[Mesure invariante]
+Soit $\mu$ une mesure positive et non identiquement nulle sur $E$. $\mu$ est une mesure invariante si elle vérifie
+$$
+\mu(y) = \sum_{x\in E}\mu(x)Q(x,y),
+$$
+soit matriciellement $$\mu = \mu \mathbf{Q}.$$
+\end{definition}
+\begin{remark}
+Si on suppose que $\mu(E)<\infty$, toujours vrai si $E$ est fini, alors quitte à remplacer $\mu(.)$ par $\mu(.)/\mu(E)$, on obtient une mesure de probabilité invariante. On remarque aussitôt que
+$$
+\mu = \mu\mathbf{Q}^{n},\text{ pour tout }n\geq1,
+$$
+cela implique que si on choisit $\mu$ comme loi initiale alors $X_0, X_1, X_2,\ldots,$ sont identiquement distribués (pas indépendants).
+\end{remark}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{definition}[Mesure réversible]
+Soit $\lambda$ une mesure finie, non identiquement nulle, sur $E$. $\lambda$ est une mesure reversible si
+$$
+\lambda(x)Q(x,y) = \lambda(y)Q(y,x),\text{ pour tout }x,y\in E.
+$$
+\end{definition}
+\begin{prop}
+$$
+\lambda \text{ reversible }\Rightarrow  \lambda \text{ invariante.}
+$$
+\end{prop}
+\underline{preuve:}\\
+On a
+$$
+\sum_{x\in E}\lambda(x)Q(x,y)=\sum_{x\in E}\lambda(y)Q(y,x) =\lambda(y)
+$$
+$\square$\\
+\end{frame}
+\begin{frame}
+\begin{example}[Modèle d'urne d'Erhenfest]
+Dans deux urnes $A$ et $B$ se trouvent $N$ boules numérotées de $1$ à $N$. Le processus $(X_n)_{n\in \N}$ correspond au nombre de boules présente dans l'urne $A$. On suppose qu'initialement toutes les boules sont dans l'urne $A$ (soit $X_0 = N$). A chaque pas de temps
+\begin{enumerate}
+    \item On tire un numéro $i$ au hasard dans $\{1,\ldots, n\}$
+    \item La boule portant le numéro $i$ change d'urne
+\end{enumerate}
+Le processus $(X_n)_{n\in \N}$ est une CMH d'espace d'état $E = \{0,\ldots, N\}$ de probabilité de transition
+$$
+Q(x,y) = \begin{cases}
+\frac{N-x}{N},&\text{ si }y = x+1,\text{ et }x = 0,\ldots, N-1, \\
+\frac{x}{N},&\text{ si }y = x-1,\text{ et }x = 1,\ldots, N,\\
+0&\text{ sinon}.
+\end{cases}
+$$
+Une mesure $\lambda$ est réversible si et seulement si elle vérifie
+$$
+\lambda(x)\frac{N-x}{N} = \lambda(x+1)\frac{x+1}{N},\text{ }x= 0,\ldots, N-1.
+$$
+On remarque alors que $\lambda(x) = \binom{N}{x}$ convient.
+\end{example}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{theorem}
+Soit $x$ un état récurrent. La formule
+$$
+\nu_x(y) = \E_x\left(\sum_{k = 0}^{S_x -1}\mathbb{I}_{X_k = y}\right),
+$$
+définit une mesure invariante. De plus, $\nu_x(y)>0$ si et seulement si $y$ appartient à la même classe de communication que $x$.
+\end{theorem}
+\underline{preuve}\\
+Pour commencer, si $y$ ne communique pas avec $x$ alors $\nu_x(y) = 0$. On écrit
+\begin{eqnarray*}
+\nu_x(y) &=& \E_x\left(\sum_{k = 1}^{S_x}\mathbb{I}_{X_k=y}\right)\\
+\end{eqnarray*}
+en effet, si $x=y$ alors
+$$
+\nu_x(x) =\E_x\left(\sum_{k = 0}^{S_x-1}\mathbb{I}_{X_k=x}\right)= \E_x\left(\sum_{k = 1}^{S_x}\mathbb{I}_{X_k=x}\right)=1
+$$
+et si $x\neq y$, on sait que $X_0 = X_{S_x} = x$ et donc
+$$
+\E_x\left(\sum_{k = 0}^{S_x-1}\mathbb{I}_{X_k=y}\right)= \E_x\left(\sum_{k = 1}^{S_x}\mathbb{I}_{X_k=y}\right)
+$$
+Par suite,
+\begin{eqnarray*}
+\nu_x(y) &=& \E_x\left(\sum_{k = 1}^{S_x}\mathbb{I}_{X_k=y}\right)\\
+ &=& \sum_{z \in E} \E_x\left(\sum_{k = 1}^{S_x}\mathbb{I}_{X_{k-1} = z, X_k=y}\right)\\
+&=& \sum_{z \in E} \sum_{k = 1}^{\infty}\E_x\left(\mathbb{I}_{X_k=y, X_{k-1} = z, S_x\geq k}\right)\\
+&=& \sum_{z \in E} \sum_{k = 1}^{\infty}\E_x\left[\E_x \left(\mathbb{I}_{X_k=y, X_{k-1} = z, S_x\geq k}\big\rvert \mathcal{F}_{k-1} \right)\right]\\
+&=& \sum_{z \in E} \sum_{k = 1}^{\infty}\E_x\left[\mathbb{I}_{X_{k-1} = z, S_x\geq k}
+\E_x\left(\mathbb{I}_{X_k=y}\big\rvert \mathcal{F}_{k-1} \right)\right]\\
+&=& \sum_{z \in E} \sum_{k = 1}^{\infty}\E_x\left[\mathbb{I}_{X_{k-1} = z, S_x\geq k}Q(X_{k-1},y)\right]\\
+&=& \sum_{z \in E} \sum_{k = 1}^{\infty}\E_x\left[\mathbb{I}_{X_{k-1} = z, S_x\geq k}Q(z,y)\right]\\
+&=& \sum_{z \in E} \E_x\left[\sum_{k = 1}^{S_x}\mathbb{I}_{X_{k-1} = z}\right]Q(z,y)\\
+&=& \sum_{z \in E} \nu_x(z)Q(z,y).\\
+\end{eqnarray*}
+On observe que $\nu_x = \nu_x\mathbf{Q}$, ce qui conduit à $\nu_x = \nu_x\mathbf{Q}^n$ pour tout $n \geq 0$. On note que
+$$
+\nu_x(x) = 1 = \sum_{z\in E}\nu_x(z)Q^{n}(z,x).\footnote{Définition de la mesure invariante}
+$$
+Pour $y$ dans la classe de communication de $x$, il existe $n\geq 1$ tel que $Q^{n}(y,x)>0$ puis on a
+\begin{eqnarray*}
+ &&\nu_x(y)Q^{n}(y,x) + \sum_{z\in E/\{y\}}\nu_x(z)Q^{n}(z,x) = 1\\
+ &\Leftrightarrow&\nu_x(y)Q^{n}(y,x)  \leq  1\\
+ &\Leftrightarrow&\nu_x(y)  \leq  \frac{1}{Q^{n}(y,x)} < \infty.\\
+ \end{eqnarray*}
+ Il existe également $m\geq 1$ tel que $Q^m(x,y)>0$ et
+ $$
+ \nu_x(y) = \sum_{z\in E}\nu_x(y)Q^{m}(z,y)\geq \nu_x(x)Q^{m}(x,y) =Q^{m}(x,y) > 0.
+ $$
+ $\square$
+ \end{frame}
+ \begin{frame}
+\begin{remark}
+\begin{enumerate}
+\item S'il existe plusieurs classes de récurrence (classe de communication contenant un état récurrent) $R_i\text{, }i\in I$. En choisissant pour chaque $i$, un état $x_i\in R_i$, alors
+$$
+\nu_{x_i}(y) = \E_{x_{i}}\left[\sum_{k = 0}^{S_{x_i} - 1}
+\mathbb{I}_{X_k = y}
+\right], \text{ }y\in R_i.
+$$
+définit des mesures invariantes à support disjoints $R_i\subset E$.
+\item Si $E$ est fini il existe au moins un état récurrent, on peut donc définir une mesure invariante. Celle-ci sera finie, on pourra donc obtenir une probabilité invariante en normalisant. On retiendra que si l'espace d'état est fini, alors il existe au moins une probabilité invariante!
+\end{enumerate}
+\end{remark}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{theorem}[Mesure invariante proportionnelle]\label{theo:mesure_invariante_proportionnelle}
+Si $(X_n)_{n\in \N}$ irréductible et récurrente alors la mesure invariante est unique à une constante multiplicative près.
+\end{theorem}
+\underline{preuve:}\\
+Soit  $\mu$ une mesure invariante. On montre par récurrence sur $p$, que pour $p\geq 0$ entier et $x,y\in E$
+$$
+\mu(y)\geq \mu(x)\E_x\left[\sum_{k = 0}^{p\land (S_x -1)}\mathbb{I}_{X_k = y}\right]
+$$
+Si $x = y$ alors l'inégalité est immédiate puisque
+$$
+\E_x\left[\sum_{k = 0}^{p\land (S_x -1)}\mathbb{I}_{X_k = x}\right] = \E_x\left[\sum_{k = 0}^{S_x -1}\mathbb{I}_{X_k = x}\right]  = \nu_x(x) = 1.
+$$
+Soit $x \neq y$. Supposons que  $p = 0$, l'inégalité est triviale. Supposons l'inégalité vérifiée au rang $p$ qu'en est il au rang $n+1$?
+\begin{eqnarray*}
+\mu(y) &=& \sum_{z \in E}\mu(z)Q(z,y)\\
+       &\geq& \sum_{z \in E}\mu(x)\E_x\left[\sum_{k = 0}^{p\land (S_x -1)}\mathbb{I}_{X_k = z}\right] Q(z,y)\\
+       &=& \mu(x)\sum_{z \in E}\sum_{k = 0}^{p}\E_x\left[\mathbb{I}_{X_k = z, k\leq S_x - 1}\right] Q(z,y)\\
+       &=& \mu(x)\sum_{z \in E}\sum_{k = 0}^{p}\E_x\left[\mathbb{I}_{X_k = z, X_{k+1} = y,  k\leq S_x - 1}\right]\\
+       &=& \mu(x)\sum_{k = 0}^{p\land (S_x-1)}\E_x\left[\mathbb{I}_{X_{k+1} = y}\right]\\
+       &=& \mu(x)\sum_{k = 1}^{(p+1)\land S_x}\E_x\left[\mathbb{I}_{ X_{k} = y}\right]
+\end{eqnarray*}
+La propriété est vérifiée au rang $p+ 1$ et donc pour tout $p$. Lorsque $p$ tend vers l'infini  on trouve
+$$
+\mu(y)\geq \mu(x)\E_x\left[\sum_{k = 0}^{S_x -1}\mathbb{I}_{X_k = y}\right] = \mu(x)\nu_x(y).
+$$
+Fixons $x\in E$. La mesure $\nu_x$ est invariante et on a $\mu(y)\geq \mu(x)\nu_x(y)$ pour tout $y\in E$.
+De plus pour tout $n\geq 1$, on a
+$$
+\mu(x) = \sum_{y\in E}\mu(y)Q^{n}(y,x)\geq \sum_{y\in E}\mu(x)\nu_x(y)Q^n(y,x)=\mu(x)\nu_x(x)=\mu(x)
+$$
+ce qui équivaut à
+$$
+\sum_{y\in E}(\mu(y)- \mu(x)\nu_x(y))Q^{n}(y,x)=0
+$$
+donc on a l'égalité $\mu(y)= \mu(x)\nu_x(y)$ pour $y$ tel qu'il existe $n\geq 1$ avec $Q^n(y,x)>0$. Cela est vrai pour tout $y\in E$ puisque la chaine est irréductible. On a bien
+$$
+\mu = \mu(x)\nu_x
+$$
+$\square$
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{corollary}\label{cor:loi_invariante_existence_unicite}
+Si $(X_n)_n\geq 0$ est une CMH irréductible et récurrente alors
+\begin{enumerate}
+    \item Soit il existe une unique mesure de probabilité invariante $\pi$ et on a pour tout $x\in E$
+    $$
+    \pi(x) = \frac{1}{E_x(S_x)},
+    $$
+    la chaine est dite récurrente positive.
+    \item Soit il n'existe pas de mesure de probabilité (les mesures invariantes ont une masse totale infinie) et pour tout $x\in E$
+    $$
+    \E_x(S_x) = \infty,
+    $$
+    la chaine est dite récurrente nulle.
+\end{enumerate}
+\end{corollary}
+\underline{preuve:}\\
+D'après le théorème \ref{theo:mesure_invariante_proportionnelle}, les mesures invariantes sont proportionnelles. Elles ont donc toutes une masse infinie ou toute une masse finie. Supposons que leur masse totale soit finie et notons $\pi$ l'unique mesure de probabilité. On a $\pi = C\nu_x$ puis $C = (\nu_x(E))^{-1}$ et
+$$
+\pi(x) = \frac{\nu_x(x)}{\nu_x(E)} = \frac{1}{\E_x(S_x)}
+$$
+Supposons que la masse totale des mesures invariantes soit infinie alors
+$$
+\E_x(S_x) = \nu_x(E) = \infty.
+$$
+% \begin{remark}
+% Si l'espace d'état est fini, la mesure invariante ne peut avoir une masse infinie. Si la chaine est récurrente, elle est forcément récurrente positive. On en déduit que si l'espace d'état est fini alors une mesure de probabilité existe et que si la chaine est irréductible alors celle-ci est unique.
+% \end{remark}
+\begin{prop}[Loi invariante et espace d'état fini]
+Soit $(X_n)_{n\in\N}$ une chaine de Markov homogène dont l'espace d'état est fini.
+\begin{itemize}
+\item Il existe au moins une mesure de probabilité invariante
+\end{itemize}
+Si la chaine $(X_n)_{n\in\N}$ est irréductible alors cette loi est unique.
+\end{prop}
+\underline{preuve:}\\
+Puisque $(X_n)_{n\in\N}$ est une chaine de Markov sur un espace d'état fini alors il existe au moins un état récurrent et donc au moins une mesure invariante. Cette mesure est nécessairement de masse finie et peut donc être normalisée pour devenir une mesure de probabilité.\\
+
+De plus, si la chaine est irréductible alors tous les états sont récurrents puis récurrents positifs car l'espace d'état est fini. D'où l'unicité de la loi de probabilité invariante par le corollaire \ref{cor:loi_invariante_existence_unicite}.
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}[$\mathbf{\pi}=\left(\pi_1\text{ }\pi_2\text{ }\pi_3\right)$]
+Soit $\{X_t\text{ ; }t\in\mathbb{N}\}$ une chaine de Markov homogène sur un espace d'état $E=\{1,2,3\}$ et de matrice de transition
+\begin{equation*}
+\mathbf{Q}=
+\left(\begin{array}{ccc}
+3/5&2/5&0\\
+1/5&3/5&1/5\\
+0&3/5&2/5\\
+\end{array}\right).
+\end{equation*}
+\begin{enumerate}
+\item Justifiez l'existence et l'unicité d'une loi invariante
+\item Pour chaque $x\in E$, donnez $\pi_x$ en résolvant
+$
+\begin{cases}
+\mathbf{\pi}.\mathbf{Q}=\pi,&\\
+\sum_{x\in E}\pi_x=1.&
+\end{cases}
+$
+\item pour chaque $x\in S$, donnez $\mathbb{E}_x(S_x)$.
+\end{enumerate}
+\end{example}
+% \underline{Solution:}\\
+% \begin{enumerate}
+% \item La chaine de Markov  
+% \begin{itemize}
+% \item[$\hookrightarrow$] admet un espace d'état fini $\Rightarrow$ Il existe une mesure de probabilité invariante
+% \item[$\hookrightarrow$] est irréductible $\Rightarrow$ cette mesure de probabilité invariante est unique
+% \end{itemize}
+% \item La loi de probabilité invariante est obtenue en résolvant le système $
+% \begin{cases}
+% \mathbf{\pi}.\mathbf{Q}=\pi,&\\
+% \sum_{x\in E}\pi_x=1,&
+% \end{cases}
+% $ et $\mathbf{\pi}=\left(3/11\text{  }6/11\text{  }2/11\right)$.
+% \item
+% On en déduit que $\mathbb{E}_1(S_1)=11/3$, $\mathbb{E}_2(S_2)=11/6$ and $\mathbb{E}_3(S_3)=11/2$.
+% \end{enumerate}
+\end{frame}
+\section{Stabilisation des chaines de Markov}
+\subsection{Convergence vers la loi stationaire}
+\begin{frame}[allowframebreaks]
+\underline{IV. Stabilisation des chaines de Markov}\\
+\underline{1. Convergence vers la loi stationaire}\\
+Dans cette section, on s'intéresse au comportement asymptotique de la chaine de Markov. La question est de savoir si la chaine de Markov se stabilise au sens où elle atteint un état "stationnaire". Nous allons notamment étudier le lien entre stationarité et mesure de probabilité invariante.
+\begin{theorem}[Temps moyen passé en $x$]\label{prop:LongRunProportion}
+Soit une chaine de Markov $(X_n)_{n\in\N}$ homogène et irréductibe sur un espace d'état $E$.
+$$
+\underset{n\rightarrow+\infty}{\lim} \frac{1}{n}\sum_{k=1}^{n}\mathbb{I}_{X_k=x}=\frac{1}{\E_x(S_x)}\text{ p.s.}
+$$
+
+\end{theorem}
+\underline{preuve}\\
+Posons $m(n)=\sum_{k=1}^{n}\mathbb{I}_{X_k=x}$. Si la chaine est transiente alors $\mathbb{P}(S_x=\infty)>0$, $\forall x\in E$ et donc $\E_x(S_x)=\infty$. De plus on remarque que $\forall\omega\in\Omega$ $m(n)[\omega]$ (on comprend $\Omega$ comme l'ensemble des trajectoires possibles du processus) devient constant pour $n$ suffisamment grand (comme $x$ est transient alors au bout d'un moment la chaine ne visite plus $x$), cela implique que $m(n)/n\underset{n\rightarrow\infty}{\rightarrow} 0$ p.s.\\
+
+Supposons la chaine récurrente, on introduit la suite de variables aléatoires.
+$$S_k=\inf\{n>S_{k-1}\text{ ; }X_n=x\},\text{ }k\geq1$$
+qui représente les temps de $k^{eme}$ retour en $x$. On convient que $S_0=0$ et $S_1=S_x$. Soit $\Delta^{S}_k=S_k-S_{k-1},\text{ }k\geq1$ les temps séparant deux passages par $x$ consécutifs.
+\begin{lemma}
+$(\Delta^S_n)_{n\geq1}$ est une i.i.d. de variables aléatoires distribuées comme $S_x|X_0=x$
+\end{lemma}
+\underline{preuve:}\\
+On va se contenter de montrer le résultat pour les deux premiers délais. On a pour $p,q\in\N$,
+\begin{eqnarray*}
+\Pr_x(S_1=p,\Delta^S_2=q)&=&\Pr(\Delta^S_2=q|S_1=p,X_0=x)\Pr_x(S_1=p)\\
+&=&\Pr(X_{p+q}=x,\bigcap_{k=p+1}^{p+q-1}\{X_k\neq x\}|X_{p}=x,\bigcap_{k=1}^{p-1}\{X_k\neq x\},X_0=x)\P_x(S_1=p)\\
+&=&\Pr(X_{p+q}=x,\bigcap_{k=p+1}^{p+q-1}\{X_k\neq x\}|X_{p}=x)\Pr_x(S_1=p)\\
+&=&\Pr(X_{q}=x,\bigcap_{k=1}^{q-1}\{X_k\neq x\}|X_{0}=x)\Pr_x(S_1=p)\\
+&=&\Pr_x(S_1=q)\Pr_x(S_1=p)=\Pr_x(S_x=q)\Pr_x(S_x=p)\\
+\end{eqnarray*}
+ $\square$\\
+En vertu de le loi forte des grands nombres, il vient
+$$
+\frac{S_n}{n}=\frac{\sum_{k=1}^{n}\Delta^{S}_{k}}{n}\rightarrow \E_x(S_x)\text{ p.s.}
+$$
+Comme $x$ est récurrent alors $m(n)\rightarrow\infty$ et
+$$
+\frac{S_m(n)}{m(n)}\rightarrow\E_x(S_x)
+$$
+Soit $n\in\N$ tel que $m(n)[\omega]=l$, on a $S_l[\omega]\leq n\leq S_{l+1}[\omega]$ (On retourne $l$ fois en $x$ avant $n$ puis la $l+1^{eme}$ visite a lieu après $n$). Par suite,
+$$
+\frac{S_{m(n)}}{m(n)}\leq\frac{n}{m(n)}\leq \frac{S_{m(n)+1}}{m(n)}=\frac{S_{m(n)+1}}{m(n)+1}\frac{m(n)+1}{m(n)}
+$$
+Théorème des gendarmes $\Rightarrow$ $\frac{n}{m(n)}\rightarrow\mathbb{E}_x(S_x)$.\\
+Vérifions que si $\mathbb{E}_x(S_x)=\infty$ alors $\mathbb{E}_y(S_y)=\infty,\text{ }\forall y\in E$.\\
+Notons que
+$$
+\underset{n\rightarrow+\infty}{\lim} \E_{y}\left(\frac{1}{n}\sum_{k=1}^{n}\mathbb{I}_{X_{k}=y}\right)=\underset{n\rightarrow+\infty}{\lim} \frac{1}{n}\sum_{k=1}^{n}Q^{k}(y,y)
+$$
+d'une part et
+$$
+\underset{n\rightarrow+\infty}{\lim} \E_{y}\left(\frac{1}{n}\sum_{k=1}^{n}\mathbb{I}_{X_{k}=y}\right)=\frac{1}{\E_y(S_y)}
+$$
+en vertu du résultat de convergence précédent. L'irréductibilité de la chaine entraine l'existence de $r,s \geq 1$ tels que $Q^{r}(x,y)>0$ et $Q^{s}(y,x)>0$. On remarque que $Q^{r+k+s}(x,x)\geq Q^{r}(x,y)Q^{k}(y,y)Q^{s}(y,x)$ puis
+$$
+\frac{1}{n}\sum_{k=1}^{n}Q^{k}(y,y)\leq \frac{1}{nQ^{r}(x,y)Q^{s}(y,x)}\sum_{k=1}^{n}Q^{r+k+s}(x,x)\rightarrow 0.
+$$
+On en déduit que $\E_y(S_y)=\infty$. On peut montrer de manière équivalente que $E_x(S_x)<\infty\Rightarrow E_y(S_y)<\infty,\text{ }y\in E$\\
+$\square$
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{remark}
+$$
+\frac{1}{n}\sum_{k=1}^{n}Q^{k}(x,x)\rightarrow
+\begin{cases}
+0, & \text{ récurrence nulle},\\
+1/\E_x(S_x), & \text{ récurrence positive}.
+\end{cases}
+$$
+D'après le Théorème \ref{prop:LongRunProportion} et la convergence dominée, on a
+$$
+\E_{\mu}\left(\frac{1}{n}\sum_{k=1}^{n}\mathbb{I}_{X_k=x}\right)=\frac{1}{n}\sum_{k=1}^{n}\Pr_{\mu}(X_k=x)=\frac{1}{n}\sum_{k=1}^{n}\mu Q^{k}(x)\rightarrow \frac{1}{\E_{x}(S_x)}:=\pi(x)
+$$
+pour toute loi initiale $\mu$ et en particulier $\forall x,y\in E$
+$$
+\frac{1}{n}\sum_{k=1}^{n}Q^{k}(y,x)\rightarrow \pi(x).
+$$
+Nous venons de montrer que pour une chaine irréductible, récurrente positive, la suite $(\pi Q^{n}(x))$ converge en moyenne de Césarro vers $\pi(x)$ avec
+$$
+\frac{\mu Q(x)+\mu Q^{2}(x)+\ldots+\mu Q^{n}(x)}{n}\underset{n\rightarrow\infty}{\rightarrow}\pi(x).
+$$
+\end{remark}
+Mais que dire de la convergence de $\mu Q^{n}(x)=\mathbb{P}_{\mu}(X_n=x)$ au sens usuel? La chaine de Markov $(X_n)_{n\in\N}$ converge-t-elle en loi vers une variable aléatoire $X_{\infty}$? Cette convergence est établie sous réserve d'apériodicité.
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+
+Soit $(X_n)_{n\in\N}$ une chaine de Markov irréductible, récurrente positive.
+\begin{prop}\label{prop:MatrixQPositive}
+Si $(X_n)_{n\in\N}$ est apériodique alors il existe $N\in\N$ tel que pour tout $n\geq N$ on a
+$$
+Q^{n}(x,y)>0\text{ pour tout }x,y\in E.
+$$
+\end{prop}
+\underline{preuve:}\\
+Soit $I(x)=\{n\in\N^{\ast}\text{ ; }Q^{n}(x,x)>0\}$. On note que si $p,q\in I(x)$ alors $p+q\in I(x)$.
+\begin{lemma}
+Soit un ensemble $A\subset\N^{\ast}$, stable par addition de pgcd égal à $1$ alors $A$ contient tout les entiers plus grand que $N$.
+\end{lemma}
+\underline{preuve:}\\
+Soit $A'=A\cup\{0\}$, alors $A'-A'$ est un sous groupe de $\mathbb{Z}$ qui est donc de la forme $d\mathbb{Z}$, avec $d$ le plus petit élément non nul de $A'$. Comme $A'$ contient $A$ alors $d$ divise tout les élements de $A$ donc $d=1$. On en déduit qu'il existe $a,b\in A'$ tels que $a+1=b$. Nécécessairement, $a\in A$,
+\begin{itemize}
+\item si $b=0$ alors $a=1$ et $A$ continent tout les entiers naturels
+\item Si $b\in A$ alors $N= b^{2}$ convient car pour $n\geq N$, on a pour $0\leq r<b$,
+$$
+n=b^{2}+bq+r=b(q+1-r)+(b+1)r\in A
+$$
+\end{itemize}
+ $\square$
+
+
+$I(x)\subset\N$ est stable par addition, il existe $n_1\in\N$ tel que $I(x)$ contient tout les entiers supérieurs à $n_1$ et $Q^{n}(x,x)>0$ pour tout $n\geq n_1$. Par irréductibilité, on a aussi pour tout $z,y\in E$ l'existence de $n_2,n_3\in\N$ tels que $Q^{n_2}(z,x)>0$ et $Q^{n_3}(x,y)>0$. On en déduit que
+$$
+Q^{n_2+n+n_3}(z,y)\geq Q^{n_2}(z,x)Q^{n}(x,x)Q^{n_3}(x,y)>0
+$$
+On choisit alors $N=n_1+n_2+n_3$.
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{definition}[Chaine de Markov couplée]
+Soit $(X_n')_{n\in\N}$ une copie indépendante de $(X_n)_{n\in\N}$, on appelle $((X_n,X_n'))_{n\in\N}$ la chaine couplée.
+\begin{itemize}
+\item $(X_n,X_n')$ est une chaine de Markov sur $E\times E$ de matrice de transition
+$\overline{Q}\left[(x,x'),(y,y')\right]=Q(x,y)Q(x',y')$
+\item Soit $\mu$ et $\nu$ les lois initiales respectives de $(X_n)_{n\in\N}$ et $(X_n')_{n\in\N}$ alors la loi initiale de $((X_n,X_n'))_{n\in\N}$ est la mesure produit $\mu\otimes\nu$
+\end{itemize}
+\end{definition}
+\begin{prop}
+Si $(X_n)_{n\in\N}$ une chaine de Markov irréductible, récurrente positive et apériodique alors la chaine couplée $((X_n,X_n'))_{n\in\N}$ est irréductible et récurrente positive.
+\end{prop}
+\underline{preuve:}\\
+On vérifie que, il existe $N\in\N$ telle que $\forall n\geq N$
+$$
+\overline{Q}^{n}\left[(x,x'),(y,y')\right]=Q^{n}(x,y)Q^{n}(x',y')>0
+$$
+d'après la Proposition \ref{prop:MatrixQPositive}. $((X_n,X_n'))_{n\in\N}$ est donc irréductible. On note ensuite que
+$$
+\frac{1}{n}\sum_{k=1}^{n}\overline{Q}^{n}\left[(x,x'),(y,y')\right]=\frac{1}{n}\sum_{k=1}^{n}Q^{n}(x,y)Q^{n}(x',y')\leq\frac{1}{n}\sum_{k=1}^{n}Q^{n}(x,y)<\infty
+$$
+et donc que $((X_n,X_n'))_{n\in\N}$ est récurrente positive.
+\begin{theorem}
+Si $(X_n)_{n\in\N}$ est apériodique alors la chaine se stabilise au sens où, pour toutes lois initiales $\mu,\nu$ sur $E$, on a
+$$
+\underset{y\in E}{\sup}|\mu Q^{n}(y)-\nu Q^{n}(y)|\underset{n\longrightarrow\infty}{\rightarrow} 0.
+$$
+et en particulier
+$$
+\mu Q^{n}(y) \underset{n\longrightarrow\infty}{\rightarrow} \pi(y).
+$$
+\end{theorem}
+\underline{preuve:}\\
+Soit $((X_n,X_n'))_{n\in\N}$ la chaine couplée de $(X_n)_{n\in\N}$ de loi initiale $\mu\otimes\nu$ et $\tau_x=\inf\{n\in\N^{\ast}\text{ ; }(X_n,X_n')=(x,x)\}$. On a
+\begin{eqnarray*}
+\mu Q^{n}(y)&=&\Pr_{\mu\otimes\nu}(X_n=y)\\
+&=&\Pr_{\mu\otimes\nu}(X_n=y,\tau_x>n)+\sum_{k=1}^{n}\Pr_{\mu\otimes\nu}(X_n=y,\tau_x=k)\\
+&=&\Pr_{\mu\otimes\nu}(X_n=y,\tau_x>n)+\sum_{k=1}^{n}\Pr_{\mu\otimes\nu}(X_n=y,X_k=x,\tau_x=k)\\
+&=&\Pr_{\mu\otimes\nu}(X_n=y,\tau_x>n)+\sum_{k=1}^{n}\Pr_{\mu\otimes\nu}(X_n=y|X_k=x)\Pr_{\mu\otimes\nu}(\tau_x=k)\\
+&=&\Pr_{\mu\otimes\nu}(X_n=y,\tau_x>n)+\sum_{k=1}^{n}\Pr_{x}(X_{n-k}=y)\Pr_{\mu\otimes\nu}(\tau_x=k)
+\end{eqnarray*}
+d'une part et
+$$
+\nu Q^{n}(y)=\Pr_{\mu\otimes\nu}(X_n'=y,\tau_x>n)+\sum_{k=1}^{n}\Pr_{x}(X_{n}'=y)\Pr_{\mu\otimes\nu}(\tau_x=k)
+$$
+d'autre part. On en déduit que
+\begin{eqnarray}
+|\mu Q^{n}(y)-\nu Q^{n}(y)|&=&|\Pr_{\mu\otimes\nu}(X_n=y|\tau_x>n)-\Pr_{\mu\otimes\nu}(X_n'=y|\tau_x>n)|\Pr_{\mu\otimes\nu}(\tau_x>n)\\
+&\leq& 2\Pr_{\mu\otimes\nu}(\tau_x>n)\underset{n\rightarrow +\infty}{\rightarrow} 0 \text{(car $((X_n,X_n'))_{n\in \N}$ est récurrente}
+\end{eqnarray}
+On constate que
+$$
+\mu Q^{n}(y) \underset{n\longrightarrow\infty}{\rightarrow} \pi(y).
+$$
+en choisissant $\nu=\pi$.
+
+
+\end{frame}
+% \begin{frame}{Classification d'un état}
+% \tikzstyle{decision} = [diamond, draw, fill=blue!20,
+%     text width=4em, text badly centered, node distance=3cm, inner sep=0pt]
+% \tikzstyle{block} = [rectangle, draw, fill=blue!20,text width=3.2cm, rounded corners, minimum height=3em]
+% \tikzstyle{smallblock} = [rectangle, draw, fill=blue!20,text width=3cm, rounded corners, minimum height=3em]
+% \tikzstyle{line} = [draw, -latex']
+% \tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
+%     minimum height=2em]
+
+% \begin{tikzpicture}[node distance = 3cm, auto]
+%     % Place nodes
+%     \node [cloud] (State) {$x\in S$};
+%     \node [block, left of=State] (TransientState) {\scriptsize $x$ est transient \begin{itemize}
+%     \item $\mathbb{P}_x(S_x=\infty)>\infty$
+%     \item $\mathbb{P}_x(N_x=\infty)=0$
+%     \item $\sum_{t=0}^{+\infty}Q(x,x)^{t}<+\infty$
+%     \item $\underset{t\rightarrow+\infty}{\lim}Q(x,x)^{t}=\pi_x=0$
+%     \end{itemize}};
+%     \node [block, right of=State] (RecurrentState) {\scriptsize $x$ est recurrent
+% \begin{itemize}
+%     \item $\mathbb{P}_x(S_x<\infty)=1$
+%     \item $\mathbb{P}_x(N_x=\infty)=1$
+%     \item $\sum_{t=0}^{+\infty}Q(x,x)^{t}=+\infty$
+
+%     \end{itemize}
+%     };
+%     \node [block, below left of=State] (RecurrentPositive) {\scriptsize $x$ est positive recurrent\begin{itemize}
+%     \item $\mathbb{E}_x(S_x)<\infty$
+%    \end{itemize}
+%     };
+%         \node [block, below of=RecurrentState] (RecurrentNull) {\scriptsize $x$ est recurrent nul\begin{itemize}
+%     \item $\mathbb{E}_x(S_x)=\infty$
+%     \item $\underset{t\rightarrow+\infty}{\lim}Q(x,x)^{t}=\pi_x=0$
+%    \end{itemize}
+%     };
+%       \node [block, below of=RecurrentPositive] (Ergodic) {\scriptsize $x$ est ergodique\begin{itemize}
+%     \item $d(x)=1$
+%     \item $\underset{t\rightarrow+\infty}{\lim}Q(x,x)^{t}=\pi_x>0$
+%    \end{itemize}
+%     };
+
+%     % Draw edges
+%    \path [line] (State) -- (TransientState);
+%     \path [line] (State) -- (RecurrentState);
+%     \path [line] (RecurrentState) -- (RecurrentPositive);
+%      \path [line] (RecurrentState) -- (RecurrentNull);
+%      \path [line] (RecurrentPositive) -- (Ergodic);
+
+% \end{tikzpicture}
+% \end{frame}
+\begin{frame}[allowframebreaks]
+Que peut-on dire d'une chaine de Markov qui n'est pas irréductible?\\
+Soit $(X_{n})_{n\in\N}$ une chaine de Markov homogène sur un espace d'état fini. Ce dernier se divise en $k=k_1+k_2$ classes d'équivalence avec $O_1,\ldots,O_{k_1}$ les classes ouvertes et $F_1,\ldots,F_{k_2}$ les classes fermées.
+\begin{itemize}
+\item $x\in\bigcup_{i=1}^{k_1}O_i$ alors $x$ est transient et $\pi(x)=0$
+\item Pour chaque classe fermée $F_i,\text{ }i=1,\ldots,k_2$,
+\begin{itemize}
+\item On définit une sous matrice de transition $\mathbf{Q}_{F_i}$, de loi stationaire unique $\pi_{F_i}$
+\item On définit le vecteur $\Pi_{F_i}=\left(\mathbf{0}\text{ }\pi_{F_i}\text{ }\mathbf{0}\right)$ de dimension $\text{Card}(E)$.
+\end{itemize}
+\end{itemize}
+Les lois stationnaires de $(X_{n})_{n\in\N}$ admettent la forme suivante
+$$
+\pi=\sum_{i=1}^{k_2}\alpha_i \Pi_{F_i},\text{ avec }
+\begin{cases}
+0\leq \alpha_i\leq 1&\\
+\sum_{i=1}^{k_2}\alpha_i=1&
+\end{cases}
+$$
+S'il n'y a qu'une seule classe fermée $(k_2=1)$ alors la loi stationnaire est unique et $\alpha_1=1$.
+\begin{example}
+Soit $\{X_t\text{ ; }t\in\mathbb{N}\}$ une chaine de Markov sur un espace d'état $E=\{1,2,3,4,5\}$ et de matrice de transition
+$$\mathbf{Q}=\left(\begin{array}{ccccc}
+1/4&1/4&1/4&0&1/4\\
+1/2&0&0&1/2&0\\
+0&0&0&1&0\\
+0&0&1/2&1/2&0\\
+0&0&0&0&1\\
+\end{array}\right)$$.
+\begin{enumerate}
+\item $\{X_t\text{ ; }t\in\mathbb{N}\}$ est-elle irreductible, combien de classe de communication, ouvertes/fermées?
+\item Donnez la forme générale des lois invariantes.
+\end{enumerate}
+\end{example}
+% \underline{Solution:}\\
+% \begin{enumerate}
+% \item La chaine n'est pas irréductible
+% \begin{itemize}
+% \item Une classe ouverte $O_1=\{1,2\}$, $\pi_1=\pi_2=0$
+% \item Deux classes fermées $C_1=\{3,4\}$ and $C_2=\{5\}$
+% \begin{itemize}
+% \item de lois invariantes $\mathbf{\pi}_1=\left( 1/3\text{ }2/3\right)$ and $\mathbf{\pi}_2=\left(1\right)$
+% \end{itemize}
+% \end{itemize}
+% \item Soient
+% $$\Pi_{C_1}=\left(0\text{ } 0\text{ } 1/3\text{ } 2/3\text{ }0\right),$$
+% et
+% $$\Pi_{C_2}=\left(0\text{ } 0\text{ }0\text{ } 0\text{ }1\right).$$
+% Les lois invariantes de $\{X_t\text{ ; }t\in\mathbb{N}\}$ sont de la forme
+% \begin{equation*}
+% \pi=\alpha \Pi_{C_1}+(1-\alpha)\Pi_{C_2},\text{ pour tout }\alpha \in [0,1].
+% \end{equation*}
+% \end{enumerate}
+
+\end{frame}
+\subsection{Théorèmes ergodiques}
+\begin{frame}[allowframebreaks]
+\underline{2. Théorèmes ergodiques}\\
+\begin{theorem}[Théorème ergodique]\label{theo:ergodique}
+Soit $(X_n)_{n\in\N}$ une chaine de Markov homogène, irréductible et récurrente positive sur un espace d'état $E$. Soient $\mu$ une
+mesure invariante, et  $f,g:E\mapsto \mathbb{R}_+$ telles que
+$\int f\text{d}\mu<\infty$ et $\int g\text{d}\mu<\infty$. Alors, pour tout $x\in E$, on a
+$$
+\frac{\sum_{k = 0}^{n-1} f(X_k)}{\sum_{k = 0}^{n-1} g(X_k)}\underset{n\rightarrow \infty}{\rightarrow}\frac{\int f\text{d}\mu}{\int g\text{d}\mu},\text{ }\P_x-p.s.
+$$
+Avec $g$ constante égale à 1, on a
+$$
+\frac{1}{n}\sum_{k = 0}^{n-1} f(X_k)\underset{n\rightarrow \infty}{\rightarrow} \int f\text{d}\pi,\text{ }\text{ }\P_x-p.s.
+$$
+avec $\pi$ l'unique mesure de probabilité invariante.
+\end{theorem}
+\underline{preuve:}\\
+On définit les temps d'arrêts
+$$
+S_0 = 0, \text{ et }S_n =\inf\{k\geq S_{n-1}\text{, }X_k = x\}
+$$
+$S_k$ est le temps de $k^{\text{ème}}$ retour en $x$, comme l'état $x$ est récurrent alors ces temps d'arrêt sont finis presque sûrement. On pose
+$$
+Z_n(f) = \sum_{k = S_n}^{S_{n+1}-1}f(X_k),\text{ }n\geq 1.
+$$
+\begin{lemma}
+Les v.a. $Z_n(f)$, $n = 0,1,\ldots,$ sont i.i.d.
+\end{lemma}
+Soient $g_1,g_2,g_3,\ldots$ des fonctions mesurables bornées sur $\mathbb{R}_+$. On va montrer l'identité
+$$
+\E_x\left\{\prod_{i = 0}^{n}g_i[Z_i(f)]\right\}=\prod_{i = 0}^{n}\E_x\left\{g_i[Z_0(f)]\right\}.
+$$
+par récurrence sur $n$. Au rang $n = 0$ l'identité est vérifiée. Supposons la propriété vérifiée au rang $n\in \N$, qu'en est-il au rang $n+1$?\\
+On note que $Z_{0}(f),\ldots, Z_n(f)$ sont mesurable par rapport à la filtration $\mathcal{F}_{S_n}$. De plus, $Z_{n+1}(f)$ est indépendante de $\mathcal{F}_{S_n}$ et distribuée comme $[Z_0(f)|X_0 = x]$ d'après la propriété de Markov forte. On en déduit que
+\begin{eqnarray*}
+\E_x\left\{\prod_{i = 0}^{n+1}g_i[Z_i(f)]\right\}&=&\E_x\left(\E_x\left\{\prod_{i = 0}^{n+1}g_i[Z_i(f)]\right\}\Big\rvert\mathcal{F}_{S_n}\right)\\
+&=&\E_x\left(\prod_{i = 0}^{n}g_i[Z_i(f)]\E_x\left\{g_{n+1}[Z_{n+1}(f)]\Big\rvert\mathcal{F}_{S_n}\right\}\right)\\
+&=&\E_x\left\{\prod_{i = 0}^{n}g_i[Z_0(f)]\right\}\E_x\left\{g_{n+1}[Z_{0}(f)]\right\}
+\end{eqnarray*}
+La propriété est vérifiée au rang $n+1$. On rappelle que
+$$
+\nu_x(y) = \E_x\left(\sum_{k = 0}^{S_x-1}\mathbb{I}_{X_k=y}\right)
+,\text{ pour }y\in E.$$
+définie une mesure invariante, on considère une mesure invariante définie par $\mu = \mu(x)\nu_x$ ($\nu_x(x)=1$ et les mesures invariantes sont proportionnelles). On observe alors
+$$
+\E_x\left[Z_0(f)\right] =\E_x\left[\sum_{k = 0}^{S_x -1}\sum_{y\in E}f(y)\mathbb{I}_{X_k =y}\right] = \sum_{y\in E}f(y)\nu_x(y) = \frac{\int f\text{d}\mu}{\mu(x)}
+$$
+La loi forte des grands nombres implique
+$$
+\frac{1}{n}\sum_{k = 0}^{n-1}Z_k(f)\underset{n\rightarrow\infty}{\longrightarrow}\frac{\int f\text{d}\mu}{\mu(x)}
+$$
+On note $N_x(n)$ le nombre de passage par l'état $x$ avant l'instant $n$, de sorte que
+$$
+S_{N_x(n)}\leq n\leq S_{N_x(n)+1},
+$$
+et
+$$
+\frac{\sum_{k = 0}^{S_{N_x(n)}-1}f(X_k)}{N_x(n)}\leq \frac{\sum_{k = 0}^{n-1}f(X_k)}{N_x(n)}\leq \frac{\sum_{k = 0}^{S_{N_x(n)+1}-1}f(X_k)}{N_x(n)}.
+$$
+Cela est équivalent à
+$$
+\frac{\sum_{k = 0}^{N_x(n)-1}Z_k}{N_x(n)}\leq \frac{\sum_{k = 0}^{n-1}f(X_k)}{N_x(n)}\leq \frac{\sum_{k = 0}^{N_x(n)+1}Z_k}{N_x(n)}
+$$
+puis
+$$
+\frac{\sum_{k = 0}^{n-1}f(X_k)}{N_x(n)}\rightarrow \frac{\int f\text{d}\mu}{\mu(x)}
+$$
+On effectue le même travail pour $g$ avant de conclure.
+\begin{remark}[Algorithme MCMC]
+Les méthodes de simulation de Monte Carlo par chaine de Markov consiste à estimer l'intégrale $\int f(X)\text{d}\pi$ par $\frac{1}{n}\sum_{k=1}^{n} f(X_{k})$, où $X_1,\ldots,X_n$ sont les points d'une trajectoire d'une chaine de Markov dont la loi de probabilité invariante $\pi$. \begin{color}{blue}Activité Python\end{color}
+\end{remark}
+\end{frame}
+
+% \section{La marche aléatoire sur $\mathbb{Z}$}
+% \begin{frame}[allowframebreaks]
+% \underline{V. La marche aléatoire sur $\mathbb{Z}$}\\
+% La marche aléatoire sur $\mathbb{Z}$ est une chaine de Markov $(X_n)$ dont l'espace d'état est $\mathbb{Z}$ définie par
+% $$
+% X_n=X_{n-1}+\xi_{n},\text{ }n\geq 1.
+% $$
+% où $\xi_1,\xi_2,\ldots,$ sont des variables aléatoires i.i.d. distribuées comme $\xi$ avec
+% $$
+% \Pr(\xi=1)=p\text{ et }\Pr(\xi=-1)=1-p.
+% $$
+% \begin{theorem}
+% La marche aléatoire sur $\mathbb{Z}$ est irréductible et
+% \begin{itemize}
+% \item Récurrente si $p=1/2$.
+% \item Transiente sinon.
+% \end{itemize}
+% \end{theorem}
+% \underline{preuve:}\\
+% Pour montrer ce résultat, on étudie la distribution du temps $S_0$ de retour à $0$. On a
+% $$
+% \mathbb{P}_0(S_0<\infty)=\sum_{n=1}^{+\infty}\mathbb{P}_0(S_0=n).
+% $$
+% On remarque que les trajectoires allant de $0$ à $0$ sont nécessairement de longueur paire et
+% $$
+% \mathbb{P}_0(S_0=2n+1)=0,\text{ pour } n=0,1,\ldots.
+% $$
+% et
+% $$
+% \mathbb{P}_0(S_0<\infty)=\sum_{n=1}^{+\infty}\mathbb{P}_0(S_0=2n).
+% $$
+% On a exactement $\binom{2n}{n}$ trajectoires possibles, celle qui nous intéresse (pour lesquels $S_0=2n$) sont celles qui ne repassent pas par $0$ entre l'instant $0$ et $2n$ (On parle d'excursions). Leur nombre est donné par
+% \begin{equation}\label{eq:NombreBonnesTrajectoires}
+% 2\times C_{n-1}=2\times \frac{1}{n}\binom{2n-2}{n-1}
+% \end{equation}
+% \begin{definition}[Nombre de Catalan]
+% Les nombres de Catalan sont définis par
+% $$
+% C_n=\frac{1}{n+1}\binom{2n}{n},\text{ pour }n\geq 0,
+% $$
+% et vérifie
+% \begin{equation}\label{eq:RecurrenceDyckWord}
+% C_{n+1}=\sum_{k=0}^{n}C_kC_{n-k}\text{ pour }n\geq1
+% \end{equation}
+% \end{definition}
+% \begin{example}[Mots de Dyck]
+% $C_n$ correspond aux nombre de mots de $2n$ lettres comprenant respectivement $n$ A et $n$ B, tels que lu de gauche à droite le nombre de $A$ demeure supérieur ou égal au nombre de $B$. La relation de récurrence \eqref{eq:RecurrenceDyckWord} s'explique par le fait qu'un mot de Dyck contenant plus de deux lettres est obtenu par la concaténation de deux mots de Dyck.
+% \end{example}
+% Dans le problème considéré, on s'intéresse aux nombres de mots tels que le nombre de $A$ (interprétés comme des $+1$) soit strictement supérieur au nombre de $B$ (interprétés comme des $-1$). Alors notre mot commence nécessairement par un $A$ et fini sur un $B$. La portion entre ce $A$ et ce $B$ est un mot de Dyck contenant $2n-2$ lettres. On a $C_{n-1}$ possibilités. Le facteur $2$ dans \eqref{eq:NombreBonnesTrajectoires} s'explique par la symétrie du problème puisque l'on peut considérer les trajectoires dans lesquels les $-1$ dominent les $+1$. La probabilité d'une trajectoire quelconque de longueur $2n$ contenant $n$ "$+1$" et $n$ "$-1$" est donnée par $p^{n}(1-p)^{n}$, on en déduit que
+% \begin{eqnarray}
+% \mathbb{P}(S_0<\infty)&=&\sum_{k=1}^{+\infty}\mathbb{P}(S_0=k)=\sum_{k=1}^{+\infty}2C_{n-1}[p(1-p)]^{n}\nonumber\\
+% &=&2p(1-p)\sum_{k=0}^{+\infty}C_{n}[p(1-p)]^{n}=2p(1-p)C[p(1-p)],\label{eq:ProbaS0}
+% \end{eqnarray}
+% où $C(x)=\sum_{n=0}^{+\infty}C_nx^{n}$. Or, on a
+% \begin{eqnarray*}
+% C(x)&=&1+\sum_{n=1}^{+\infty}C_nx^{n}=1+x\sum_{n=0}^{+\infty}C_{n+1}x^{n}\\
+% &=&1+x\sum_{n=0}^{+\infty}\sum_{k=0}^{n}C_kC_{n-k}x^{n}=1+x\sum_{k=0}^{+\infty}\sum_{n=k}^{n}C_kC_{n-k}x^{n}\\
+% &=&1+x\sum_{k=0}^{+\infty}C_k\sum_{n=0}^{n}C_{n}x^{n+k}=1+xC(x)^{2}
+% \end{eqnarray*}
+% Par suite, $C(x)=\frac{1-\sqrt{1-4x}}{2x}$. En substituant dans \eqref{eq:ProbaS0}, on obtient
+% $$
+% \mathbb{P}(S_0<\infty)=1-|1-2p|
+% $$
+% On en déduit que si $p\neq 1/2$ alors $\mathbb{P}(S_0<\infty)<1$ et la chaine est transitoire sinon $\mathbb{P}(S_0<\infty)=1$ et la chaine est récurrente.
+% \begin{remark}[Divergence lorsque $p\neq 1/2$]
+% Dans le cas d'une chaine de Markov $(X_n)_{n\in\N}$ sur un espace ordonné et dénombrable (comme $\N$ ou $\mathbb{Z}$), si la chaine est transitoire alors elle diverge vers $\infty$. Par exemple dans le cas de la chaine aléatoire sur $\mathbb{Z}$, on a par la loi des grands nombre
+% $$
+% \frac{X_n}{n}=\frac{X_0}{n}+\frac{1}{n}\sum_{k=1}^{n}\xi_k\underset{n\rightarrow+\infty}{\longrightarrow} 2p-1.
+% $$
+% On en déduit que
+% $$
+% X_n\rightarrow\begin{cases}
+% -\infty,&\text{ si }p<1/2,\\
+% 0,&\text{ si }p=1/2,\\
+% +\infty,&\text{ si }p>1/2.\\
+% \end{cases}
+% $$
+
+% \end{remark}
+% \begin{example}[Le problème de la ruine du parieur]
+% Un joueur entre dans un casino avec $x\$$ en poche, il paye $1\$$ pour participer,
+% \begin{itemize}
+% \item Il gagne et remporte $2\$$ avec une probabilité $p$
+% \item Il perd avec une probabilité $q=1-p$
+% \end{itemize}
+% sa richesse après chaque partie est modélisée par un processus $(X_n)_{n\in\N}$. On suppose qu'il rentre chez lui si sa richesse devient nulle ou atteint un niveau $a\geq x$. On note $\phi(x,a)$ la probabilité qu'il rentre à la maison ruiné.
+% \end{example}
+% \begin{prop}
+% La probabilité de ruine est donnée par
+% $$\phi(x,a)=\frac{(q/p)^{x}-(q/p)^{a}}{1-(q/p)^{a}}.$$
+% \end{prop}
+% \underline{preuve:}\\
+% On note que
+% $$
+% \phi(a,a)=0\text{ et }\phi(0,a)=1
+% $$
+% Soit $0<x<a$, lors de la première partie,
+% \begin{itemize}
+% \item Il perd avec probabilité $q$ et repart avec un niveau de richesse $x-1$,
+% \item Il gagne avec probabilité $p$ et repart avec un niveau de richesse $x+1$.
+% \end{itemize}
+% On en déduit que
+% \begin{equation}\label{eq:ProbaRuine1}
+% \phi(x,a)= p\phi(x+1,a)+q\phi(x-1,a)
+% \end{equation}
+% De plus, comme $p+q=1$ alors
+% \begin{equation}\label{eq:ProbaRuine2}
+% \phi(x,a)= p\phi(x,a)+q\phi(x,a).
+% \end{equation}
+% L'opération \eqref{eq:ProbaRuine1}-\eqref{eq:ProbaRuine2} donne
+% \begin{equation}\label{eq:ProbaRuine3}
+% \phi(x+1,a)-\phi(x,a)= \frac{q}{p}\left[\phi(x,a)-\phi(x-1,a)\right].
+% \end{equation}
+% Soit
+% $$
+% u_k=\phi(k+1,a)-\phi(k,a),\text{ }k=0,\ldots, a-1
+% $$
+% en remplaçant dans \eqref{eq:ProbaRuine3} cela donne
+% \begin{equation}\label{eq:ProbaRuine4}
+% u_k=\left(\frac{q}{p}\right)u_{k-1}=\ldots= \left(\frac{q}{p}\right)^{k}u_0.
+% \end{equation}
+% En sommant \eqref{eq:ProbaRuine4} pour k allant de $1$ à $a-1$, on obtient
+% \begin{equation}\label{eq:ProbaRuine5}
+% -\phi(1,a)=[1-\phi(1,a)]\frac{q/p-(q/p)^{a}}{1-q/p}\Leftrightarrow \phi(1,a)=\frac{q/p-(q/p)^{a}}{1-(q/p)^{a}}
+% \end{equation}
+% En sommant \eqref{eq:ProbaRuine4} pour k allant de $1$ à $x-1$, on obtient
+% \begin{equation}\label{eq:ProbaRuine6}
+% \phi(x,a)-\phi(1,a)=[1-\phi(1,a)]\frac{q/p-(q/p)^{x}}{1-q/p}
+% \end{equation}
+% L'insertion de \eqref{eq:ProbaRuine5} dans \eqref{eq:ProbaRuine6} donne
+% $$
+% \phi(x,a)=\frac{(q/p)^{x}-(q/p)^{a}}{1-(q/p)^{a}}
+% $$
+% \flushright$\square$
+
+% \begin{example}[Le problème de la double dépense dans les transactions validées par \textit{blockchain}]
+% Marie achète un bien à Julien en l'échange de $10$ BTCs.
+% \begin{itemize}
+% \item Julien attends que la transactions intègre un bloc, voir que plusieurs blocs soient créés avant d'expédier le bien.
+% \item Une fois le bien reçu, Marie émet un transaction transférant les mêmes BTCs vers un porte-monnaie lui appartenant.
+% \item Des mineurs malhonnêtes travaillent sur une chaine concurrente à la chaine de bloc principale
+% \begin{itemize}
+% \item[$\hookrightarrow$] les deux chaines sont identiques à la transaction frauduleuse prêt.
+% \end{itemize}
+% \item Si la chaine malhonnête rattrape la chaine principale (en termes de nombre de bloc) alors la transaction de Marie à Julien est remplacée par la transaction de Marie à elle-même.
+% \end{itemize}
+% On modélise par $(X_n)_{n\in\N}$ la différence entre les nombres de blocs dans la chaine honnête et malhonnêtes à l'instant $n$, on suppose qu'à chaque instant un bloc est créé, il rejoint
+% \begin{itemize}
+% \item La chaine honnête avec probabilité $p$,
+% \item La chaine malhonnête avec probabilité $q=1-p$.
+% \end{itemize}
+% On suppose que la chaine honnêtes a $x$ blocs d'avance. La probabilité de succès de la double dépense est donnée par
+% $$
+% \psi(x)=\mathbb{P}\left(X_n=0,\text{ pour un certain }n\in\N|X_0=x\right)=\underset{a\rightarrow+\infty}{\lim}\phi(x,a)=\left(\frac{q}{p}\right)^{x}.
+% $$
+% Pour plus de détails, on pourra lire le \textit{white paper} de Satoshi Nakamoto \cite{nakamoto2008bitcoin}
+% \end{example}
+
+% \end{frame}
+\begin{frame}
+Mes notes se basent sur les documents \cite{TruquetEnsai,Nabil17,Hohn,le2006integration}.
+\bibliographystyle{plain}
+\bibliography{mad_notes}
+\end{frame}
+
+\end{document}

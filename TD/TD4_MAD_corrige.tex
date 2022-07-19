@@ -1,0 +1,414 @@
+\documentclass[11pt]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsopn, color}
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec}
+\usepackage{tipa}
+\usepackage{hyperref}
+
+
+
+% Style
+\setlength\parindent{0pt}
+\shadedsolutions
+
+% Define course info
+\def\semester{2019-2020}
+\def\course{Modèles Aléatoires Discrets M1}
+\def\name{P.-O. Goffard \& Rémy Poudevigne}
+%\def\quizdate{10/5, 10/6}
+\def\hwknum{}
+%\def\title{\MakeUppercase{Homework \hwknum -- quiz \quizdate }}
+\def\title{\MakeUppercase{TD 4: Modèle Aléatoire Discret}}
+
+% Define commands
+\def\Bin{\operatorname{Bin}}
+\def\Geom{\operatorname{Geom}}
+\def\Pois{\operatorname{Pois}}
+\def\Exp{\operatorname{Exp}}
+\newcommand{\E}{\mathbb E}            % blackboard E
+\newcommand{\bP}{\mathbb P}            % blackboard P
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\text{Var}}            % blackboard P
+\newcommand{\Om}{\Omega}            % blackboard P
+\newcommand{\om}{\omega}            % blackboard P
+\newcommand{\N}{\mathbb N}            % blackboard P
+\newcommand{\R}{\mathbb R}            % blackboard P
+\newcommand{\A}{\mathcal A}            % blackboard P
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \Z{\mathbb Z}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+
+
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+\def \limsup{\underset{n\rightarrow+\infty}{\overline{\lim}}}
+\def \liminf{\underset{n\rightarrow+\infty}{\underline{\lim}}}
+\def\euro{\mbox{\raisebox{.25ex}{{\it =}}\hspace{-.5em}{\sf C}}}
+  \everymath{\displaystyle}
+% \newcommand{\limsup}{\overline{\lim}\,}            % blackboard P
+% \newcommand{\liminf}{\underline{\lim}\,}            % blackboard P
+
+\begin{document}
+
+% Heading
+{\center \textsc{\Large\title}\\
+	\vspace*{1em}
+	\course -- \semester\\
+	\name\\
+	\vspace*{2em}
+	\hrule
+\vspace*{2em}}
+\begin{questions}
+
+
+\question  {\bf Couverture publicitaire }\\
+Un fabricant veut fixer le niveau de publicité qu'il fait passer dans un média. Il peut choisir entre une couverture publicitaire élevée (E) et une moyenne (M). Les ventes mensuelles sont réparties en trois catégories : $C_1$ (peu de ventes), $C_2$ (nombre de ventes normal) et $C_3$ (beaucoup de ventes). On estime que l'évolution de la catégorie des ventes mensuelles au cours du temps peut être représentée par une chaîne de Markov, dont la matrice de transition dépend de la couverture publicitaire :
+$$\mbox{couverture élevée :}\quad P_E=\left(\begin{matrix}%{3}
+0.2&0.5&0.3\\0.1&0.5&0.4\\0.1&0.2&0.7
+\end{matrix}
+\right)
+\qquad\mbox{couverture moyenne :}\quad
+P_M=\left(\begin{matrix}%{3}
+0.6&0.4&0\\0.4&0.5&0.1\\0.4&0.5&0.1
+\end{matrix}
+\right) $$
+Un mois de ventes de la catégorie $C_1$ (respectivement $C_2$ et $C_3$) rapporte environ $9000$ euros (respectivement $12 000$ et $18 000$ euros). Une forte couverture publicitaire coûte $6000$ euros par mois, alors qu'une couverture publicitaire moyenne ne coûte que $1000$ euros par mois. Calculer le bénéfice moyen du fabricant sur une grande période de temps pour les deux couvertures. Quel est le choix le plus rentable ?
+\begin{solution}
+Chacune des deux chaînes de Markov ainsi définies sont
+irréductibles, à espace d'états fini, donc chacune admet une unique
+mesure stationnaire. On résoud les deux systèmes afin de trouver ces
+mesures stationnaires :
+\begin{itemize}
+\item Pour la couverture élevée
+$$
+\left\{ \begin{array}{l}
+0,2 \pi_1 + 0,1 \pi_2 + 0,1 \pi_3 =\pi_1 \\
+0,5 \pi_1 + 0,5 \pi_2 + 0,2 \pi_3 = \pi_2 \\
+0,3\pi_1 + 0,4 \pi_2 + 0,7 \pi_3 = \pi_3\\
+\pi_1 + \pi_2 + \pi_3 = 1
+\end{array} \right.
+$$
+qui a pour solution $\pi_1=\frac{1}{9}, \pi_2=\frac{1}{3},
+\pi_3=\frac{5}{9}$.
+\item Pour la couverture moyenne
+$$
+\left\{ \begin{array}{l}
+0,6 \mu_1 + 0,4 \mu_2 + 0,4 \mu_3 =\mu_1 \\
+0,4 \mu_1 + 0,5 \mu_2 + 0,5 \mu_3 = \mu_2 \\
+ 0,1 \mu_2 + 0,1 \mu_3 = \mu_3\\
+\mu_1 + \mu_2 + \mu_3 = 1
+\end{array} \right.
+$$
+qui a pour solution $\mu_1=\frac{1}{2}, \mu_2=\frac{9}{20},
+\mu_3=\frac{1}{20}$.
+\end{itemize}
+Sur une longue période de temps, la mesure de probabilité de la
+chaîne de Markov va tendre vers la mesure stationnaire (convergence
+des chaînes de Markov). Donc sur le long terme, le comportement de
+la chaîne va être celui décrit par la mesure stationnaire. Ainsi, le
+bénéfice moyen va être l'espérance du bénéfice suivant la mesure
+stationnaire, auquel on retranche le coût de la publicité. Soit
+\begin{itemize}
+\item Pour une couverture élevée, le bénéfice moyen est
+$$B_e = 9000\pi_1 + 12000 \pi_2 + 18000 \pi_3 - 6000 = 9000$$
+\item Pour une couverture moyenne, le bénéfice moyen est
+$$B_m = 9000\mu_1 + 12000 \mu_2 + 18000 \mu_3 - 1000 = 9800$$
+\end{itemize}
+Finalement, c'est avec une couverture médiatique moyenne que
+les bénéfices moyens sont les meilleurs. Donc il est plus rentable
+de choisir la couverture médiatique moyenne.
+\end{solution}
+
+\question  {\bf Livreur}\\
+Un livreur se partage sa zone de livraison en 4 zones, de manière à économiser ses efforts. On suppose qu'il a toujours des colis à livrer en attente pour toutes les zones. Il décide de ne pas trop bouger, en particulier, il reste dans la même zone toute la journée, et décide à la fin de la journée dans quelle zone il ira  le jour suivant.
+\begin{itemize}
+\item S'il est dans la zone 1, il n'y reste jamais le jour suivant, à cause des fréquents braquages, et il se rend de manière équiprobable dans l'une des trois autres zones.
+\item S'il est dans la zone 2 ou 3, il y reste avec probabilité 1/2, et s'il en part, il va aléatoirement dans l'une des autres zones.
+\item S'il est dans la zone 4, un peu plus éloignée des autres, soit il y reste (probabilité 2/3), soit il va en zone 2.
+\end{itemize}
+\begin{parts}
+\part Modéliser cette situation par une chaîne de Markov, et justifier ce choix. Donner son graphe et sa matrice de transition.
+\begin{solution}
+La zone dans laquelle est le livreur au jour $n$ ne dépend bien que de la zone où il se trouvait le jour d'avant. De plus, la manière dont celui-ci choisi la zone où il se déplace ne dépend pas non plus du temps. Il s'agit donc bien d'une chaîne de Markov homogène, dont la matrice de transition est:
+\[Q=\begin{pmatrix}
+0 & 1/3 & 1/3 & 1/3 \\
+1/6 & 1/2 & 1/6 & 1/6 \\
+1/6 & 1/6 & 1/2 & 1/6 \\
+0 & 1/3 & 0 & 2/3
+\end{pmatrix}.\]
+\end{solution}
+\part Cette chaîne est-elle irréductible ? Quelle est la nature des états ? leur période ?
+\begin{solution}
+La chaîne est irréductible. On peut par exemple remarquer que le chemin $X_0=1,X_1=3,X_2=4,X_3=2,X_4=1$, qui constitue une boucle passant par tout les points, se fait avec une proba strictement positive.\\
+Par conséquent, étant donné que l'espace des états est fini, tous les points sont récurrents.\\
+De même, l'irréductibilité implique que tous les points ont la même période, et comme $Q(2,2)>0$, cette période est $1$. La chaîne est donc apériodique.
+\end{solution}
+\part Donner, s'il en existe, la ou les mesures stationnaires de cette chaîne.
+\begin{solution}
+La chaîne est irréductible sur un espace d'état fini, il existe donc une unique mesure de probabilité invariante, que l'on note $\pi$. On la calcul en résolvant le système:
+\[\left\lbrace\begin{array}{ll}
+\pi\,Q=\pi \\
+\pi \,\Ind= \Ind,
+\end{array}\right.\]
+où $\Ind$ est le vecteur colonne avec que des $1$. On obtient:
+\[\pi=\begin{pmatrix} 1/11 & 4/11 & 2/11 & 4/11 \end{pmatrix}.\]
+On n'oublie pas de vérifier le résultat.
+\end{solution}
+\part Quelle est, à long terme, la probabilité qu'il soit dans la zone 1 ? dans la zone 3 ?
+\begin{solution}
+Cela correspond aux probabilités données par la mesure invariante. Soit $1/11$ pour la zone 1 et $2/11$ pour la zone $3$.
+\end{solution}
+\part Quelle est la probabilité qu'il se trouve dans la zone 1 après-demain sachant qu'il est dans la
+zone 4 aujourd'hui ?
+\begin{solution}
+On a
+\[\Prob_{(X_0=4)}(X_2=1)=\Prob{(X_0=4)}(X_1=2)\Prob{(X_1=2)}(X_2=1)=1/3*1/6=1/18.\]
+\end{solution}
+\part En moyenne, combien de jours faut-il pour que le livreur revienne dans chacune des zones ?
+\begin{solution}
+Le temps de retour moyen pour chaque zone correspond à l'inverse de la probabilité donnée par la mesure invariante.
+\end{solution}
+\end{parts}
+
+
+\question { \bf Le temps au pays d'Oz}\\
+Au pays d'Oz, le temps ne peut prendre que $3$ formes : Beau temps ($B$), Pluvieux ($P$), ou Neigeux ($N$). Les règles d'évolution du temps sont immuables et ne souffrent aucune exception.
+\begin{itemize}
+\item S'il fait beau, il ne fera pas beau le lendemain, et il y a autant de chances qu'il pleuve ou qu'il neige le lendemain. 
+\item S'il pleut ou il neige, il y a une chance sur deux qu'il fasse le même temps le lendemain, et une chance sur quatre qu'il fasse beau le lendemain.
+\end{itemize}
+\begin{parts}
+\part Modéliser cette situation par une chaîne de Markov, et justifier ce choix. Donner son graphe et sa matrice de transition.
+\begin{solution}
+Le temps du jour dans ce pays ne dépend que tu temps le jour
+précédent, et non des jours d'avant. Cela justifie la modélisation
+par une chaîne de Markov. La matrice de transition est :
+\[
+Q=\left( \begin{array}{ccc}
+1/2 & 1/4 & 1/4   \\
+1/2 & 0 & 1/2\\
+1/4 & 1/4 & 1/2
+\end{array} \right)
+\]
+\end{solution}
+\part Cette chaîne est-elle irréductible ? Quelle est la nature des états ? leur période ?
+\begin{solution}
+Cette chaîne est irréductible car tous les états
+communiquent. $P$ communiquant avec lui-même par un chemin de
+longueur $1$ ($Q(P,P)=1/2>0$), il est de période $1$ donc
+apériodique, et comme la chaîne est irréductible, il en est de
+même pour tous les états. Les états sont tous de même nature. La
+chaîne étant irréductible sur un espace d'états fini, il existe
+une unique mesure stationnaire, donc tous les points sont
+positivement récurrents. La chaîne est donc apériodique
+récurrente.
+\end{solution}
+\part Donner, s'il en existe, la ou les mesures stationnaires de cette chaîne.
+\begin{solution}
+La chaîne étant irréductible sur un espace d'états fini, il
+existe une unique mesure stationnaire, et en posant le système
+$\pi P=\pi$, on trouve la solution :
+\[
+\pi_P=\pi_N=2/5\ , \ \ \pi_B=1/5
+\]
+\end{solution}
+\part Quel est, à long terme, la probabilité qu'il fasse beau ? qu'il neige ?
+\begin{solution}
+La mesure stationnaire représente la probabilité à long
+terme d'être dans chacun des états. Donc à long terme, il fera
+beau avec une probabilité $1/5$, et il neigera avec une
+probabilité $2/5$.
+\end{solution}
+\part Quelle est la probabilité qu'il fasse beau après-demain sachant qu'il fait beau aujourd'hui? Quelle est la probabilité qu'il neige deux jours de suite en trois jours ?
+\begin{solution}
+La probabilité qu'il fasse beau après-demain sachant qu'il
+fait beau aujourd'hui est :
+\[
+\begin{array}{rl}
+\P(X_{n+2}=B|X_n=B)&= \P(X_2=B|X_0=B) \mbox{ par homogénéité de la
+chaîne} \\
+&=\P(X_2=B,X_1=P|X_0=B)+\P(X_2=B,X_1=N|X_0=B)\\
+&=Q(B,P)Q(P,B)+Q(B,N)Q(N,B)\\
+&=1/4
+\end{array}
+\]
+La probabilité qu'il neige deux jours de suite en trois jours est
+donnée par la somme des probabilités des évènements
+$NNN,NNP,NNB,BNN$ et $PNN$. Soit :
+\[
+\begin{array}{l}
+\P(NNN,NNP,NNB,PNN,BNN)\\
+=\P(X_0=N)Q(N,N)^2+\P(X_0=N)Q(N,N)Q(N,P)+\P(X_0=N)Q(N,N)Q(N,B)\\
+\ \ +\P(X_0=B)Q(B,N)Q(N,N)+\P(X_0=P)Q(P,N)Q(N,N)\\
+=\frac{1}{2}\P(X_0=N)+\frac{1}{4}\P(X_0=B)+\frac{1}{8}\P(X_0=P)
+\end{array}
+\]
+Et donc si on se trouve en régime stationnaire, en remplaçant par
+les valeurs de la mesure stationnaire, on trouve que la probabilité qu'il neige deux jours de suite en trois jours vaut $3/10$.
+\end{solution}
+\part En moyenne, combien de jours faut-il pour que le beau temps revienne ?
+\begin{solution}
+En moyenne, pour que le beau temps revienne, il faut
+$N=E_B(\tau_B)=5$ jours.
+\end{solution}
+\end{parts}
+
+
+\question {\bf Une chaîne de Markov non apériodique: le modèle d’Ehrenfest à deux jetons}\\
+On considère deux urnes A et B et deux jetons numérotés 1 et 2. On tire le numéro 1 ou 2 au hasard de
+manière équiprobable et indépendante et on change d’urne le jeton correspondant. Au départ les deux
+jetons sont dans l’urne A. Notons, pour tout $n\in \N$, $X_n$ le nombre de jetons dans l’urne A.
+\begin{parts}
+\part Pour tout $n\in \N$, quelles sont les valeurs prises par $X_n$ ?
+\begin{solution}
+On a $X_n\in\{0,1,2\}$.
+\end{solution}
+\part \begin{itemize}
+	 \item[(i)] Soit $k\in\{0,1, 2\}$. Calculer, pour tout $n\in \N$, $\P(X_{n+1} = k|X_n = k)$, $\P (X_{n+1} = k + 1|X_n = k)$ et $\P (X_{n+1} = k-1|X_n = k)$.
+	 \item[(ii)] Que peut-on en déduire sur $(X_n)_{n\in \N}$ ?
+     \end{itemize}
+     \begin{solution}
+		\begin{enumerate}
+\item On a, pour tout $n\in \N$ et pour tout $k\in\{0,1,2\}$, $\Prob(X_{n+1} = k|X_n = k)=0$. Ensuite,  
+\[
+\Prob (X_{n+1} = k + 1|X_n = k)=
+\left\{\begin{matrix} 1 \text{ si } k=0 \\ 1/2 \text{ si } k=1 \\ 0 \text{ si } k=2 \end{matrix} \right. .
+\]
+Enfin,
+\[
+\Prob (X_{n+1} = k + 1|X_n = k)=
+\left\{\begin{matrix} 0 \text{ si } k=0 \\ 1/2 \text{ si } k=1 \\ 1 \text{ si } k=2 \end{matrix} \right. .
+\]
+\item On en déduit que c'est une chaîne de Markov homogène.
+\end{enumerate}
+     \end{solution}
+\part Donner la matrice de transition $Q$ associée à $(X_n)_{n\in\N}$.
+\begin{solution}
+On a
+\[Q=\left(\begin{matrix}
+0 & 1 & 0 \\
+1/2 & 0 & 1/2 \\
+0 & 1 & 0
+\end{matrix}\right).\]
+\end{solution}
+\part Montrer que, pour tout $k\geq1$, $Q^{2k} = \begin{pmatrix}1/2 & 0 & 1/2 \\ 0 & 1 & 0 \\ 1/2 & 0 & 1/2 \end{pmatrix}$ et pour tout $k\geq 0$, $Q^{2k+1}=Q$.
+\begin{solution}
+On commence par calculer $Q^2$. On trouve
+\[
+\begin{pmatrix}1/2 & 0 & 1/2 \\ 0 & 1 & 0 \\ 1/2 & 0 & 1/2 \end{pmatrix}.
+\]
+On remarque que cet matrice est idempotente :
+\[
+\begin{pmatrix}1/2 & 0 & 1/2 \\ 0 & 1 & 0 \\ 1/2 & 0 & 1/2 \end{pmatrix}\begin{pmatrix}1/2 & 0 & 1/2 \\ 0 & 1 & 0 \\ 1/2 & 0 & 1/2 \end{pmatrix}=\begin{pmatrix}1/2 & 0 & 1/2 \\ 0 & 1 & 0 \\ 1/2 & 0 & 1/2 \end{pmatrix}
+\]
+donc par une récurrence immédiate, pour tout $k\geq 1$,
+\[
+Q^{2k} = \begin{pmatrix}1/2 & 0 & 1/2 \\ 0 & 1 & 0 \\ 1/2 & 0 & 1/2 \end{pmatrix}.
+\]
+De même, on peut calculer $Q^3$ et on trouve $Q^3=Q$. On a donc pour tout $k\geq 1$, $Q^{2k+1}=Q^{2k}Q=Q^2Q=Q^3=Q$. On en conclut que pour tout $k\geq 0$, $Q^{2k+1}=Q$.
+\end{solution}
+\part \begin{itemize}
+	 \item $(X_n)_{n\in \N}$ est-elle irréductible ?
+	 \item Déterminer la période de $(X_n)_{n\in \N}$.
+\end{itemize}
+\begin{solution}
+\begin{enumerate}
+\item La chaîne est irréductible, comme par exemple le chemin $0\to1\to2\to1\to0$ se fait avec une proba $>0$.
+\item On a $Q^{2n}(0,0)>0$ et $Q^{2n+1}(0,0)=0$ donc $0$ est de période $2$ (cela se voit directement sur le graphe). Comme la chaîne est irréductible, tous les points sont de période $2$.
+\end{enumerate}
+\end{solution}
+\part Montrer que $(X_n )_{n\in\N}$ admet une unique probabilité invariante.
+\begin{solution}
+La chaîne est irréductible sur un espace d'état fini, il existe donc une unique mesure de probabilité invariante, que l'on note $\pi$. On la calcul en résolvant le système:
+\[\left\lbrace\begin{array}{ll}
+\pi\,Q=\pi \\
+\pi \,\Ind= \Ind,
+\end{array}\right.\]
+où $\Ind$ est le vecteur colonne avec que des $1$. On obtient:
+\[\pi=\begin{pmatrix} 1/4 & 1/2 & 1/4 \end{pmatrix}.\]
+\end{solution}
+\part Étudier la convergence en loi de $(X_n)_{n\in\N}$.
+\begin{solution}
+Comme la chaîne n'est pas apériodique, il n'y a pas nécessairement convergence vers la mesure invariante.
+\end{solution}
+\part Pour tout $n\in\N$, quel est le nombre moyen de jetons dans l’urne A au bout de $n$ étapes ?
+\begin{solution}
+On fait le calcul en utilisant la formule pour $Q^n$. On a de manière générale
+\[\E_{\mu_0}[X_n]=1*(\mu_0Q^n)(1)+2*(\mu_0Q^n)(2),\]
+où $\mu_0$ est la mesure initiale donnée par
+\[\mu_0=\begin{pmatrix} 0 & 0 & 1 \end{pmatrix}.\]
+On obtient dans les deux cas, $n$ pair et $n$ impair, que $\E_{\mu_0}[X_n]=1$.
+\end{solution}
+
+\part Notons $T$ la variable aléatoire qui compte le nombre d’étapes pour revenir à l’état initial pour la première fois (c’est-à-dire avec deux jetons dans A).
+  \begin{itemize}
+  \item[(i)] Montrer que, pour tout $k\in\N$, $\P (T = 2k + 1) = 0$.
+  \item[(ii)] Montrer que, pour tout $k\in\N^*$ , $\P (T = 2k) = \frac{1}{2^k}$ .
+  \item[(iii)] Montrer que $\P (T < +\infty) = 1$.
+  \item[(iv)] \begin{itemize}
+	  \item Montrer que, pour tout $n\in\N$, $\sum_{k=1}^n\, \frac{k}{2^{k-1}}=4-\frac{n+2}{2^{n-1}}$.
+	  \item En déduire l’espérance de $T$.
+      \end{itemize}
+  \end{itemize}
+  \begin{solution}
+	\begin{enumerate}
+\item On a $P (T = 2k + 1)\leq P(X_{2k+1}=2) = 0$, d'où le résultat.
+\item On a
+\[
+\begin{aligned}
+\Prob(T=2k) & = \Prob(X_{2k}=2,\,X_j<2\ \forall j<2k) \\
+& = \Prob(X_{2k}=2,\,X_{2j}=0\ \forall j<k) \\
+& = (1/2)^k 
+\end{aligned}
+\]
+\item On a $\Prob (T < +\infty) = \sum_{k\geq1}{P(T=k)}=\sum_{k\geq 1} 2^{-k}=1$.
+\item\begin{enumerate}
+\item Par récurrence, ou en dérivant la fonction
+\[x\mapsto \sum_{k=1}^N{x^k}=\frac{1-x^{k}}{1-x}.\]
+\item On a
+\[\E(T)=\sum_{k\geq1}k\,\Prob(T=k)=\sum_{k\geq1}2k\,P(T=2k)=4.\]
+\end{enumerate}
+\end{enumerate}
+  \end{solution}
+\end{parts}
+
+
+
+
+\end{questions}
+\end{document}

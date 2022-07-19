@@ -1,0 +1,8 @@
+PWD /Users/pierrogoffard/Dropbox/PO/Enseignements/ISFA/mad/Note de cours
+INPUT /usr/local/texlive/2017/texmf.cnf
+INPUT /usr/local/texlive/2017/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT Chap2_MAD_Markov_Chain.tex
+OUTPUT Chap2_MAD_Markov_Chain.log
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/beamer/beamer.cls
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/beamer/beamer.cls

@@ -1,0 +1,278 @@
+\documentclass[11pt, addpoints, answers]{exam}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin  = 1in]{geometry}
+\usepackage{amsmath, amscd, amssymb, amsthm, verbatim}
+\usepackage{mathabx}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows}
+%%%<
+\usepackage{verbatim}
+%%%>
+\usetikzlibrary{automata,arrows,positioning,calc}
+
+\usetikzlibrary{trees}
+
+\shadedsolutions
+\definecolor{SolutionColor}{RGB}{214,240,234}
+
+\newcommand{\bbC}{{\mathbb C}}
+\newcommand{\R}{\mathbb{R}}            % real numbers
+\newcommand{\bbR}{{\mathbb R}}
+\newcommand{\Z}{\mathbb{Z}}            % integers
+\newcommand{\bbZ}{{\mathbb Z}}
+\newcommand{\bx}{\mathbf x}            % boldface x
+\newcommand{\by}{\mathbf y}            % boldface y
+\newcommand{\bz}{\mathbf z}            % boldface z
+\newcommand{\bn}{\mathbf n}            % boldface n
+\newcommand{\br}{\mathbf r}            % boldface r
+\newcommand{\bc}{\mathbf c}            % boldface c
+\newcommand{\be}{\mathbf e}            % boldface e
+\newcommand{\bE}{\mathbb E}            % blackboard E
+\newcommand{\bP}{\mathbb P}            % blackboard P
+
+\newcommand{\ve}{\varepsilon}          % varepsilon
+\newcommand{\avg}[1]{\left< #1 \right>} % for average
+%\renewcommand{\vec}[1]{\mathbf{#1}} % bold vectors
+\newcommand{\grad}{\nabla }
+\newcommand{\lb}{\langle }
+\newcommand{\rb}{\rangle }
+
+\def\Bin{\operatorname{Bin}}
+\def\Var{\operatorname{Var}}
+\def\Geom{\operatorname{Geom}}
+\def\Pois{\operatorname{Pois}}
+\def\Exp{\operatorname{Exp}}
+\newcommand{\Ber}{\operatorname{Ber}}
+\def\Unif{\operatorname{Unif}}
+\def\No{\operatorname{N}}
+\newcommand{\E}{\mathbb E}            % blackboard E
+\def\th{\theta }            % theta shortcut
+\def\V{\operatorname{Var}}
+\def\Var{\operatorname{Var}}
+\def\Cov{\operatorname{Cov}}
+\def\Corr{\operatorname{Corr}}
+\newcommand{\epsi}{\varepsilon}            % epsilon shortcut
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert} %norm
+\providecommand{\abs}[1]{\left \lvert#1\right \rvert} %absolute value
+
+\DeclareMathOperator{\lcm}{lcm}
+\newcommand{\ds}{\displaystyle}	% displaystyle shortcut
+
+\def\semester{2020-2021}
+\def\course{Modèles Aléatoires Discrets}
+\def\title{\MakeUppercase{Examen de deuxième session}}
+\def\name{Pierre-O Goffard}
+
+
+\setlength\parindent{0pt}
+
+\cellwidth{.35in} %sets the minimum width of the blank cells to length
+\gradetablestretch{2.5}
+
+%\bracketedpoints
+%\pointsinmargin
+%\pointsinrightmargin
+
+\begin{document}
+
+
+\runningheader{\course  \vspace*{.25in}}{}{\title \vspace*{.25in}}
+%\runningheadrule
+\runningfooter{}{Page \thepage\ of \numpages}{}
+
+% \firstpageheader{Name:\enspace\hbox to 2.5in{\hrulefill}\\  \vspace*{2em} Section: (circle one) TR: 3-3:50 \textbar\, TR: 5-5:50 \textbar\,  TR: 6-6:50(Xu) \textbar\,  TR: 6-6:50 }{}{Perm \#: \enspace\hbox to 1.5in{\hrulefill}\\ \vspace*{2em} Score:\enspace\hbox to .6in{\hrulefill} $/$\numpoints}
+\extraheadheight{.25in}
+
+\hrulefill
+
+\vspace*{1em}
+
+% Heading
+{\center \textsc{\Large\title}\\
+	\vspace*{1em}
+	\course -- \semester\\
+	Pierre-O Goffard\\
+}
+\vspace*{1em}
+
+\hrulefill
+
+\vspace*{2em}
+
+\noindent {\bf\em Instructions:} On éteint et on range son téléphone.
+\begin{itemize}
+	\item La calculatrice et les appareils éléctroniques ne sont pas autorisés.
+	\item Vous devez justifier vos réponses de manière claire et concise.
+	\item Vous devez écrire de la manière la plus lisible possible. Souligner ou encadrer votre réponse finale.
+
+\end{itemize}
+
+\begin{center}
+	\gradetable[h]
+\end{center}
+
+\smallskip
+
+\begin{questions}
+\question[2] Rappeler ce qu'est une mesure réversible pour une chaine de Markov homogène $(X_n)_{n\geq0}$ d'espace d'état $E$ et de probabilités de transition $Q(x,y),\text{ pour }x,y\in E$. Montrer qu'une loi reversible est aussi une mesure invariante.
+\begin{solution}
+Voir le cours
+\end{solution}
+\question Soit $(X_n)_{n\geq0}$ une chaine de markov homogène sur un espace d'état $E= \{1,2,3\}$ et de matrice des tranition
+\[
+Q =\left(\begin{array}{ccc}
+0&1/2&1/2\\
+1/2&0&1/2\\
+1&0&0
+\end{array}\right)
+\]
+\begin{parts}
+\part[1] Identifier les classes de communications, sont-elles ouvertes ou fermées?
+\begin{solution}
+Une seule classe de communication $\{1,2,3\}$ fermée
+\end{solution}
+\part[2] Après avoir justifié son existence et son unicité, donner la loi de probabilité invariante de $(X_n)_{n\geq0}$.
+\begin{solution}
+L'espace d'état de $(X_n)_{n\geq0}$ est fini, il existe donc une loi de probabilité invariante. Comme la chaine est irréductible alors cette loi de probabilité est unique. On résout le système
+$$
+\begin{cases}
+\pi Q = \pi\\
+\sum_{x\in E} \pi(x) = 1
+\end{cases}
+$$
+et on obtient $\pi = \left(\begin{array}{ccc}4/9&2/9&3/9\end{array}\right)$
+\end{solution}
+\part[1] Donner la période de chaque état $x\in E$. Que vaut la limite $\underset{n\rightarrow+\infty}{\lim}Q^n(x,y)$?
+\begin{solution}
+On a 
+$$1\rightarrow 3\rightarrow 1\text{ et }1\rightarrow 2\rightarrow 3\rightarrow 1.$$
+On en déduit qu ela période de l'état $1$ est donnée par 
+$$
+d(1) = \text{pgcd}\{2,3,\ldots,\} = 1.
+$$
+Comme la chaine est irréductible alors tous les états ont la même période 
+$$d(2)=d(3) = d(1) = 1.$$
+Comme la chaine est apériodique, irréductible et récurrente alors 
+$$
+\underset{n\rightarrow+\infty}{\lim}Q^n(x,y) = \pi(y)
+$$ 
+\end{solution}
+\part[2] Soit $T_3  = \inf\{n\geq0\text{ ; }X_n = 3\}$, calculer 
+$$
+\mathbb{E}_x(T_3) = \mathbb{E}(T_3|X_0 = x),\text{ pour tout }x\in E. 
+$$
+\begin{solution}
+On effectue une analyse à un pas, on résout 
+$$
+\begin{cases}
+\E_1(T_3) = 1+\frac{1}{2}\E_2(T_3)\frac{1}{2}\E_3(T_3)\\
+\E_2(T_3) = 1+\frac{1}{2}\E_1(T_3)\frac{1}{2}\E_3(T_3)\\
+\E_3(T_3) = 0
+\end{cases}
+$$
+Il vient $E_1(T_3)=\E_2(T_3) = 2$.
+\end{solution}
+\end{parts}
+\question Un bûcheron possède un stock de bois dont le nombre d'unité (bûche de bois) est donné par $X_n$ à l'instant $n\geq0$. Il consomme une unité de bois par jour. Lorsque sa réserve de bois tombe à $0$ il part couper du bois le jour suivant et ramène à la maison $Y$ unités de bois où $Y$ est une variable aléatoire à valeur entière de loi de probabilités
+\[
+\mathbb{P}(Y = y) = p(y)>0,\text{ }y\geq1,
+\]
+avec $\sum_{y\geq1}p(y)=1$. A noter que le jour pendant lequel il part couper du bois, il consomme aussi une unité de bois
+\begin{parts}
+\part[2] Donner l'espace d'état et les probabilités de transition de la chaine de Markov homogène $(X_n)_{n\geq0}$.
+\begin{solution}
+$E=\mathbb{N}$ et 
+$$
+Q(x,y) = \begin{cases}
+1&\text{si }x>0\text{ et } y = x-1,\\
+p(y+1)&\text{si }x=0\text{ and }y\geq1,\\
+0&\text{ sinon.}
+
+\end{cases}
+$$
+\end{solution}
+\part[1] La chaine $(X_n)_{n\geq0}$ est elle irréductible?
+\begin{solution}
+Soit $n = x+1$, on a 
+$$
+Q^n(x,y) =Q^{x+1}(x,y) = Q^x(x,0)Q(0,y) = p(y+1)>0 
+$$
+La chaine est bien irréductible.
+\end{solution}
+\part[1] La chaine $(X_n)_{n\geq0}$ est elle récurrente?
+\begin{solution}
+On a 
+$$
+\sum_{n\geq1}Q^{n}(x,x)\geq  \sum_{n\geq x}Q^{n}(x,x)\geq\sum_{n\geq x}p(x+1)=\infty
+$$
+L'état $x\in E$ est récurrent et puisque la chaine est irréductible alors tous les états sont récurrents.
+\end{solution}
+\part[1] Montrer que la mesure 
+\[
+\lambda(x) = \sum_{z \geq x+1}p(z),\text{ }x\geq0
+\]
+est une mesure invariante de $(X_n)_{n\geq0}$.
+\begin{solution}
+On a 
+$$
+\sum_{x\geq0}\lambda(x)Q(x,y) = \lambda(0)p(y+1)+ \lambda(y+1) = \lambda(y)
+$$
+$\lambda$ est bien une mesure invariante.
+\end{solution}
+\part[2] Discuter de l'existence et de l'unicité d'une loi de probabilité invariante en fonction des réponses aux questions (b), (c) et d'une condition sur $\mathbb{E}(Y)$. Si elle existe, donner cette mesure de probabilité invariante.  
+\begin{solution}
+Comme la chaine est iréductible et récurrente alors toutes les lois sont proportionnelles. Si la mesure $\lambda$ est finie alors on peut la normalisé. On note que $\sum_{x\in E} \lambda(x) = \mathbb{E}(Y)$. Si $\E(Y)<\infty$ alors la probabilité invariante est unique et donnée par 
+$$
+\pi(x) = \lambda(x)/\E(Y),\text{ }x\in E,
+$$
+sinon la chaine est récurrente nulle et il n'y a pas de loi de probabilité invariante.
+\end{solution}
+\end{parts}
+\end{questions}
+%-------------------------------TABLE-------------------------------
+\newpage
+\hrule
+\vspace*{.15in}
+\begin{center}
+  \large\MakeUppercase{Formulaire}
+\end{center}
+\vspace*{.15in}
+\hrule
+\vspace*{.25in}
+
+\renewcommand\arraystretch{3.5}
+\begin{table}[H]
+\begin{center}
+\footnotesize
+\begin{tabular}{|c|c|c|c|c|c|}
+
+\hline
+Nom & abbrev. & Loi & $\E(X)$ & $\Var(X)$ & FGM\\
+\hline\hline
+Binomial & $\Bin(n,p)$ & $\binom{n}{k}p^k(1-p)^{n-k}$ & $np$ & $np(1-p)$ & $[(1-p)+pe^t]^n$\\
+\hline
+Poisson & $\Pois(\lambda)$ & $e^{-\lambda}\dfrac{\lambda^k}{k!}$ & $\lambda$ & $\lambda$ &$ \exp(\lambda(e^t-1))$\\
+\hline
+Geometric & $\Geom(p)$ & $(1-p)^{k-1}p$ & $\dfrac{1}{p}$ & $\dfrac{1-p}{p^2}$ & $\frac{pe^t}{1-(1-p)e^t}$ pour  $t<-\ln(1-p)$\\
+\hline
+Uniform & $\Unif(a,b)$ & $\begin{cases} \dfrac{1}{b-a} & a\leq t\leq b\\ 0 & \text{sinon}\end{cases}
+$ & $\dfrac{a+b}{2}$ & $\dfrac{(b-a)^2}{12}$ & $\frac{e^{tb}-e^{ta}}{t(b-a)}$\\
+\hline
+Exponential & $\Exp(\lambda)$ & $\begin{cases} \lambda e^{-\lambda t} & t\geq 0 \\ 0 & t<0\end{cases}$ & $\dfrac{1}{\lambda}$ & $\dfrac{1}{\lambda^2}$ & $\frac{\lambda}{\lambda -t}$ pour $t<\lambda$\\
+\hline
+Normal & $\No(\mu,\sigma^2)$ & $\left(\dfrac{1}{\sqrt{2\pi\sigma^2}}\right)\operatorname{exp}{\left(\dfrac{-(t-\mu)^2}{2\sigma^2}\right)}$ & $\mu$ & $\sigma^2$ & $e^{\mu t}e^{\sigma^2t^2/2}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}%
+
+\end{document}

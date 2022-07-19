@@ -1,0 +1,566 @@
+\documentclass[11pt, addpoints, answers]{exam}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin  = 1in]{geometry}
+\usepackage{amsmath, amscd, amssymb, amsthm, verbatim}
+\usepackage{mathabx}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{color}
+\usepackage{graphicx}   
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows}
+%%%<
+\usepackage{verbatim}
+%%%>
+\usetikzlibrary{automata,arrows,positioning,calc}
+
+\usetikzlibrary{trees}
+
+\shadedsolutions
+\definecolor{SolutionColor}{RGB}{214,240,234}
+
+\newcommand{\bbC}{{\mathbb C}}
+\newcommand{\R}{\mathbb{R}}            % real numbers
+\newcommand{\bbR}{{\mathbb R}}
+\newcommand{\Z}{\mathbb{Z}}            % integers
+\newcommand{\bbZ}{{\mathbb Z}}
+\newcommand{\bx}{\mathbf x}            % boldface x
+\newcommand{\by}{\mathbf y}            % boldface y
+\newcommand{\bz}{\mathbf z}            % boldface z
+\newcommand{\bn}{\mathbf n}            % boldface n
+\newcommand{\br}{\mathbf r}            % boldface r
+\newcommand{\bc}{\mathbf c}            % boldface c
+\newcommand{\be}{\mathbf e}            % boldface e
+\newcommand{\bE}{\mathbb E}            % blackboard E
+\newcommand{\bP}{\mathbb P}            % blackboard P
+
+\newcommand{\ve}{\varepsilon}          % varepsilon
+\newcommand{\avg}[1]{\left< #1 \right>} % for average
+%\renewcommand{\vec}[1]{\mathbf{#1}} % bold vectors
+\newcommand{\grad}{\nabla }
+\newcommand{\lb}{\langle }
+\newcommand{\rb}{\rangle }
+
+\def\Bin{\operatorname{Bin}}
+\def\Var{\operatorname{Var}}
+\def\Geom{\operatorname{Geom}}
+\def\Pois{\operatorname{Pois}}
+\def\Exp{\operatorname{Exp}}
+\newcommand{\Ber}{\operatorname{Ber}}
+\def\Unif{\operatorname{Unif}}
+\def\No{\operatorname{N}}
+\newcommand{\E}{\mathbb E}            % blackboard E
+\def\th{\theta }            % theta shortcut
+\def\V{\operatorname{Var}}
+\def\Var{\operatorname{Var}}
+\def\Cov{\operatorname{Cov}}
+\def\Corr{\operatorname{Corr}}
+\newcommand{\epsi}{\varepsilon}            % epsilon shortcut
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert} %norm
+\providecommand{\abs}[1]{\left \lvert#1\right \rvert} %absolute value
+
+\DeclareMathOperator{\lcm}{lcm}
+\newcommand{\ds}{\displaystyle}	% displaystyle shortcut
+
+\def\semester{2020-2021}
+\def\course{Modèles Aléatoires Discrets}
+\def\title{\MakeUppercase{Examen final}}
+\def\name{Pierre-O Goffard}
+%\def\name{Professor Wildman}
+
+\setlength\parindent{0pt}
+
+\cellwidth{.35in} %sets the minimum width of the blank cells to length
+\gradetablestretch{2.5}
+
+%\bracketedpoints
+%\pointsinmargin
+%\pointsinrightmargin
+
+\begin{document}
+
+
+\runningheader{\course  \vspace*{.25in}}{}{\title \vspace*{.25in}}
+%\runningheadrule
+\runningfooter{}{Page \thepage\ of \numpages}{}
+
+% \firstpageheader{Name:\enspace\hbox to 2.5in{\hrulefill}\\  \vspace*{2em} Section: (circle one) TR: 3-3:50 \textbar\, TR: 5-5:50 \textbar\,  TR: 6-6:50(Xu) \textbar\,  TR: 6-6:50 }{}{Perm \#: \enspace\hbox to 1.5in{\hrulefill}\\ \vspace*{2em} Score:\enspace\hbox to .6in{\hrulefill} $/$\numpoints}
+\extraheadheight{.25in}
+
+\hrulefill
+
+\vspace*{1em}
+
+% Heading
+{\center \textsc{\Large\title}\\
+	\vspace*{1em}
+	\course -- \semester\\
+	Pierre-O Goffard\\
+}
+\vspace*{1em}
+
+\hrulefill
+
+\vspace*{2em}
+
+\noindent {\bf\em Instructions:} On éteint et on range son téléphone.
+\begin{itemize}
+	\item La calculatrice et les appareils éléctroniques ne sont pas autorisés.
+	\item Vous devez justifier vos réponses de manière claire et concise.
+	\item Vous devez écrire de la manière la plus lisible possible. Souligner ou encadrer votre réponse finale.
+
+\end{itemize}
+
+\begin{center}
+	\gradetable[h]
+\end{center}
+
+\smallskip
+
+\begin{questions}
+\question Soit $(X_n)_{n\geq0}$ une chaine de Markov homogène sur un espace d'état $E = \{1,2,3\}$ de matrice des transitions
+
+$$Q = \left(\begin{array}{ccc}
+6/10 &4/10&0\\
+2/10&5/10&3/10\\
+0&1/10&9/10
+\end{array}\right).
+$$
+\begin{parts}
+\part[1] Calculer $\mathbb{P}(X_2 = 2|X_0 = 1)$
+\begin{solution}
+La probabilité $\mathbb{P}(X_2 = 2|X_0 = 1)$ correspond au terme de la ligne 1 et de la colonne 2 de la matrice $Q^2$. Avec, 
+$$Q^2 = \left(\begin{array}{ccc}
+44/100&44/100&12/100\\
+22/100&36/100&42/100\\
+2/100&14/100&84/100
+\end{array}\right),
+$$
+on identifie $$\mathbb{P}(X_2 = 2|X_0 = 1) = 44/100$$
+\end{solution}
+\part[1] Justifier de l'existence et de l'unicité de la mesure de probabilité stationaire
+\begin{solution}
+\begin{itemize}
+\item L'espace d'état fini => Existence de la loi stationnaire
+\item La chaine de Markov irréductible => Unicité de la loi stationnaire
+\end{itemize}
+\end{solution}
+\part[1] Calculer la loi de probabilité stationnaire
+\begin{solution}
+$$\pi = (\begin{array}{ccc}1/9&2/9& 6/9\end{array})$$
+\end{solution}
+\part[1] On définit le processus 
+$$
+Y_n = X_{n}-X_{n-1},\text{ pour }n\geq1.
+$$
+Calculer $\underset{n\rightarrow+\infty}{\lim}\,\mathbb{P}(Y_n = 1)$
+\begin{solution}
+On observe que 
+\begin{eqnarray*}
+\mathbb{P}(Y_n = 1)&=&\sum_{i=1}^{3}\mathbb{P}(Y_n = 1|X_{n-1}=i)\mathbb{P}(X_{n-1}=i)\\
+&=&\frac{4}{10}\mathbb{P}(X_{n-1}=1)+\frac{3}{10}\mathbb{P}(X_{n-1}=2)
+\end{eqnarray*}
+pour tout $n>1$. Par passage à la limite et en utilisant la question précédente, on obtient  $\underset{n\rightarrow+\infty}{\lim}\,\mathbb{P}(Y_n = 1) = 1/9$.
+\end{solution}
+\end{parts}
+\question On suppose que le nombre de paquets de données traités par le serveur de calcul \texttt{Belenos} est un processus de Poisson $(N_t)_{t\geq0}$ d'intensité $\lambda$. 
+\begin{parts}
+\part[1] On note $(T_n)_{n\geq1}$ la suite des temps d'arrivée du processus de Poisson. Montrer que la densité jointe de $(T_1,T_2)$ est donnée par 
+$$
+f_{T_1,T_2}(t_1,t_2) = \lambda^2e^{-\lambda t_2}\mathbb{I}_{0<t_1<t_2}(t_1,t_2)
+$$
+\begin{solution}
+Voir le cours
+\end{solution}
+\part[2] Sachant qu'à l'instant $t>0$, \texttt{Belenos} a traité $N_t = N$ paquets, quelle est la loi de $N_s$, pour $s<t$? Justifier votre résultat.
+\begin{solution}
+On a, pour $k\leq N$,
+\begin{eqnarray*}
+\mathbb{P}(N_s=k|N_t = N) &=& \frac{\mathbb{P}(N_s=k,N_t = N)}{\mathbb{P}(N_t = N)}\\
+&=& \frac{\mathbb{P}(N_s=k)\mathbb{P}(N_t = N)}{\mathbb{P}(N_t = N)}\\
+&=& \binom{N}{k}\left(\frac{s}{t}\right)^k\left(\frac{t-s}{t}\right)^{N-k}
+\end{eqnarray*}
+\end{solution}
+\part[1] Au temps $t = 1$, on installe un nouveau serveur de calcul \texttt{Toutatis} qui traite les paquets de données suivant un processus de Poisson $(M_t)_{t\geq0}$ d'intensité $\mu$, indépendant de $(N_t)_{t\geq0}$. Donner, en justifiant, la loi de la somme du nombre de paquets de données traité par chacun des serveurs au temps $t = 2$. 
+\begin{solution}
+$N_2+M_1\sim \text{Pois}(2\lambda+\mu)$
+\end{solution}
+\end{parts}
+\question La loi inverse Gaussienne $\text{IG}(\mu,\lambda),\text{ }\lambda,\mu>0$ admet une densité donnée par 
+$$
+f(x) = \sqrt{\frac{\lambda}{2\pi x^3}}\exp\left(-\frac{\lambda(x-\mu)^2}{2x\mu^2}\right)\mathbb{I}_{x>0}(x)
+$$
+\begin{parts}
+\part[2] Le temps $U$ de traitement d'une tâche par le serveur \texttt{Rihanna} est distribué suivant une loi inverse gaussienne $\text{IG}(\mu_R,\mu_R^2)$. Montrer que 
+$$
+\mathbb{E}(U) = \mu_R,\text{ }\mathbb{V}(U)=\mu_R.
+$$
+\underline{Indication:} On pourra calculer la fonction génératrice des moments, et faire apparaitre la densité d'une loi inverse gaussienne dont l'intégrale vaut $1$.
+\begin{solution}
+Par définition de la fonction génératrice des moments 
+\begin{eqnarray*}
+M_U(s) &= &\int_{0}^{+\infty}e^{sx}\frac{\mu_R}{\sqrt{2\pi x^3}}\exp\left[-\frac{(x-\mu_R)^2}{2x}\right]\text{d}x\\
+&=&\exp\left[\mu_R\left(1-\sqrt{1- 2s}\right) \right] \int_{0}^{+\infty}\frac{\mu_R}{\sqrt{2\pi x^3}}\exp\left[-\frac{1-2s}{2x}\left(x-\frac{\mu_R}{\sqrt{1-2s}}\right)^2\right]\text{d}x
+\end{eqnarray*}
+On reconnait dans l'intégrale la densité de la loi $\text{IG}\left(\frac{\mu_R}{\sqrt{1-2s}},\mu_R^2\right)$. On évalue ensuite $M_U'(0) = \mathbb{E}(U)=\mu_R$, $M_U''(0) =\mathbb{E}(U^2)=\mu_R^2+\mu_R $ puis $\mathbb{V}(U)=\mu_R$. 
+\end{solution}
+\part[2] On suppose que les tâches parviennent aux serveurs \texttt{Rihanna} et \texttt{Gaga} suivant des processus de Poisson $(N_t)_{t\geq0}$ et $(M_t)_{t\geq0}$ d'intensité respectives $\lambda_R$ et $\lambda_G$. Le temps de traitement des tâches par les serveurs \texttt{Rihanna} et \texttt{Gaga} forment des suites indépendantes $(U_i)_{i\geq1}$ et $(V_i)_{i\geq0}$ de variables aléatoires iid de loi Inverse Gaussienne $\text{IG}(\mu_R,\mu_R^2)$ et $\text{IG}(\mu_G,\mu_G^2)$ respectivement. Les temps d'occupation des serveurs sont modélisés par des processus de Poisson composés  
+$$
+X_t = \sum_{i = 1}^{N_t}U_i,\text{ et }Y_t = \sum_{i = 1}^{M_t}V_i,\text{ }t\geq0.
+$$
+En utilisant les approximations suivantes 
+$$
+X_t = \sum_{i = 1}^{N_t}U_i\sim\text{Normal}(\mu = \mathbb{E}(X_t),\sigma^2 = \mathbb{V}(X_t)),
+$$
+et 
+$$
+Y_t = \sum_{i = 1}^{M_t}U_i\sim\text{Normal}(\mu = \mathbb{E}(Y_t),\sigma^2 = \mathbb{V}(Y_t)),
+$$
+de la loi d'un processus de Poisson composé par une loi normale, donner la probabilité qu' à l'instant $t>0$, le temps d'occupation du serveur \texttt{Rihanna} soit supérieur à celui du serveur \texttt{Gaga}, en fonction de $t,\lambda_R,\lambda_G,\mu_R,\mu_G$ et $\phi$ la fonction de répartition de la loi normale $\text{Normal}(\mu = 0,\sigma^2 =1)$.
+\begin{solution}
+L'approximation suggérée dans l'énoncé implique que 
+$$
+X_t-Y_t\sim\mathcal{N}(\mu = \lambda_R t\mu_R-\lambda_G t\mu_G,\sigma^2 = \lambda_Rt\mu_R(1+\mu_R)+ \lambda_Gt\mu_G(1+\mu_G) ) 
+$$
+La probabilité recherché peut alors être approchée par 
+$$
+\mathbb{P}(X_t-Y-t >0) = 1-\phi\left[\frac{(X_t-Y_t) - (\lambda_Rt\mu_R - \lambda_Gt\mu_G)}{\sqrt{\lambda_Rt\mu_R(1+\mu_R)+ \lambda_Gt\mu_G(1+\mu_G) }}\right]
+$$
+\end{solution}
+\end{parts}
+\question Soit $(X_n)_{n\geq0}$ une chaine de Markov homogène sur un espace d'état $E = \{1,2,3,4,5\}$ de matrice des transition
+$$
+Q = \left(\begin{array}{ccccc}
+1/3&2/3&0&0&0\\
+1/2&1/2&0&0&0\\
+0&0&1&0&0\\
+0&0&1/7&5/7&1/7\\
+1&0&0&0&0
+\end{array}\right)
+$$
+\begin{parts}
+\part[2] Identifier les classes de communications et indiquer si elles sont ouvertes ou fermées.
+\begin{solution}
+Il y a $4$ classes de communications, dont deux classes fermées $F_1 = \{1,2\}$ et $F_2 = \{3\}$, et deux classes ouvertes $O_1 = \{4\}$ et $O_2 = \{5\}$.
+\end{solution}
+\part[2] Discuter le comportement asymptotique de la chaine (son comportement sur le long terme). La chaine admet-elle une loi de probabilité invariante?
+\begin{solution}
+La chaine terminera sa course dans l'une des deux classes fermées $F_1$ ou $F_2$, à noter que $F_2$ n'est formé d'un seul état qui est absorbant. Si la chaine rejoint la classe $F_1$, elle se comportera comme une chaine de Markov irréductible de loi de probabilité invariante $\pi_{F_1} = \left(\begin{array}{cc}3/7&4/7\end{array}\right)$. Si elle démarre dans l'état $4$, il semble qu'elle rejoindra la classe $F_1$ ou $F_2$ de manière équiprobable. Comme la chaine de Markov évolue sur un espace d'état fini alors il existe une mesure de probabilité invariante. En fait commme il y a deux classes fermées, il existe une infinité de mesure de probabilité invariante définie comme combinaison linéaire convexe des lois de probabilité invariante sur les clase fermées, c'est à dire 
+$$
+\pi = \alpha \Pi_{F_1}+(1-\alpha)\Pi_{F_2},
+$$
+où $\alpha \in [0,1]$, $\pi_{F_1} = \left(\begin{array}{ccccc}3/7&4/7&0&0&0\end{array}\right)$ et $\pi_{F_2} = \left(\begin{array}{ccccc}0&0&1&0&0\end{array}\right)$.
+\end{solution}
+\end{parts}
+\question 
+\begin{parts}
+\part[2]
+Soit $(N_t)_{t\geq0}$ un processus de Poisson d'intensité $\lambda$. Le processus
+$$
+X_n = N_n,\text{ }n\geq0
+$$
+définit-il une chaine de Markov? Justifier votre réponse, s'il s'avère que $(X_n)_{n\geq0}$ est une chaine de Markov alors on donnera sa matrice des transition et son espace d'état.
+\begin{solution}
+On note que 
+$$
+X_{n+1} = X_n+(N_{n+1}-N_n),
+$$
+La suite $\xi_n = N_{n+1}-N_n,\text{ }n\geq 1$ forme une suite de va iid puisque $N_t$ est un processus de Poisson. On en déduit que $(X_n)_{n\geq0}$ est une CMH en vertu du théorème qui introduit le protocole générateur de chaine de Markov. L'espace d'état est $E = \mathbb{N}$ et la matrice des transition est donnée par 
+$$
+Q(i,j) = \begin{cases}
+\frac{e^{-\lambda}\lambda^{j-i}}{(j-i)!}, &j\geq i\\
+0,&\text{ Sinon}.
+\end{cases}
+$$ 
+\end{solution} 
+\part[2] Soit le processus 
+
+$$
+M_t = U_1+\ldots+  U_{N_t}
+$$
+où $U_1,\ldots, U_{N_t}$ sont iid de loi normale $\text{Normal}(\mu ,\sigma^2 )$. Montrer que 
+$$
+\mathbb{E}\left(\frac{M_t}{N_t}\Big\rvert N_t>0\right) = \frac{\mathbb{E}(M_t)}{\mathbb{E}(N_t)}
+$$
+\begin{solution}
+On a d'une part
+\begin{eqnarray}
+\mathbb{E}\left(\frac{M_t}{N_t}\Big\rvert N_t>0\right)&=& \frac{\mathbb{E}\left(\frac{M_t}{N_t}\mathbb{I}_{N_t>0}\right)}{\mathbb{P}(N_t>0)}\\
+&=&\frac{1}{1-e^{-\lambda t}}\mathbb{E}\left(\sum_{k = 1}^{+\infty}\frac{U_1+\ldots U_k}{k}\mathbb{I}_{N_t=k}\right)\\
+&=&\frac{1}{1-e^{-\lambda t}}\mu\sum_{k = 1}^{+\infty}\mathbb{P}(N_t=k)=\mu\\
+\end{eqnarray}
+et d'autre part
+\begin{eqnarray} 
+\frac{\mathbb{E}(M_t)}{\mathbb{E}(N_t)}&=& \frac{\mathbb{E}(\mathbb{E}(M_t|N_t))}{\lambda t}\\
+&=& \frac{\mathbb{E}(N_t)\mathbb{E}(U)}{\lambda t} = \mu
+\end{eqnarray}
+d'où l'égalité 
+$$
+\mathbb{E}\left(\frac{M_t}{N_t}\Big\rvert N_t>0\right) = \frac{\mathbb{E}(M_t)}{\mathbb{E}(N_t)}.
+$$
+\end{solution}
+\end{parts}
+\question $N$ étudiants de l'ISFA se lance dans un jeu pour tuer l'ennui. Chacun pose son doigt sur un verre et au signal décide de lever le doigt en l'air ou de le laisser au contact du verre. 
+\begin{itemize}
+  \item Si un seul étudiant laisse son doigt sur le verre, il sort du jeu et on poursuit le jeu avec un participant en moins. 
+  \item Si aucun ou plusieurs étudiants laissent leur doigt poser sur le verre, rien ne se passe et on poursuit le jeu 
+  avec le même nombre de participants. 
+  \item Le jeu s'arrête lorsqu'il ne reste plus qu'un étudiant en jeu.
+\end{itemize}
+On suppose qu'un étudiant lève son doigt indépendamment des autres étudiants et des évènements passés avec une probabilité $p$ (la même pour tous les étudiants et constante au fur et à mesure des tours de jeu). Soit $(X_n)_{n\geq0}$ le processus égale au nombre d'étudiants encore en jeu après le tour $n$, on suppose que $X_0=N$.
+\begin{parts}
+\part[1] $(X_n)_{n\geq0}$ définit une chaine de Markov homogène, donner son espace d'état et sa matrice des transitions.
+\begin{solution}
+L'espace d'état est donné par $E = \{1,\ldots, N\}$ et la matrice des transitions est donnée par 
+$$
+Q(x,y) = \begin{cases}
+1,&\text{ si }y = x = 1\\
+xp^{x-1}(1-p),&\text{ si } y = x - 1,\\
+1-xp^{x-1}(1-p), &\text{ si }y = x > 1,\\
+0,&\text{ sinon.}
+\end{cases}
+$$
+\end{solution} 
+\part[1] Supposons que $0<p<1$. La chaine est-elle irréductible? Quel est le comportement asymptotique de la chaine, admet-elle une loi de probabilité stationnaire? Est-elle unique? Peut-on l'expliciter?
+\begin{solution}
+La chaine n'est pas irreductible car il y a $N$ classes de communications. Elles sont toutes ouvertes à l'exception de $F_1 = \{1\}$ qui est fermée. Asymptotiquement la chaine finira presque surement dans l'état $1$ qui est absorbant. La loi de probabilité stationnaire est unique donnée par 
+$$
+\pi(x)=\begin{cases}
+1,&\text{ si }x=1,\\
+0,&\text{ sinon.}
+\end{cases}
+$$
+\end{solution} 
+\part[2] Montrer que la valeur moyenne du nombre de tours à effectuer avant que le jeu ne s'arrête, variable aléatoire notée $M$, est donnée par 
+$$
+\mathbb{E}(M) = \sum_{x = 2}^N \frac{1}{x p^{x-1}(1-p)}.
+$$
+\begin{solution}
+Le nombre de tour $N_x$ nécessaire pour passer de l'état $x$ à l'état $x-1$ est une loi géométrique de paramètre $q_x = xp^{x-1}(1-p)$ et de fonction de masse 
+$$
+\mathbb{P}(N_x = k) = q_x(1-q_x)^{k-1},\text{ }k\geq 1. 
+$$
+Cela est valable au départ de n'importe quel état x. Le nombre de tour nécessaire pour passer de $X_0 = N$ à l'état $1$ est une somme de variable aléatoire géométrique 
+$$
+M = \sum_{x = 2}^N N_x
+$$
+puis par linéarité de l'espérance il vient 
+$$
+\mathbb{E}(M) = \sum_{x = 2}^N \frac{1}{q_x}.
+$$
+
+
+\end{solution} 
+\end{parts}
+\question Soit $(X^1_n)_{n\geq0}$ et $(X^2_n)_{n\geq0}$ deux copies indépendantes d'une chaine de Markov homogène $(X_n)_{n\geq0}$ d'espace d'état $E= \{0,1\}$ et de matrice des transitions 
+$$
+Q = \left(\begin{array}{cc}
+1-\mu&\mu\\
+\lambda&1-\lambda
+\end{array}\right)
+$$  
+Le processus
+$$
+S^2_n = X^1_n + X^2_n\text{, }n\geq0.
+$$
+définit une chaine de Markov homogène.
+\begin{parts}
+\part[2] Donner l'espace d'état et la matrice des transitions de $(S^2_n)_{n\geq0}$.
+\begin{solution}
+$E = \{0,1,2\}$ et 
+$$
+Q = \left(\begin{array}{ccc}
+(1-\mu)^2&2\mu(1-\mu)&\mu^2\\
+(1-\mu)\lambda&(1-\lambda)(1-\mu)+\lambda \mu\text{ ou }1-(\lambda + \mu) +2\mu\lambda &(1-\lambda)\mu\\
+\lambda^2&2\lambda(1-\lambda)&(1-\lambda)^2
+\end{array} \right)
+$$
+\end{solution}
+\part[1] la chaine de Markov $(S^2_n)_{n\geq0}$ admet-elle une mesure de probablité stationnaire? Est-elle unique? Justifier votre réponse et expliciter la loi de probabilité stationnaire.
+\begin{solution}
+$(S^2_n)_{n\geq0}$ est une chaine de Markov irréductible sur un espace d'état fini, elle admet donc une unique loi stationnaire. De même les chaines de Markov $X^1_{n}$ et $X^2_{n}$ admettent des lois stationnaires. Les variables aléatoires $X^1_{ \infty}$ et $X^2_{\infty}$ sont des variables aléatoires de Bernouilli $\text{Ber}( \mu/(\lambda+\mu))$ et donc 
+$$S_n^2\sim\text{Bin}\left(2, \frac{\mu}{\lambda +\mu}\right)$$
+Cette loi correspond à la loi de la somme des variables aléatoires $X^1$ 
+\end{solution}
+\part[1] Quelle serait la loi stationnaire du processus 
+$$
+S_{n}^N = \sum_{i = 1}^N X^i_n,\text{ }n\geq0.
+$$
+\begin{solution}
+$$S_N^2\sim\text{Bin}\left(N, \frac{\mu}{\lambda +\mu}\right)$$
+\end{solution}
+\end{parts}
+\question Soient $M$ pièces de monnaie disposées sur une table montrant chacune pile ou face. A chaque pas de temps, on choisit une pièce au hasard (tirage aléatoire uniforme parmi les pièces) et on l'a jette en l'air. Elle retombera sur pile ou sur face de manière équiprobable. L'état du système est décrit par une chaine de Markov homogène $(X_n)_{n\geq0}$ égale au nombre de pièces montrant pile après le lancer $n$. 
+\begin{parts}
+\part[1] Donner l'espace d'état et les probabilités de transition de $(X_n)_{n\geq0}$.
+\begin{solution}
+$E = \{0,\ldots, M\}$ et 
+$$
+Q(x,y) = \begin{cases}
+\frac{1}{2}&\text{ si }y = x\\
+\frac{1}{2}\frac{M-x}{M}&\text{ si }y = x+1\\
+\frac{1}{2}\frac{x}{M}&\text{ si }y = x-1\\
+0&\text{ sinon }\\
+\end{cases}
+$$
+\end{solution}
+\part[1] Déterminer la loi de probabilité stationnaire de $(X_n)_{n\geq0}$ après avoir justifié son existence et son unicité. 
+\begin{solution}
+$(X_n)_{n\geq0}$ est une chaine de Markov homogène, irréductible sur un espace d'état fini. Elle admet donc une unique loi stationnaire
+\end{solution}
+\part[1] .
+\begin{solution}
+Le plus simple est de rechercher une loi réversible $\lambda$ qui vérifie 
+$$
+\lambda(x)Q(x,y) = \lambda(y)Q(y,x),\text{ }x,y\in E.
+$$
+Cela revient, au vu de la matrice des transitions à rechercher $\lambda$ qui vérifie
+$$
+\lambda(x)Q(x,x+1) = \lambda(x+1)Q(x+1, x).
+$$
+On s'aperçoit que $\lambda(x) = \binom{M}{x}$ convient. On obtient la loi stationnaire en normalisant 
+$$
+\pi(x) = \binom{M}{x}2^{-M}.
+$$
+
+\end{solution} 
+\part[1] Supposons que $M = 20$ et $X_0=10$, donner la moyenne du temps de retour à l'état $10$, défini par $S_{10} = \inf\{n\geq1\text{ ; }X_n = 10\}$.
+\begin{solution}
+En exploitant le lien entre la loi stationnaire et l'espérance des temps de retour, on a directement 
+$$
+\mathbb{E}_{10}(S_10) = \left[\binom{20}{10}2^{-20}\right]^{-1}
+$$
+\end{solution}   
+\end{parts} 
+\question Soit $(N_t)_{t\geq0}$ un processus de Poisson d'intensité $\lambda$ qui compte (via un capteur) le nombre de Poisson traversant une rivière. Avec probabilité $p$, il s'agit d'une truite, sinon il s'agit d'un saumon. On note $(N_t^T)_{t\geq0}$ le nombre de truites.
+\begin{parts}
+\part[2] Soit 
+$$
+X = \sum_{i= 1}^{N}U_i
+$$
+où $N$ suit une loi géométrique de paramètre $p$ avec 
+$$
+\mathbb{P}(N = n) = (1-p)^{n-1}p,\text{ }n = 1,2,\ldots
+$$
+et $(U_i)_{i\geq1}$ forme une suite iid de variables aléatoires de loi exponentielle de paramètre $\lambda$ dont la densité est donnée par 
+$$
+f(t) = \lambda e^{-\lambda t}\mathbb{I}_{t>0}(t).
+$$ 
+Montrer que $X$ suit une loi exponentielle dont on précisera le paramètre. \\
+
+\underline{Indications:} On pourra par exemple calculer ma fonction génératrice des moments de $X$, en se rappelant que la fonction génératrice des moments caractérise une distribution. 
+\begin{solution}
+On a 
+$$
+M_X(s) = \frac{p\lambda}{p\lambda -s}
+$$
+qui correspond à la fgm d'une loi exponentielle de paramètre $p\lambda$.
+\end{solution}
+\part[2] Montrer que $(N_t^T)_{t\geq0}$ est un processus de Poisson d'intensité $\lambda p$.
+\end{parts}
+\begin{solution}
+On note $(T_i)_{i\geq0}$ et $(S_j)_{j\geq0}$ la suite des temps d'arrivées des processus $(N_t)_{t\geq0}$ et $(N_t^T)_{t\geq0}$ respectivement. On note $(\Delta^T_i)_{i\geq0}$ et $(\Delta^S_j)_{j\geq0}$ la suite des temps inter-arrivées des processus $(N_t)_{t\geq0}$ et $(N_t^T)_{t\geq0}$ respectivement. Par définition des temps inter-arrivée, on a 
+$$
+\Delta^S_j = S_{j+1}-S_j,\text{ }j\geq0 
+$$
+Les instants de saut du processus $N_t^T$ coincident avce des instants de saut du processus $N_t$. Supposons que $S_j = T_i$ ave $i\geq j$. La définition du processus $N_t^T$ implique que 
+$$
+S_j =\begin{cases}
+T_{i+1}&\text{ avec probabilité }p\\
+T_{i+2}&\text{ avec probabilité }(1-p)p\\
+T_{i+3}&\text{ avec probabilité }(1-p)^2p\\
+\vdots & \vdots
+\end{cases} 
+$$
+On en déduit que $S_{j+1} = T_{i+N}$ avec $N\sim\text{Geom}(p)$, puis
+$$
+\Delta^S_j = \sum_{k = 1}^N\Delta^T_{k+i+1}, j \geq0
+$$
+Les $\Delta^S_j$ sont iid de loi exponentielle de paramètre $p\lambda$ d'après la question précédente, ce qui implique que $N_t^T$ est un processus de Poisson d'intensité $p\lambda$.
+\end{solution}
+\question Soit $(X_n)_{n\geq0}$ une chaine de Markov homogène sur un espace d'état $E = \{1,2,3,4\}$ de matrice des transitions
+$$
+Q = \left(\begin{array}{cccc}
+1&0&0&0\\
+1/4&1/4&1/4&1/4\\
+1/8&1/2&1/4&1/8\\
+0&0&0&1\end{array}\right)
+$$
+\begin{parts}
+\part[2] Soit $A = \{1,4\}$ et $\tau_A = \inf\{n\geq0\text{ ; }X_n \in A\}$. Calculer 
+$$
+\mathbb{E}_x(\tau_A) = \mathbb{E}(\tau_A|X_0 = x),\text{ pour }x\in E.
+$$
+\begin{solution}
+On a $E_1(\tau_A) = E_4(\tau_A) = 0$ et on résout le système (analyse à un pas, résultat du cours)
+$$
+\begin{cases}
+E_2(\tau_A) = 1+\frac{1}{4}E_2(\tau_A) + \frac{1}{4}E_3(\tau_A)\\
+E_3(\tau_A) = 1+\frac{1}{2}E_2\tau_A) + \frac{1}{4}E_3\tau_A) 
+\end{cases}
+$$
+On obtient $E_2(\tau_A) = 20/7$ et $E_3(\tau_A) = 48/7$ 
+\end{solution}
+\part[2] Soit l'évènement 
+$$
+G = \text{"L'état 2 est visité juste avant l'absorption"}
+$$
+Calculer 
+$$
+\mathbb{P}_x(G) = \mathbb{P}(G|X_0 = x),\text{ pour }x\in E.
+$$
+\end{parts}
+\begin{solution}
+On a $\mathbb{P}_1(G) = \mathbb{P}_4(G)=0$ et 
+$$
+\begin{cases}
+\mathbb{P}_2(G) = \frac{1}{2}+\frac{1}{4}\mathbb{P}_2(G)+\frac{1}{4}\mathbb{P}_3(G)\\
+\mathbb{P}_2(G) = \frac{1}{2}\mathbb{P}_2(G)+\frac{1}{4}\mathbb{P}_3(G)
+\end{cases}
+$$
+On en déduit que $\mathbb{P}_2(G) = 6/7$ et $\mathbb{P}_3(G) = 12/21$  
+\end{solution}
+\end{questions}
+%-------------------------------TABLE-------------------------------
+\newpage
+\hrule
+\vspace*{.15in}
+\begin{center}
+  \large\MakeUppercase{Formulaire}
+\end{center}
+\vspace*{.15in}
+\hrule
+\vspace*{.25in}
+
+\renewcommand\arraystretch{3.5}
+\begin{table}[H]
+\begin{center}
+\footnotesize
+\begin{tabular}{|c|c|c|c|c|c|}
+
+\hline
+Nom & abbrev. & Loi & $\E(X)$ & $\Var(X)$ & FGM\\
+\hline\hline
+Binomial & $\Bin(n,p)$ & $\binom{n}{k}p^k(1-p)^{n-k}$ & $np$ & $np(1-p)$ & $[(1-p)+pe^t]^n$\\
+\hline
+Poisson & $\Pois(\lambda)$ & $e^{-\lambda}\dfrac{\lambda^k}{k!}$ & $\lambda$ & $\lambda$ &$ \exp(\lambda(e^t-1))$\\
+\hline
+Geometric & $\Geom(p)$ & $(1-p)^{k-1}p$ & $\dfrac{1}{p}$ & $\dfrac{1-p}{p^2}$ & $\frac{pe^t}{1-(1-p)e^t}$ pour  $t<-\ln(1-p)$\\
+\hline
+Uniform & $\Unif(a,b)$ & $\begin{cases} \dfrac{1}{b-a} & a\leq t\leq b\\ 0 & \text{sinon}\end{cases}
+$ & $\dfrac{a+b}{2}$ & $\dfrac{(b-a)^2}{12}$ & $\frac{e^{tb}-e^{ta}}{t(b-a)}$\\
+\hline
+Exponential & $\Exp(\lambda)$ & $\begin{cases} \lambda e^{-\lambda t} & t\geq 0 \\ 0 & t<0\end{cases}$ & $\dfrac{1}{\lambda}$ & $\dfrac{1}{\lambda^2}$ & $\frac{\lambda}{\lambda -t}$ pour $t<\lambda$\\
+\hline
+Normal & $\No(\mu,\sigma^2)$ & $\left(\dfrac{1}{\sqrt{2\pi\sigma^2}}\right)\operatorname{exp}{\left(\dfrac{-(t-\mu)^2}{2\sigma^2}\right)}$ & $\mu$ & $\sigma^2$ & $e^{\mu t}e^{\sigma^2t^2/2}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}%
+
+\end{document}

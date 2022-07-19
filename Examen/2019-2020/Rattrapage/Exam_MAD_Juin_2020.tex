@@ -1,0 +1,377 @@
+\documentclass[11pt, addpoints, answers]{exam}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin  = 1in]{geometry}
+\usepackage{amsmath, amscd, amssymb, amsthm, verbatim}
+\usepackage{mathabx}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows}
+%%%<
+\usepackage{verbatim}
+%%%>
+\usetikzlibrary{automata,arrows,positioning,calc}
+
+\usetikzlibrary{trees}
+
+\shadedsolutions
+\definecolor{SolutionColor}{RGB}{214,240,234}
+
+\newcommand{\bbC}{{\mathbb C}}
+\newcommand{\R}{\mathbb{R}}            % real numbers
+\newcommand{\bbR}{{\mathbb R}}
+\newcommand{\Z}{\mathbb{Z}}            % integers
+\newcommand{\bbZ}{{\mathbb Z}}
+\newcommand{\bx}{\mathbf x}            % boldface x
+\newcommand{\by}{\mathbf y}            % boldface y
+\newcommand{\bz}{\mathbf z}            % boldface z
+\newcommand{\bn}{\mathbf n}            % boldface n
+\newcommand{\br}{\mathbf r}            % boldface r
+\newcommand{\bc}{\mathbf c}            % boldface c
+\newcommand{\be}{\mathbf e}            % boldface e
+\newcommand{\bE}{\mathbb E}            % blackboard E
+\newcommand{\bP}{\mathbb P}            % blackboard P
+
+\newcommand{\ve}{\varepsilon}          % varepsilon
+\newcommand{\avg}[1]{\left< #1 \right>} % for average
+%\renewcommand{\vec}[1]{\mathbf{#1}} % bold vectors
+\newcommand{\grad}{\nabla }
+\newcommand{\lb}{\langle }
+\newcommand{\rb}{\rangle }
+
+\def\Bin{\operatorname{Bin}}
+\def\Var{\operatorname{Var}}
+\def\Geom{\operatorname{Geom}}
+\def\Pois{\operatorname{Pois}}
+\def\Exp{\operatorname{Exp}}
+\newcommand{\Ber}{\operatorname{Ber}}
+\def\Unif{\operatorname{Unif}}
+\def\No{\operatorname{N}}
+\newcommand{\E}{\mathbb E}            % blackboard E
+\def\th{\theta }            % theta shortcut
+\def\V{\operatorname{Var}}
+\def\Var{\operatorname{Var}}
+\def\Cov{\operatorname{Cov}}
+\def\Corr{\operatorname{Corr}}
+\newcommand{\epsi}{\varepsilon}            % epsilon shortcut
+
+\providecommand{\norm}[1]{\left\lVert#1\right\rVert} %norm
+\providecommand{\abs}[1]{\left \lvert#1\right \rvert} %absolute value
+
+\DeclareMathOperator{\lcm}{lcm}
+\newcommand{\ds}{\displaystyle}	% displaystyle shortcut
+
+\def\semester{2019-2020}
+\def\course{Modèles Aléatoires Discrets}
+\def\title{\MakeUppercase{Examen de deuxième session}}
+\def\name{Pierre-O Goffard}
+%\def\name{Professor Wildman}
+
+\setlength\parindent{0pt}
+
+\cellwidth{.35in} %sets the minimum width of the blank cells to length
+\gradetablestretch{2.5}
+
+%\bracketedpoints
+%\pointsinmargin
+%\pointsinrightmargin
+
+\begin{document}
+
+
+\runningheader{\course  \vspace*{.25in}}{}{\title \vspace*{.25in}}
+%\runningheadrule
+\runningfooter{}{Page \thepage\ of \numpages}{}
+
+% \firstpageheader{Name:\enspace\hbox to 2.5in{\hrulefill}\\  \vspace*{2em} Section: (circle one) TR: 3-3:50 \textbar\, TR: 5-5:50 \textbar\,  TR: 6-6:50(Xu) \textbar\,  TR: 6-6:50 }{}{Perm \#: \enspace\hbox to 1.5in{\hrulefill}\\ \vspace*{2em} Score:\enspace\hbox to .6in{\hrulefill} $/$\numpoints}
+\extraheadheight{.25in}
+
+\hrulefill
+
+\vspace*{1em}
+
+% Heading
+{\center \textsc{\Large\title}\\
+	\vspace*{1em}
+	\course -- \semester\\
+	Pierre-O Goffard\\
+}
+\vspace*{1em}
+
+\hrulefill
+
+\vspace*{2em}
+
+\noindent {\bf\em Instructions:} On éteint et on range son téléphone.
+\begin{itemize}
+	\item La calculatrice et les appareils éléctroniques ne sont pas autorisés.
+	\item Vous devez justifier vos réponses de manière claire et concise.
+	\item Vous devez écrire de la manière la plus lisible possible. Souligner ou encadrer votre réponse finale.
+
+\end{itemize}
+
+\begin{center}
+	\gradetable[h]
+\end{center}
+
+\smallskip
+
+\begin{questions}
+\question Soient deux urnes $A$ et $B$ dans lesquelles sont répartis  boules numérotées de $1$ à $N$ . A chaque pas de temps, un numéro est tiré uniformément dans l'ensemble d'indices $\{1,\ldots, N\}$. La boule associée au numéro tiré change d'urne, on note $(A_n)_{n\in\geq0}$ le nombre de boule dans l'urne $A$.
+\begin{parts}
+  \part[1] Montrer que $(A_n)_{n\geq0}$ est une chaine de Markov homogène et expliciter ses probabilités de transitions.
+  \begin{solution}
+  Les probabilités de transitions ne sont fonction que de l'état du système à l'instant précédent. On a 
+  \begin{equation}
+    \mathbb{P}(X_n = y|X_{n-1}=x)=
+    \begin{cases}
+    \frac{N-x}{N},&y=x+1\\
+    \frac{x}{N},&y=x-1\\
+    0,&\text{Sinon.}\\
+    \end{cases}
+  \end{equation}
+  \end{solution}
+\part[1] Après avoir justifié de son existence et de son unicité, donner la loi stationnaire de $(A_n)_{n\geq0}$.
+\begin{solution}
+Chaine de Markov sur un espace d'état fini (Existence) et irréductible (unicité). Pour déterminer la loi stationaire, on recherche une loi réversible qui vérifie 
+$$
+  \lambda(x)\frac{N-x}{N}=\lambda(x+1)\frac{x+1}{N}
+$$
+il apparait que $\lambda(x)=\binom{N}{x}$ convient en tant que mesure reversible, une loi de probabilité $\mu$ est obtenu en normalisant avec 
+$$
+\mu(x) =\binom{N}{x}2^{-N} 
+$$
+\end{solution}
+\end{parts}
+\question Une compagnie d'assurance s'est aperçu (en faisant des statistiques) que 
+\begin{itemize}
+\item Un assuré n'ayant reporté aucun sinistre l'année $n-1$  reportera un sinistre l'année $n$avec probabilité $0.1$ 
+\item Un assuré qui a reporté au moins un sinistre durant l'année $n-1$ reportera un sinistre l'année $n$ avec probabilité $0.2$.
+\end{itemize} 
+On définit une chaine de Markov homogène $(X_n)_{n\geq0}$ telle que 
+$$
+X_n = 
+\begin{cases}
+0,&\text{si aucun sinistre n'est reporté.}\\
+1& \text{sinon}.
+\end{cases}
+$$
+\begin{parts}
+\part[1] Donner la matrice des transition de $(X_n)$
+\begin{solution}
+L'espace d'état est donné par $E = \{0,1\}$, La matrice des transitions est donnée par 
+$$
+Q_X =\left(\begin{array}{cc}
+0.9&0.1\\
+0.8&0.2\\
+\end{array}\right)
+$$
+
+\end{solution}
+\part[1] Soit le processus définie par 
+$$
+Y_n = (X_{n-2}, X_{n-1}),\text{ } n\geq 2.
+$$
+Quel est l'espace d'état de ce processus? S'agit-il d'une chaine de Markov homogène? (Justifier). S'il s'agit d'une chaine de Markov, donner sa matrice des transitions.
+\begin{solution}
+L'espace d'état est donné par $E_Y = \{(0,0), (0,1), (1,0), (1,1)\}$ et la matrice des transition est donnée par 
+$$
+Q_Y =\left(\begin{array}{cccc}
+0.9&0.1&0&0\\
+0&0&0.8&0.2\\
+0.9&0.1&0&0.\\
+0&0&0.8&0.2\\
+\end{array}\right)
+$$ 
+\end{solution}
+\part Discuter l'existence et l'unicité de la loi stationnaire du processus  Déterminer cette loi stationaire (si elle existe).
+\begin{solution}
+$Y_n$ est une CMH sur un espace d'état fini (existence de la loi stationaire) irréductible (loi stationnaire unique). On résout $\pi Q_Y = \pi$ et il vient 
+
+$$
+\pi = \left(4/5, 4/45, 4/45, 1/45\right).
+$$
+\end{solution}
+\part La compagnie d'assurance adapte son tarif $\pi_n$ pour la couverture de l'année $n$ d'un assuré en fonction de sa sinistralité sur les deux années précédentes de la façon suivante 
+\begin{itemize}
+\item $\$450$ si aucun sinistre au cours des deux années précédentes
+\item $\$900$ si au moins un sinistre est reporté au cours de l'une des deux années précédentes
+\item $\$1350$ si au moins un sinistre a été reporté au cours de chacune des deux années précédentes
+\end{itemize}
+Déterminer la prime moyenne payée par un assuré en portefeuille depuis un certain nombre d'année. Faite l'application numérique.
+\begin{solution}
+La prime moyenne s'élève alors à $\$550$
+\end{solution}
+\end{parts}
+\question Soit un processus défini par $S_0=x>0$ et $S_n = S_{n-1}+\sigma\cdot \epsilon_n\cdot S_{n-1},\text{ }n\geq1$, où 
+
+\begin{itemize}
+  \item $\sigma$ est un réel tel que $|\sigma|<1$ 
+ \item $(\epsilon_n)_{n\geq1}$ est une suite de variables aléatoires i.i.d. de loi de probabilité
+ $$
+\mathbb{P}(\epsilon_1 = 1)=\mathbb{P}(\epsilon_1 = -1)=\frac 12.
+ $$ 
+\end{itemize}
+                         
+\begin{parts}
+\part[1] Montrer que le processus $(S_n)_{n\geq0}$ est une Martingale.
+\begin{solution}
+$\mathbb{E}(S_n|S_{n-1})=S_{n-1}$
+\end{solution}
+\part Montrer par récurrence que $S_n>0$ pour tout $n\geq0$.
+\begin{solution}
+La propriété est vérifiée au rang $0$ puisque $S_0=x>0$. Supposons la propriété vérifié au rang $n>0$ qu'en est-il au rang $n+1?$\\
+
+On a $S_{n+1}=S_{n}(1+\sigma\cdot\epsilon_{n+1})>0$ car $1+\sigma\cdot\epsilon_{n+1}>0$.
+\end{solution}
+\part Soit  pour tout $Z_n = \log(S_n)$. Montrer que 
+$$
+Z_n = \log(x)+\sum_{k=1}^{n}\log(1+\sigma\epsilon_k).
+$$
+\begin{solution}
+$Z_n = \log(S_{n_1}(1+\sigma\cdot\epsilon_n))=\log(x\prod_{k=1}^n(1+\sigma\cdot\epsilon_k))=\log(x)+ \sum_{k=1}^n(1+\sigma\cdot\epsilon_k)$
+\end{solution}
+\part Calculer la limite de $Z_n/n$  lorsque$n\rightarrow\infty$  (convergence presque sûre)
+\begin{solution}
+Par la loi forte des grands nombres
+$$Z_n/n\rightarrow\frac xn+\frac{1}{2} \log\left(\frac{1+\sigma}{1-\sigma}\right)$$
+\end{solution}
+\end{parts}
+
+\question Soit $(X_t)_{t\geq0}$ un processus de Poisson d'intensité $\lambda$ qui décompte le nombre de saumon sauvage passant devant un détecteur placé sur un cours d'eau. Le détecteur n'est pas infaillible et on estime qu'un saumon passant devant le détecteur est effectivement détecté avec probabilité $p\in(0,1)$. Soit $(Y_t)_{t\geq0}$ le nombre de saumon détectés jusqu'à l'instant $t\geq0$.
+\begin{parts}
+  \part[1] Calculer la probabilité conditionnelle 
+  $$
+\mathbb{P}(Y_t =l|X_t = k),\text{ pour }l,k\geq0.
+  $$
+  \begin{solution}
+  $$
+\mathbb{P}(Y_t =l|X_t = k) =\begin{cases} 
+\binom{k}{l}p^l(1-p)^{k-l}&\text{ si }j\geq k\\
+0&\text{ sinon}.
+\end{cases}
+  $$
+\end{solution}
+  \part[1] Calculer la loi de probabilité de $Y_t$, c'est à dire $\mathbb{P}(Y_t =l)$  pour tout $l\geq0$. Détaillez vos calculs.
+  \begin{solution}
+  \begin{eqnarray*}
+  \mathbb{P}(Y_t=l) &=&\sum_{k=0}^{+\infty}\mathbb{P}(Y_t=l|X_t=k)\mathbb{P}(X_t=k)\\
+  &=& \frac{e^{-p\lambda}(p\lambda)^l}{l!}
+  \end{eqnarray*}
+  \end{solution}
+  \part[1] Montrer que le processus  est un processus de Poisson dont on précisera l'intensité. 
+  \begin{solution}
+  On montre que $(Y_t)_{t\geq 0}$ est à accroissement indépendants et stationnaires. Le plus simple est d'observer que $Y_t = \sum_{k=1}^{X_t}I_k$, où les $I_k$ sont iid de loi $\text{Ber}(p)$.
+  \end{solution}
+\end{parts} 
+\question Soit $(N_t)_{t\geq0}$ un processus de Poisson d'intensité . 
+\begin{parts}
+\part Calculer la covariance du processus 
+$$
+\text{Cov}(N_t,N_s),\text{ }s,t\geq0.
+$$
+\begin{solution}
+$$
+\text{Cov}(N_t,N_s) = \min(s,t).
+$$
+\end{solution}
+\part Soit le processus défini par
+$$
+Z_t = Z_0\cdot(-1)^{N_t}\text{, }t\geq0
+$$
+où $Z_0$ est une variable aléatoire discrète de loi de probabilité,
+$$
+\mathbb{P}(Z_0=-1)=p\text{ et }\mathbb{P}(Z_0=1)=1-p,
+$$
+avec $p\in(0,1)$. Calculer $\mathbb{E}(Z_t)$ pour tout $t\geq0$.
+\begin{solution}
+$$
+\mathbb{E}(Z_t) = (1-2p)e^{-2\lambda t}
+$$
+\end{solution}
+\part Calculer la covariance $\text{Cov}(Z_s,Z_t),\text{ }s,t\geq0$ du processus $(Z_t)_{t\geq0}$.
+\begin{solution}
+$\text{Cov}(Z_s,Z_t)=e^{-2|t-s|}-(1-2p)^2e^{-2\lambda(t+s)}$.
+\end{solution}
+\end{parts}
+\question Supposons que je dispose de $4$ parapluies qui peuvent se trouver dans deux endroits, soit chez moi, soit à l'ISFA. A chaque pas de temps je me déplace d'un endroit à l'autre, je prends un parapluie s'il pleut et je n'en prends pas s'il ne pleut pas. Le nombre de parapluies à un endroit fluctue ainsi entre 0 et 4. On définie la chaîne de Markov $(X_n)_{n\geq0}$ égale au nombre de parapluie à l'endroit où je me trouve. 
+
+Par exemple, je suis chez moi à l'instant initial et la répartition des parapluies est 2 parapluies à la maison et 2 parapluies à l'ISFA  alors $X_0=3$. A l'instant suivant je vais de la maison à l'ISFA et il pleut, j'emporte un parapluie et donc $X_1=2$
+ (puisque je suis à l'ISFA ou il y avait un parapluie et j'en ai pris un avec moi pour mon déplacement)
+Supposons que la probabilité qu'il pleuve lors d'une transition est $p\in(0,1)$.
+\begin{parts}
+\part Donner la matrice des transitions de $(X_n)_{n\geq0}$
+\begin{solution}
+$$
+Q =\left(\begin{array}{ccccc}
+0&0&0&0&1\\
+0&0&0&1-p&p\\
+0&0&1-p&p&0\\
+0&1-p&p&0&0\\
+1-p&p&0&0&0
+\end{array}\right)
+$$
+\end{solution}
+\part Si je me trouve à un endroit où il n'y a pas de parapluie et que je doive me rendre à l'autre endroit alors qu'il pleut alors fatalement je me fait trempé. En supposant que ce petit système a été mis au point il y a un certain temps, quelle est la probabilité que je me fasse trempé?
+\begin{solution}
+La loi stationnaire est donnée par $\pi_1=\ldots, =\pi_4 = \frac{1}{5-p}$ et $\pi_0=\frac{1-p}{5-p}$. La probabilité que je me fasse trempé est que je sois dans un endroit sans parapluie et qu'il pleuve dehors, donc 
+$$
+\mathbb{P}(\text{"Pierre-O se fait trempé"})=\frac{p(1-p)}{5-p}
+$$
+\end{solution}
+\part Sachant que $p=0.04$ à Lyon (Expérience personnelle ^^), à partir de combien de parapluie la probabilité que je me fasse trempé passe-t-elle en dessous de $0.05$?
+
+Précisément, si on note $E$ l'évènement "Pierre-O se fait trempé", on recherche le plus petit entier (nombre de parapluie) tel que $\mathbb{P}(E)<0.05$.
+\begin{solution}
+On a, pour un nombre $N$ de parapluie, $\mathbb{P}(E)=\frac{p(1-p)}{N-p}$, on en déduit que 
+$$
+\frac{p(1-p)}{N-p}<0.05\Leftrightarrow N> p+\frac{p(1-p)}{0.05}= 5.2
+$$
+\end{solution}
+
+\end{parts}
+\end{questions}
+%-------------------------------TABLE-------------------------------
+\newpage
+\hrule
+\vspace*{.15in}
+\begin{center}
+  \large\MakeUppercase{Formulaire}
+\end{center}
+\vspace*{.15in}
+\hrule
+\vspace*{.25in}
+
+\renewcommand\arraystretch{3.5}
+\begin{table}[H]
+\begin{center}
+\footnotesize
+\begin{tabular}{|c|c|c|c|c|c|}
+
+\hline
+Nom & abbrev. & Loi & $\E(X)$ & $\Var(X)$ & FGM\\
+\hline\hline
+Binomial & $\Bin(n,p)$ & $\binom{n}{k}p^k(1-p)^{n-k}$ & $np$ & $np(1-p)$ & $[(1-p)+pe^t]^n$\\
+\hline
+Poisson & $\Pois(\lambda)$ & $e^{-\lambda}\dfrac{\lambda^k}{k!}$ & $\lambda$ & $\lambda$ &$ \exp(\lambda(e^t-1))$\\
+\hline
+Geometric & $\Geom(p)$ & $(1-p)^{k-1}p$ & $\dfrac{1}{p}$ & $\dfrac{1-p}{p^2}$ & $\frac{pe^t}{1-(1-p)e^t}$ pour  $t<-\ln(1-p)$\\
+\hline
+Uniform & $\Unif(a,b)$ & $\begin{cases} \dfrac{1}{b-a} & a\leq t\leq b\\ 0 & \text{sinon}\end{cases}
+$ & $\dfrac{a+b}{2}$ & $\dfrac{(b-a)^2}{12}$ & $\frac{e^{tb}-e^{ta}}{t(b-a)}$\\
+\hline
+Exponential & $\Exp(\lambda)$ & $\begin{cases} \lambda e^{-\lambda t} & t\geq 0 \\ 0 & t<0\end{cases}$ & $\dfrac{1}{\lambda}$ & $\dfrac{1}{\lambda^2}$ & $\frac{\lambda}{\lambda -t}$ pour $t<\lambda$\\
+\hline
+Normal & $\No(\mu,\sigma^2)$ & $\left(\dfrac{1}{\sqrt{2\pi\sigma^2}}\right)\operatorname{exp}{\left(\dfrac{-(t-\mu)^2}{2\sigma^2}\right)}$ & $\mu$ & $\sigma^2$ & $e^{\mu t}e^{\sigma^2t^2/2}$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}%
+
+\end{document}

@@ -1,0 +1,657 @@
+\documentclass[8pt,notheorems]{beamer}
+\usetheme{Copenhagen}
+\usepackage{beamerthemesplit}
+\usepackage{graphicx}
+\usepackage{tkz-graph}
+\usepackage{color}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsfonts,amsthm,t1enc}
+\usepackage{fourier}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,calc}
+\setbeamertemplate{footline}{\hfill \insertframenumber/\inserttotalframenumber}
+% \setbeamertemplate{headline}{}
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+\newcommand{\Exp}{\mathbb{E}}
+
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+
+\setbeamertemplate{theorem}[ams style]
+\setbeamertemplate{theorems}[numbered]
+%\makeatletter
+%\def\th@mystyle{%
+%    \normalfont % body font
+%    \setbeamercolor{block title example}{bg=orange,fg=white}
+%    \setbeamercolor{block body example}{bg=blue!20,fg=black}
+%    \def\inserttheoremblockenv{block}
+%  }
+%\makeatother
+%\theoremstyle{mystyle}
+
+\makeatletter
+    \ifbeamer@countsect
+      \newtheorem{theorem}{\translate{Theorem}}[section]
+    \else
+      \newtheorem{theorem}{\translate{Théorème}}
+    \fi
+    \newtheorem{corollary}{\translate{Corollaire}}
+    \newtheorem{prop}{\translate{Proposition}}
+    \newtheorem{lemma}{\translate{Lemme}}
+    \newtheorem{problem}{\translate{Problème}}
+    \newtheorem{solution}{\translate{Solution}}
+
+    \theoremstyle{definition}
+    \newtheorem{definition}{\translate{Definition}}
+    \newtheorem{definitions}{\translate{Definitions}}
+
+    \theoremstyle{example}
+    \newtheorem{example}{\translate{Exemple}}
+    \newtheorem{examples}{\translate{Examples}}
+
+\makeatletter
+\def\th@mystyle{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange,fg=white}
+    \setbeamercolor{block body example}{bg=orange!20,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{mystyle}
+\newtheorem{remark}{\translate{Remarque}}
+\newtheorem{fact}{\translate{Fact}}
+
+
+
+
+
+    % Compatibility
+    \newtheorem{Beispiel}{Beispiel}
+    \newtheorem{Beispiele}{Beispiele}
+    \theoremstyle{plain}
+    \newtheorem{Loesung}{L\"osung}
+    \newtheorem{Satz}{Satz}
+    \newtheorem{Folgerung}{Folgerung}
+    \newtheorem{Fakt}{Fakt}
+    \newenvironment{Beweis}{\begin{proof}[Beweis.]}{\end{proof}}
+    \newenvironment{Lemma}{\begin{lemma}}{\end{lemma}}
+    \newenvironment{Proof}{\begin{proof}}{\end{proof}}
+    \newenvironment{Theorem}{\begin{theorem}}{\end{theorem}}
+    \newenvironment{Problem}{\begin{problem}}{\end{problem}}
+    \newenvironment{Corollary}{\begin{corollary}}{\end{corollary}}
+    \newenvironment{Example}{\begin{example}}{\end{example}}
+    \newenvironment{Examples}{\begin{examples}}{\end{examples}}
+    \newenvironment{Definition}{\begin{definition}}{\end{definition}}
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+% ============================================================
+% Title
+% ============================================================
+
+\title[]{MAD M1 Actuariat/ES}
+\subtitle{Chapitre IV: Processus de Poisson}
+\author{Pierre-Olivier Goffard}
+\institute{
+     Université de Lyon 1\\
+  ISFA\\
+     \texttt{pierre-olivier.goffard@univ-lyon1.fr}
+    }
+\date{
+ISFA\\
+\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+
+% ============================================================
+
+
+\section{Processus de Poisson}
+\begin{frame}[allowframebreaks]
+\underline{I. Processus de Poisson}\\
+On souhaite construire un processus stochastique en temps continu permettant le décompte d'évènement au cours du temps. On considère des évènements du type
+\begin{itemize}
+\item tremblement de terre
+\item accident de voiture
+\item arrivée d'un client dans un magasin
+\end{itemize}
+Soit une variable aléatoire $N_t$ à valeur entière à l'instant $t\in[0,+\infty)$. On suppose que le processus démarre à $0$, avec $N_0=0$, et augmente en effectuant des sauts de hauteur $1$. Voici un exemple de trajectoire d'un tel processus.
+\begin{figure}[!h]
+\begin{center}
+\begin{tikzpicture}[scale=0.6]
+  %Origin and axis
+  \coordinate (O) at (0,0);
+  \draw[->] (-1,0) -- (8,0) coordinate[label = {below:$t$}] (xmax);
+  \draw[->] (0,-0.5) -- (0,5.5) coordinate[label = {left:$N_t$}] (ymax);
+  %Lower linear boundary
+
+
+  %Stochastic process trajectory
+
+  \draw (0,0) node[blue,left] {} node{};
+  \draw[very thick,blue,-] (0,0) -- (1,0) node[pos=0.5, above] {$\Delta^T_0$} ;
+  \draw[very thick,dashed,blue] (1,0) -- (1,1) node[pos=0.5, right] {};
+  \draw[very thick,blue,-] (1,1) -- (1.75,1) node[pos=0.5, above] {$\Delta^T_1$};
+  \draw[very thick,dashed,blue] (1.75,1) -- (1.75,2) node[pos=0.5, right] {};
+  \draw[very thick,blue,-] (1.75,2) -- (2.75,2) node[pos=0.5, above] {$\Delta^T_2$};
+  \draw[very thick,dashed,blue] (2.75,2) -- (2.75,3) node[pos=0.5, right] {};
+  \draw[very thick,blue,-] (2.75,3) -- (5,3)node[pos=0.5, above] {$\Delta^T_3$};
+  \draw[very thick,dashed,blue] (5,3) -- (5,4) node[pos=0.5, right] {};
+  \draw[very thick,blue,-] (5,4) -- (6,4) node[pos=0.5, above] {$\Delta^T_4$};
+  \draw[very thick,dashed,blue] (6,4) -- (6,5) node[pos=0.5, right] {};
+  \draw[very thick,blue,-] (6,5) -- (8,5) node[pos=0.5, above] {$\Delta^T_5$};
+  %Jump Times
+  \draw (1,0) node[blue,below] {$T_1$} node{ \color{blue}$\bullet$};
+  \draw (1.75,0) node[blue,below] {$T_2$} node{ \color{blue}$\bullet$};
+  \draw (2.75,0) node[blue,below] {$T_3$} node{ \color{blue}$\bullet$};
+  \draw (5,0) node[blue,below] {$T_4$} node{ \color{blue}$\bullet$};
+  \draw (6,0) node[blue,below] {$T_5$} node{ \color{blue}$\bullet$};
+  %Level of the counting process
+   \draw (0,0) node[black,left] {$0$} node{ \color{black}$\bullet$};
+   \draw (0,1) node[black,left] {$1$} node{ \color{black}$\bullet$};
+   \draw (0,2) node[black,left] {$2$} node{ \color{black}$\bullet$};
+   \draw (0,3) node[black,left] {$3$} node{ \color{black}$\bullet$};
+   \draw (0,4) node[black,left] {$4$} node{ \color{black}$\bullet$};
+   \draw (0,5) node[black,left] {$5$} node{ \color{black}$\bullet$};
+\end{tikzpicture}
+\end{center}
+\caption{Evolution du processus de comptage $\{N_t\text{ ; }t\geq0\}$.}
+\label{Fig:TrajectoryCountingProcess}
+\end{figure}
+\begin{definition}[Processus de comptage]
+Un processus de comptage $(N_t)_{t\geq0}$ est un processus stochastique en temps continu qui compte les occurences d'un certain évènement dans le temps tel que
+\begin{equation*}
+N_0=0\text{ and }N_t=\sum_{k=1}^{+\infty}\mathbb{1}_{T_k\leq t}.
+\end{equation*}
+où $T_1,T_2,T_3,\ldots$ sont les temps d'arrivées, on convient que $T_0=0$. On définit la suite des temps inter-arrivée $\Delta^T_0,\Delta^T_1,\Delta^T_2,\ldots$ comme différence des temps d'arrivée avec
+$$\Delta^T_k=T_{k+1}-T_{k}\text{, }k=0,1,2\ldots.$$
+\begin{itemize}
+\item[$\hookrightarrow$] Cela correspond au temps entre le $(k+1)^{\text{éme}}$ and le  $k^{\text{éme}}$ évènement.
+\item[$\hookrightarrow$] On parle parfois de temps de séjour de $(N_t)_{t\geq0}$ dans l'état $k$
+\item[$\hookrightarrow$] Le temps d'arrivée est donné par la somme des temps d'inter-arrivée avec $T_n=\sum_{n=0}^{n-1}\Delta^T_k$.
+\end{itemize}
+\end{definition}
+\begin{definition}[Processus de Poisson]
+Un processus de comptage $(N_t)_{t\geq0}$ est un processus de Poisson d'intensité $\lambda$ si ses temps inter-arrivée $(\Delta^T_n)_{n\geq1}$ forme une suite i.i.d. de variables aléatoires de loi exponentielle de paramètre $\lambda$.
+\end{definition}  
+\begin{definition}[Loi exponentielle]
+La variable aléatoire $\tau$ suit une loi exponentielle $\text{Exp}(\lambda)$ si elle admet pour densité
+$$
+f_{\tau}(t)=\lambda e^{-\lambda t},\text{ }t>0.
+$$
+Sa fonction génératrice des moments s'écrit
+$$
+M_{\tau}(s)=\E\left(e^{s\tau}\right)=\frac{\lambda}{\lambda-s},\text{ }s\in\left]-\infty,\lambda\right[.
+$$
+\end{definition}
+\begin{prop}[Loi sans mémoire]
+La loi exponentielle est dite sans mémoire, c'est à dire si $\tau\sim\text{Exp}(\lambda)$ alors
+$$
+\P(\tau>t+s|\tau>t)=\P(\tau>s),\text{ }s,t>0.
+$$
+\end{prop}
+\underline{preuve:}\\
+On utilise la formule de Bayes avec
+$$
+\P(\tau>t+s|\tau>t)=\frac{\P(\tau>t|\tau>t+s)\P(\tau>t+s)}{\P(\tau>t)}= \frac{1\times e^{-\lambda(s+t)}}{e^{-\lambda t}}=e^{-\lambda s}=\P(\tau>s).
+$$
+\begin{definition}[Loi de Dirichlet]
+Soient $U_1,\ldots, U_n$ $n$ v.a. i.i.d. de loi uniforme sur l'intervalle $[a,b]$ alors la loi jointe des statistiques d'ordre $(U_{1:n},\ldots, U_{n:n})$ de l'échantillon est une loi de Dirichlet $D_n([a,b])$, avec
+$$
+f_{(U_{1:n},\ldots, U_{n:n})}(u_1,\ldots, u_n)=\frac{n!}{(b-a)^n}\mathbb{I}_{a<u_1<\ldots< u_n<b}(u_1,\ldots, u_n).
+$$
+\end{definition}
+\underline{preuve:}\\
+Soit $g:\mathbb{R}^n\mapsto \mathbb{R}_+$ une fonction mesurable bornée. On note que
+$$
+\mathbb{E}[g(U_{1:n},\ldots,U_{n:n})]=\mathbb{E}\left[\sum_{\sigma\in\mathcal{S}_n}
+g(U_{\sigma(1)},\ldots,U_{\sigma(n)})
+\mathbb{I}_{U_{\sigma(1)} <\ldots< U_{\sigma(n)}}
+\right]
+$$
+où $\mathcal{S}_n$ désigne l'ensemble des permutations de $\{1,\ldots,n \}$ puis
+\begin{eqnarray*}
+\mathbb{E}\left[g(U_{\sigma(1)},\ldots,U_{\sigma(n)})
+\mathbb{I}_{U_{\sigma(1)} <\ldots< U_{\sigma(n)}}
+\right]&=& \mathbb{E}\left[g(U_{1},\ldots,U_{n})
+\mathbb{I}_{U_{1} <\ldots< U_{n}}\right]\\
+&=&\int_{\mathbb{R}^{n}}g(u_{1},\ldots,u_{n})
+\mathbb{I}_{u_{1} <\ldots< u_{n}}\frac{1}{(b-a)^n}\text{d}\lambda_{n}(u_1,\ldots, u_n)
+\end{eqnarray*}
+On en déduit que
+$$
+\mathbb{E}[g(U_{1:n},\ldots,U_{n:n})]=\int_{\mathbb{R}^{n}}g(u_{1},\ldots,u_{n})
+\mathbb{I}_{u_{1} <\ldots< u_{n}}\frac{n!}{(b-a)^n}\text{d}\lambda_{n}(u_1,\ldots, u_n).
+$$
+\begin{prop}
+Soient $\tau_1,\ldots, \tau_n$ des v.a. i.i.d. de loi exponentielle $\text{Exp}(\lambda)$, on définit la suite de v.a. $T_k=\sum_{i=1}^{k}\tau_i, k=1,\ldots, n$.
+\begin{enumerate}
+\item $T_{k}\sim\text{Erl}(k,\lambda)$, avec
+$$
+f_{T_k}(t)=\frac{t^{k-1}e^{-\lambda t}\lambda^k}{(k-1)!},\text{ }t>0.
+$$
+\item La loi jointe de $(T_1,\ldots, T_n)$ admet pour densité
+$$
+f_{(T_1,\ldots, T_n)}(t_1,\ldots, t_n)=\lambda^n e^{-\lambda t_n }\mathbb{I}_{0<t_1<\ldots< t_n}(t_1,\ldots, t_n)
+$$
+\item $[(T_1,\ldots, T_n)|T_{n+1}=t]\sim D_{n}([0,t])$
+\end{enumerate}
+\end{prop}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\underline{preuve:}
+\begin{enumerate}
+\item Par récurrence sur $k$, au rang $k=1$ on a $\tau_1= T_1$ et la propriété est vérifiée. Supposons la propriété vérifiée au rang $k$ qu'en est il au rang $k+1$. On note que $T_{k+1}=T_k+\tau_{k+1}$ puis
+\begin{eqnarray*}
+f_{T_{k+1}}(t)&=&\int_{0}^{t}f_{T_k}(x)f_{\tau_{k+1}}(t-x)\text{d}x\\
+&=&\int_{0}^{t}\frac{x^{k-1}e^{-\lambda x}\lambda^k}{(k-1)!}\lambda e^{-\lambda(t-x)}\text{d}x\\
+&=&\frac{e^{-\lambda t}\lambda^{k+1}}{(k-1)!}\frac{t^k}{k}=\frac{t^k e^{-\lambda t}\lambda^{k+1}}{k!}
+\end{eqnarray*}
+\item Soit $g:\mathbb{R}^n\mapsto \mathbb{R}_+$ mesurable et bornée, alors
+\begin{eqnarray*}
+\mathbb{E}[g(T_{1},\ldots,T_n)]&=& \mathbb{E}[g(\tau_{1},\tau_1+\tau_2\ldots,\tau_1+\ldots+ \tau_n)]\\
+&=&\int_{\mathbb{R}^n}g(t_{1},\ldots,t_1+\ldots+ t_n)f_{(\tau_{1},\ldots,\tau_n)}(t_1,\ldots,t_n)\text{d}\lambda_n(t_{1},\ldots,t_n)\\
+\end{eqnarray*}
+On utilise la formule de changement de variable avec $\Phi:(u_{1},\ldots,u_n)\mapsto(u_1, u_{2}-u_1,\ldots,u_n-u_{n-1}):=(t_1,\ldots, t_n)$,  $\Phi(\mathbb{R}_+\times ]u_1,\infty[\times \ldots\times ]u_{n-1},\infty[) = \mathbb{R}^n $ et $\left|\frac{\text{d}\Phi}{\text{d}u}\right|=1$. Il vient
+$$
+\mathbb{E}[g(T_{1},\ldots,T_n)]=\int_{\mathbb{R}^n} g(u_1,\ldots, u_n)\lambda^{n}e^{-\lambda u_n}\mathbb{I}_{0<u_1<\ldots<u_n}(u_1,\ldots, u_n)\text{d}\lambda_{n}(u_1,\ldots, u_n).
+$$
+\item On a 
+\begin{eqnarray*}
+\mathbb{E}\left[g(T_1,\ldots, T_n)|T_{n+1}=t\right] &=& \int g(t_1,\ldots,t_n)f_{T_1,\ldots, T_n|T_{n+1}}(t_1,\ldots,t_n|t)\text{d}\lambda_n(t_1,\ldots,t_n)\\
+&=& \int g(t_1,\ldots,t_n)\frac{f_{T_1,\ldots, T_n,T_{n+1}}(t_1,\ldots,t_n,t)}{f_{T_{n+1}(t)}}\text{d}\lambda_n(t_1,\ldots,t_n)\\
+&=& \int g(t_1,\ldots,t_n)\frac{n!}{t^n}\text{d}\lambda_n(t_1,\ldots,t_n).
+\end{eqnarray*}
+
+\end{enumerate}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{remark}
+\begin{enumerate}
+  \item On a $N_t\sim\text{Pois}(\lambda t)$ avec
+\begin{eqnarray*}
+\Pr(N_t=n)&=&\Pr(T_n\leq t, T_{n+1}> t )\\
+&=&\Pr(T_n\leq t, T_{n}+\Delta^T_{n+1}> t )\\
+&=&\int_0^t\int_{t-x}^{+\infty}f_{T_n,\Delta^T_{n+1}}(x,y)\text{d}y\text{d}x\\
+&=&\int_0^t\int_{t-x}^{+\infty}\frac{\lambda^{n}e^{-\lambda x}x^{n-1}}{(n-1)!}\lambda e^{-\lambda y}\text{d}y\text{d}x\\
+&=&\int_0^t\frac{\lambda^{n}e^{-\lambda x}x^{n-1}}{(n-1)!} e^{-\lambda (t-x)}\text{d}x\\
+&=&\frac{\lambda^{n}e^{-\lambda t}}{(n-1)!}\int_0^tx^{n-1}\text{d}x\\
+&=&\frac{(\lambda t)^{n}e^{-\lambda t}}{n!}.
+\end{eqnarray*}
+\item $\E(N_t)=\text{Var}(N_t)=\lambda t$
+\end{enumerate}
+
+\end{remark}
+\begin{remark}[Processus de renouvellement]
+Un processus de comptage dont les temps inter-arrivée sont \textbf{i.i.d.} est un processus de renouvellement.
+\end{remark}
+\begin{prop}[Caractérisation du processus de Poisson]
+On a équivalence entre les assertions suivantes
+\begin{enumerate}
+\item Le processus $(N_t)_{t\geq 0}$ est un processus de Poisson
+\item Le processus $(N_t)_{t\geq 0}$ a
+\begin{itemize}
+\item[(i)] des accroissements indépendants, soit pour $0<t_1\leq\ldots\leq t_n$, les variables aléatoires
+$$N_{t_1},N_{t_2}-N_{t_1},\ldots,N_{t_{n}}-N_{t_{n-1}}\text{ sont indépendantes.}$$
+\item[(ii)] des accroissements stationnaires au sens où la distribution du nombre d'évènements durant un intervalle de longueur $s>0$ ne dépend que de $s$. En fait, on peut montrer que pour $s,t\geq0$, on a
+$$
+N_{t+s}-N_t\sim\text{Pois}(\lambda s)
+$$
+\end{itemize}
+\end{enumerate}
+Les processus stochastiques à accroissements indépendants et stationnaires sont les processus de Lévy. 
+\end{prop}
+\underline{Preuve:}\\
+\underline{$1 \Rightarrow 2$}\\
+Supposons que $(N_t)_{t\geq0}$ soit un processus de Poisson et soient $0<t_1<\ldots <t_n$ des instants. On calcul la probabilité jointe 
+$$
+\mathbb{P}\left(N_{t_1} = j_1, N_{t_2}-N_{t_1} = j_2,\ldots, N_{t_n}-N_{t_{n-1}} = j_n\right)
+$$
+avec $j_1,\ldots, j_n\in \mathbb{N}$, que l'on ré-écrit
+$$
+\mathbb{P}\left(T_{k_1}\leq t_1<T_{k_1+1}, T_{k_2}\leq t_2<T_{k_2+1},\ldots, T_{k_n} \leq t_n<T_{k_n+1}\right),
+$$
+où $k_i = j_1 + \ldots +j_i, i = 1,\ldots, n$. On en déduit en conditionnant par rapport au valeur de $T_{k_n+1}$ que
+\begin{eqnarray*}
+&&\mathbb{P}\left(T_{k_1}\leq t_1<T_{k_1+1}, T_{k_2}\leq t_2<T_{k_2+1},\ldots, T_{k_n}\leq t_n<T_{k_n+1}\right)\\
+&=&\int_{t_n}^{+\infty}\mathbb{P}\left(T_{k_1}<t_1<T_{k_1+1}, T_{k_2}<t_2<T_{k_2+1},\ldots, T_{k_n}<t_n|T_{k_n +1}=t\right)f_{T_{k_n+1}}(t)\text{d}\lambda(t)\\
+&=& \int_{t_n}^{+\infty}\binom{k_n}{j_1,\ldots, j_n}\left(\frac{t_1}{t}\right)^{j_1}\left(\frac{t_2-t_1}{t}\right)^{j_2}\ldots \left(\frac{t_n-t_{n-1}}{t}\right)^{j_n}\frac{e^{-\lambda t}t^{k_n}\lambda^{k_n + 1}}{k_n!}\text{d}\lambda(t)\\
+&=&\frac{e^{-\lambda t_1}\left(t_1\right)^{j_1}}{j_1!}\frac{\left(t_2-t_1\right)^{j_2}e^{-\lambda(t_2 - t_1)}}{j_2!}\ldots \frac{\left(t_n-t_{n-1}\right)^{j_n}e^{-\lambda(t_n - t_{n-1})}}{j_n!}
+\end{eqnarray*}
+
+
+\underline{$2 \Rightarrow 1$}\\
+On montre que le vecteur des temps d'arrivée $(T_1,\ldots, T_n)$ admet pour densité
+\begin{equation}\label{eq:DensityVectorArrivalTimes}
+f_{T_1,\ldots, T_n}(t_1,\ldots, t_n)=\lambda^n e^{-\lambda t_n}\mathbb{I}_{0< t_1<\ldots<t_n}.
+\end{equation}
+Soit $t_1,\ldots, t_n$ et $h$ des réels positifs telles que
+$$t_1<t_1+h<t_2<\ldots<t_n<t_n+h,$$ on a
+\begin{eqnarray*}
+&&\mathbb{P}(t_1<T_1<t_1+h,\ldots,t_n<T_1<t_n+h)\\
+&=&\mathbb{P}(N_{t_1}=0,N_{t_1+h}-N_{t_1}=1,\ldots,N_{t_n}-N_{t_{n-1}+h}=0,N_{t_n+h}-N_{t_n}\geq 1)\\
+&=&e^{-\lambda t_1}e^{-\lambda h}\lambda h e^{-\lambda [t_2-(t_1+h)]}e^{-\lambda h}\lambda h\ldots e^{-\lambda [t_n-(t_{n-1}+h)]}[1-e^{-\lambda h}] \\
+&=&e^{-\lambda t_n}\lambda^{n-1}h^{n-1}[1-e^{-\lambda h}]\\
+\end{eqnarray*}
+On divise par $h^{n}$ puis on laisse $h$ tendre vers $0$ pour obtenir \eqref{eq:DensityVectorArrivalTimes}. Il ne reste plus qu'a appliquer la formule de changement de variables pour constater que la loi jointe de $(\Delta^{T}_1, \ldots, \Delta^{T}_n)$ est celle d'un $n-$uplets de $n$ variables iid de loi exponentielles.\\
+ $\square$
+
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{prop}[La distribution de $T_1,\ldots,T_n|N_t=n$]
+Sachant que  $\{N_t=n\}$, les instants de saut $T_1,\ldots,T_n$ admettent la même distribution que les statistiques d'ordre associées à un échantillon de $n$ variables aléatoires indépendantes de loi uniforme sur $[0,t]$, concrétement
+$$T_1,\ldots,T_n|N_t=n\sim U_{1:n}(0,t),\ldots, U_{n:n}(0,t)$$.
+\end{prop}
+\underline{preuve:}\\
+On a 
+\begin{eqnarray*}
+&&\mathbb{E}\left[g(T_1,\ldots, T_n)|N_t = n\right]\\
+&=&\frac{\mathbb{E}\left[g(T_1,\ldots, T_n)\mathbb{I}_{N_t = n}\right]}{\P(N_t = n)}\\
+&=&\frac{n!}{e^{-\lambda t}(\lambda t)^n}\int_{\mathbb{R}^{n+1}}g(t_1,\ldots, t_n)\mathbb{I}_{t_n\leq t<t_{n+1}}(t_n,t_{n+1})f_{T_1,\ldots, T_{n+1}}(t_1,\ldots, t_{n+1})\text{d}\lambda(t_1,\ldots, t_{n+1})\\
+&=&\frac{n!}{e^{-\lambda t}(\lambda t)^n}\int_{\mathbb{R}^{n}}\int_{t}^{+\infty}g(t_1,\ldots, t_n)\mathbb{I}_{0<t_1<\ldots t_n\leq t}(t_1,\ldots,t_{n})\frac{n!}{t_{n+1}^n}\\
+&\times &\frac{e^{-\lambda t_{n+1}}\lambda^{n+1}t_{n+1}^n}{n!}\text{d}\lambda(t_{n+1})\text{d}\lambda(t_1,\ldots,t_{n} )\\
+&=&\frac{n!}{e^{-\lambda t} t^n}\int_{\mathbb{R}^{n}}g(t_1,\ldots, t_n)\mathbb{I}_{0<t_1<\ldots t_n\leq t}(t_1,\ldots,t_{n})\text{d}\lambda(t_1,\ldots,t_{n} )\\
+&\times&\int_{t}^{+\infty}\lambda e^{-\lambda t_{n+1}}\text{d}\lambda(t_{n+1})\\
+ &=&\int_{\mathbb{R}^{n}}g(t_1,\ldots, t_n)\frac{n!}{t^n}\mathbb{I}_{0<t_1<\ldots t_n\leq t}(t_1,\ldots,t_{n})\text{d}\lambda(t_1,\ldots,t_{n} )
+\end{eqnarray*}
+\begin{remark}[Algorithme de simulation]
+Pour simuler la trajectoire d'un processus de Poisson $\{N_t\text{ ; }t\geq0\}$ d'intensité $\lambda$ jusqu'à l'instant $t$,
+\begin{enumerate}
+\item On simule le nombre d'évènement $N_t$ de loi de Poisson $\text{Pois}(\lambda t)$
+\item On simule un échantillon $U_1(0,t),\ldots, U_n(0,t)$ de $n$ variables aléatoires \textbf{i.i.d.} de loi uniforme sur $[0,t]$ et on les trie de manière croissante pour obtenir les statistiques d'ordre $$U_{1:n}(0,t),\ldots, U_{n:n}(0,t)$$
+\item Les temps de saut sont alors donnés par $$T_k=U_{k:n}(0,t)\text{ pour }k=1,\ldots, n.$$
+\end{enumerate}
+\end{remark}
+\end{frame}
+\begin{frame}
+\begin{example}
+On suppose que le nombre de tremblements de terre en Californie depuis le 1er janvier 2017 suit un processus de Poisson $(N_t)_{t\geq0}$. Supposons que l'unité de temps est l'année et que le nombre moyen de tremblements de terre par an est de $20$.
+\begin{enumerate}
+\item Quelle est la probabilité d'observer entre $39$ et $41$ tremblements de terre dans les deux prochaines années.
+\item Quelle est la probabilité d'observer au moins un tremblement de terre dans les trois prochains mois.
+\end{enumerate}
+% L'intensité de $N_t$ est $\lambda=20$.
+% \begin{enumerate}
+% \item
+% \begin{eqnarray*}
+% \mathbb{P}(N_2\in\{39,40,41\})&=&\mathbb{P}(N_2=39)+\mathbb{P}(N_2=40)+\mathbb{P}(N_2=41),\\
+% &=&e^{-40}\frac{(40)^{39}}{39!}+e^{-40}\frac{(40)^{40}}{40!}+e^{-40}\frac{(40)^{41}}{41!}
+% \end{eqnarray*}
+% \item
+% \begin{eqnarray*}
+% \mathbb{P}(N_{0.25}\geq1)&=&1-\mathbb{P}(N_{0.25}=0),\\
+% &=&1-e^{-5},\\
+% \end{eqnarray*}
+% \end{enumerate}
+\end{example}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{prop}[Somme de deux processus de Poisson]
+Soient $\{N_t\text{ ; }t\geq0\}$ et $\{M_t\text{ ; }t\geq0\}$ deux processus de Poisson indépendants d'intensité respectives $\lambda$ et $\mu$, alors le processus $\{X_t\text{ ; }t\geq0 \}$ défini par
+$$X_t=N_t+M_t,\text{ for }t\geq0,$$
+est un processus de Poisson d'intensité $\lambda+\mu$. Le résultat se généralise à la somme de $n$ processus de Poisson.
+\end{prop}
+\begin{remark}[Généralisation courante du processus de Poisson]
+\begin{enumerate}
+  \item Lorsque l'intensité est une variable aléatoire $\Lambda$, on parle de processus de Poisson mélange.
+  \item Lorsque l'intensité est une fonction du temps, on parle de processus de Poisson non-homogène. On a alors
+  $$N(t)\sim\text{Pois}[\mu(t)],$$
+  avec $\mu(t) = \int_{0}^t\lambda(t)\text{d}t$ et $\lambda:\mathbb{R}_+\mapsto\mathbb{R}_+$.
+\end{enumerate}
+Dans les deux cas, on perd les propriétés d'accroissement indépendants et stationnaires
+\end{remark}
+\begin{example}[Croissance des \textit{blockchain}]
+Retour sur le problème de la double dépense: On modélise par
+\begin{itemize}
+  \item $(z+N_t)_{t\geq0}$ le nombre de blocs dans la chaine honnète, où $z\in \N^{\ast}$
+  \item $(M_t)_{t\geq0}$ le nombre de blocs dans la chaine malicieuse
+\end{itemize}
+Soit $\tau_z=\inf\{t\geq0\text{ ; } z+N_t=M_t\}$ le temps de succès de la double dépense. Si $(N_t)$ et $(M_t)$ sont des processus de Poisson d'intensité respective $\lambda$ et $\mu$ alors la probabilité de succès de la double dépense est donnée par
+$$
+\Pr(\tau_z<\infty)=\left(\frac{\mu}{\lambda}\right)^z.
+$$
+Voir Goffard \cite{goffard2018fraud}. Un bon exercice consiste à évaluer par simulation $\Pr(\tau_z<t)$, la probabilité de double dépense avant l'instant $t\geq0$.
+\end{example}
+\end{frame}
+\section{Processus de Poisson composé}
+\begin{frame}[allowframebreaks]
+\underline{III. Processus de Poisson composé}\\
+\begin{definition}[Distribution composée]
+La variable aléatoire
+$$
+X=\sum_{k=1}^{N}U_k,
+$$
+où
+\begin{itemize}
+  \item $N$ est une variable aléatoires de comptage
+  \item $(U_k)_{k\geq1}$ est une suite de variables aléatoires positives, \textbf{i.i.d.} de densité $f_U$, et indépendante de $N$.
+\end{itemize}
+admet une distribution composée. La loi de probabilité de $X$ est donnée par
+$$
+\text{d}\Pr_X(x)=\Pr(N=0)\delta_0(x)+\sum_{k=1}^{\infty}f^{\ast k}_U(x)\Pr(N=k),
+$$
+\end{definition}
+\begin{remark}[Interprétation actuarielle]
+Modèle fréquence/coût classique en assurance non-vie, sur une période d'exercice donnée,
+\begin{itemize}
+  \item $N$ représente le nombre de sinistres,
+  \item $U_1,\ldots, U_N$ représente les montants de sinistres.
+\end{itemize}
+\end{remark}
+\begin{prop}
+La fonction génératrice des moments de $X$ est donnée par
+$$
+\mathcal{M}_X(t)=\E\left(e^{tX}\right)=\mathcal{G}_N\left[\mathcal{M}_U(t)\right], \text{ }t\in\mathbb{R}.
+$$
+ où $\mathcal{G}_N(t)=\E(t^N)$ désigne la fonction génératrice des probabilités de $N$. On en déduit que
+$$
+\E(X)=\E(N)\E(U)\text{ et }\text{Var}(X)=\mathbb{E}(U)^2\text{Var}(N)+\mathbb{E}(N)\text{Var}(U).
+$$
+\end{prop}
+\underline{preuve:}\\
+On a
+\begin{eqnarray*}
+\mathcal{M}_X(t)&=&\E\left(e^{tX}\right)=\E\left(e^{t\sum_{k=1}^{N}U_k}\right)\\
+&=&\E\left[\E\left(e^{t\sum_{k=1}^{N}U_k}|N\right)\right]=\sum_{n=0}^{\infty}\E\left(e^{t\sum_{k=1}^{N}U_k}|N=n\right)\Pr(N=n)\\
+&=&\sum_{n=0}^{\infty}\E\left(e^{t\sum_{k=1}^{n}U_k}|N=n\right)\Pr(N=n)=\sum_{n=0}^{\infty}\E\left(e^{tU}\right)^n\Pr(N=n)\\
+&=&\sum_{n=0}^{\infty}\E\left(e^{tU}\right)^n\Pr(N=n)=\sum_{n=0}^{\infty}\mathcal{M}_U(t)^n\Pr(N=n)=\mathcal{G}_N\left[\mathcal{M}_U(t)\right].
+\end{eqnarray*}
+L'expression de l'espérance et de la variance s'obtient alors par dérivation et évaluation en $0$.
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{definition}[Processus de Poisson composé]
+Soit
+\begin{itemize}
+\item $(N_t)_{t\geq0}$ un processus de Poisson d'intensité $\lambda$,
+\item $(U_k)_{k\geq1}$ une suite \textbf{i.i.d.} de variables aléatoires positives indépendante de $N_t$.
+\end{itemize}
+Le processus stochastique $\{X_t\text{ ; }t\geq0\}$ défini par
+\begin{equation*}
+X_t=\sum_{k=1}^{N_t}U_k,\text{ for }t\geq0,
+\end{equation*}
+est un processus de Poisson composé.
+\end{definition}
+\begin{remark}
+Le processus de Poisson composé est une généralisation du processus de Poisson permettant des sauts de hauteur aléatoire.
+\end{remark}
+\end{frame}
+\begin{frame}
+\begin{figure}[!h]
+\begin{center}
+\begin{tikzpicture}
+  %Origin and axis
+  \coordinate (O) at (0,0);
+  \draw[->] (-1,0) -- (8,0) coordinate[label = {below:$t$}] (xmax);
+  \draw[->] (0,-0.5) -- (0,5.5) coordinate[label = {left:$N_t$}] (ymax);
+  %Lower linear boundary
+
+
+  %Stochastic process trajectory
+
+  \draw (0,0) node[blue,left] {} node{};
+  \draw[very thick,blue,-] (0,0) -- (1,0) node[pos=0.5, above] {$\Delta T_0$} ;
+  \draw[very thick,dashed,blue] (1,0) -- (1,1.5) node[pos=0.5, right] {$X_1$};
+  \draw[very thick,blue,-] (1,1.5) -- (1.75,1.5) node[pos=0.5, above] {$\Delta T_1$};
+  \draw[very thick,dashed,blue] (1.75,1.5) -- (1.75,2) node[pos=0.5, right] {$X_2$};
+  \draw[very thick,blue,-] (1.75,2) -- (2.75,2) node[pos=0.5, above] {$\Delta T_2$};
+  \draw[very thick,dashed,blue] (2.75,2) -- (2.75,3.25) node[pos=0.5, right] {$X_3$};
+  \draw[very thick,blue,-] (2.75,3.25) -- (5,3.25)node[pos=0.5, above] {$\Delta T_3$};
+  \draw[very thick,dashed,blue] (5,3.25) -- (5,4) node[pos=0.5, right] {$X_4$};
+  \draw[very thick,blue,-] (5,4) -- (6,4) node[pos=0.5, above] {$\Delta T_4$};
+  \draw[very thick,dashed,blue] (6,4) -- (6,5) node[pos=0.5, right] {$X_5$};
+  \draw[very thick,blue,-] (6,5) -- (8,5) node[pos=0.5, above] {$\Delta T_5$};
+  %Jump Times
+  \draw (1,0) node[blue,below] {$T_1$} node{ \color{blue}$\bullet$};
+  \draw (1.75,0) node[blue,below] {$T_2$} node{ \color{blue}$\bullet$};
+  \draw (2.75,0) node[blue,below] {$T_3$} node{ \color{blue}$\bullet$};
+  \draw (5,0) node[blue,below] {$T_4$} node{ \color{blue}$\bullet$};
+  \draw (6,0) node[blue,below] {$T_5$} node{ \color{blue}$\bullet$};
+  %Level of the counting process
+   % \draw (0,0) node[black,left] {} node{ \color{black}$\bullet$};
+   % \draw (0,1) node[black,left] {$1$} node{ \color{black}$\bullet$};
+   % \draw (0,2) node[black,left] {$2$} node{ \color{black}$\bullet$};
+   % \draw (0,3) node[black,left] {$3$} node{ \color{black}$\bullet$};
+   % \draw (0,4) node[black,left] {$4$} node{ \color{black}$\bullet$};
+   % \draw (0,5) node[black,left] {$5$} node{ \color{black}$\bullet$};
+
+  % %Aggregated Capital gains
+%  \draw (0,1.5) node[blue,below right] {$\mu_1$} node{ \color{blue}$-$};
+%  \draw (0,2.25) node[blue,left] {$\mu_2$} node{ \color{blue}$-$};
+%  \draw (0,3.75) node[blue,left] {$\mu_3$} node{ \color{blue}$-$};
+  %Ruin time = First-crossing time time
+%  \draw (5,0) node[black,above right] {$\tau_u$} node{ \color{black}$\times$};
+%  \draw[dotted,black] (0,3.28) -- (5,3.28);
+%  \draw[dotted,black] (5,0) -- (5,3.28);
+\end{tikzpicture}
+\end{center}
+\caption{Evolution du processus $(X_t)_{t\geq0}$.}
+\label{Fig:RuinTimeInsuranceRiskModel}
+\end{figure}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{prop}
+Soit $(X_t)_{t\geq0}$ un processus de Poisson composé, on a
+$$\mathbb{E}(X_t)=\lambda t \mathbb{E}(U)\text{ and }\mathbb{V}(X_t)=\lambda t\mathbb{E}\left(U^{2}\right).$$
+\end{prop}
+\end{frame}
+%\begin{frame}{Example}
+%\begin{example}[Andrea's burger]
+%Assume that the customer enter Andrea's burger restaurant according to a Poisson process $\{N_t\text{ ; }t\geq0\}$ with intensity $\lambda$, the time unit is the day. The customers order
+%\begin{itemize}
+%\item A milkshake for $7\$$ with probability $1/5$,
+%\item A burger for $10\$$ with probability $2/5$,
+%\item A side of french fries for $5\$$ with probability $1/5$,
+%\item The \textit{ciccione} menu for $13\$$ with probability $1/5$
+%\end{itemize}
+%\begin{enumerate}
+%\item Show that the amount of money made by the restaurant up to time $t$ is a compound Poisson process.
+%\item Find the expectation and variance of the amount of money made by the restaurant in a day.
+%\end{enumerate}
+%\end{example}
+%\end{frame}
+%\begin{frame}[allowframebreaks]{Solution}
+%\begin{enumerate}
+%\item The amounts paid by customers form a sequence $\{X_k\text{ ; }k\geq1\}$ of \textbf{i.i.d.} random variables distributed as $X$ having PMF
+%\begin{equation*}
+%\mathbb{P}(X=x)=
+%\begin{cases}
+%1/5&\text{ if }x\in\{7,5,13\}\\
+%2/5 &\text{ if }x=10
+%\end{cases}
+%\end{equation*}
+%and the amount of money made by the restaurant up to time $t$ is given
+%\begin{equation*}
+%S_t=\sum_{k=1}^{N_t}X_k\text{, }t\geq0.
+%\end{equation*}
+%which define a compound Poisson process.
+%\item $\mathbb{E}(S_1)=9\lambda$ and $\mathbb{V}(S_1)=\frac{443}{5}\lambda$
+%\end{enumerate}
+%\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}[Le modèle de Cramer-Lundberg]
+Une compagnie d'assurance est supposée capable de suivre l'évolution de sa réserve financière continuement dans le temps. On suppose que
+\begin{itemize}
+\item Le nombre de sinistre $(N_t)_{t\geq0}$ enregistrés jusqu'à $t$, est un processus de Poisson d'intensité $\lambda$.
+\item Les sinistres $(U_k)_{k\geq1}$ sont modélisés par une suite \textbf{i.i.d.} de variables aléatoires positives indépendantes de $N_t$.
+\end{itemize}
+Les engagements de la compagnie d'assurance à l'instant $t$ s'élèvent à
+$$X_t=\sum_{k=1}^{N_t}U_k,\text{  }t\geq0,$$
+qui est un processus de Poisson composé. De plus, La compagnie
+\begin{itemize}
+  \item dispose d'une réserve initiale de montant $u\geq0$
+  \item récupère les primes linéairement dans le temps à un taux $c>0$
+  \begin{itemize}
+    \item Typiquement, les primes compensent le cout moyen des assurés par unité de temps avec
+     $$c=(1+\eta)\E(X_1),\text{ avec }\eta>0.$$
+  \end{itemize}
+\end{itemize}
+Finalement la réserve financière de la compagnie d'assurance est donnée par
+$$
+R_t=u+ct-X_t,\text{ }t\geq0.
+$$
+\end{example}
+On note $\tau_u=\inf\{t\geq0\text{ ; }R_t\leq0\}$ l'instant de ruine et la probabilité de ruine
+$$
+\psi(u, T)=\Pr(\tau_u<T)
+$$
+pour un horizon de temps $T$. Pour plus d'informations, on pourra consulter le livre d'Asmussen et Albrecher \cite{AsAl10}.
+\begin{problem}
+On suppose que les sinistres sont distribués suivant une loi Gamma $\Gamma(\alpha,\beta)$, donnez la moyenne et la variance de $X_t$ en fonction de $\lambda,\alpha$ et $\beta$.
+\end{problem}
+\end{frame}
+\begin{frame}
+Mes notes se basent sur les documents \cite{TruquetEnsai,Nabil17,Hohn}.
+\bibliographystyle{plain}
+\bibliography{mad_notes}
+\end{frame}
+\end{document}

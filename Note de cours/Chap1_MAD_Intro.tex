@@ -1,0 +1,259 @@
+\documentclass[8pt,notheorems]{beamer}
+\usetheme{Copenhagen}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{beamerthemesplit}
+\usepackage{graphicx}
+\usepackage{tkz-graph}
+\usepackage{color}
+\usepackage{listings}
+
+\usepackage{amsmath,amsfonts,amsthm,t1enc}
+\usepackage{fourier}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,calc}
+\setbeamertemplate{footline}{\hfill \insertframenumber/\inserttotalframenumber}
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+\newcommand{\Exp}{\mathbb{E}}
+
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+
+\setbeamertemplate{theorem}[ams style]
+\setbeamertemplate{theorems}[numbered]
+%\makeatletter
+%\def\th@mystyle{%
+%    \normalfont % body font
+%    \setbeamercolor{block title example}{bg=orange,fg=white}
+%    \setbeamercolor{block body example}{bg=blue!20,fg=black}
+%    \def\inserttheoremblockenv{block}
+%  }
+%\makeatother
+%\theoremstyle{mystyle}
+
+\makeatletter
+    \ifbeamer@countsect
+      \newtheorem{theorem}{\translate{Theorem}}[section]
+    \else
+      \newtheorem{theorem}{\translate{Theorem}}
+    \fi
+    \newtheorem{corollary}{\translate{Corollary}}
+    \newtheorem{prop}{\translate{Proposition}}
+    \newtheorem{lemma}{\translate{Lemma}}
+    \newtheorem{problem}{\translate{Problem}}
+    \newtheorem{solution}{\translate{Solution}}
+
+    \theoremstyle{definition}
+    \newtheorem{definition}{\translate{Definition}}
+    \newtheorem{definitions}{\translate{Definitions}}
+
+    \theoremstyle{example}
+    \newtheorem{example}{\translate{Example}}
+    \newtheorem{examples}{\translate{Examples}}
+
+\makeatletter
+\def\th@mystyle{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange,fg=white}
+    \setbeamercolor{block body example}{bg=orange!20,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{mystyle}
+\newtheorem{fact}{Fact}
+
+
+
+
+
+    % Compatibility
+    \newtheorem{Beispiel}{Beispiel}
+    \newtheorem{Beispiele}{Beispiele}
+    \theoremstyle{plain}
+    \newtheorem{Loesung}{L\"osung}
+    \newtheorem{Satz}{Satz}
+    \newtheorem{Folgerung}{Folgerung}
+    \newtheorem{Fakt}{Fakt}
+    \newenvironment{Beweis}{\begin{proof}[Beweis.]}{\end{proof}}
+    \newenvironment{Lemma}{\begin{lemma}}{\end{lemma}}
+    \newenvironment{Proof}{\begin{proof}}{\end{proof}}
+    \newenvironment{Theorem}{\begin{theorem}}{\end{theorem}}
+    \newenvironment{Problem}{\begin{problem}}{\end{problem}}
+    \newenvironment{Corollary}{\begin{corollary}}{\end{corollary}}
+    \newenvironment{Example}{\begin{example}}{\end{example}}
+    \newenvironment{Examples}{\begin{examples}}{\end{examples}}
+    \newenvironment{Definition}{\begin{definition}}{\end{definition}}
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+% ============================================================
+% Title
+% ============================================================
+
+\title[]{Modèles aléatoires discrets}
+\subtitle{Chapitre I: Introduction}
+\author{Pierre-Olivier Goffard}
+\institute{
+	   Université de Lyon 1\\
+	ISFA\\
+	   \texttt{pierre-olivier.goffard@univ-lyon1.fr}
+	  }
+\date{
+ISFA\\
+\today}
+\lstset{language=SAS}
+\begin{document}
+
+\frame{\titlepage}
+
+
+% ============================================================
+\begin{frame}[allowframebreaks]
+\underline{I. Introduction et motivations}\\
+\begin{block}{Objectif}
+Introduire la notion de processus stochastique.
+\begin{itemize}
+\item Chaine de Markov
+\item Processus de Poisson
+\item Processus de Poisson composé
+\item Processus de branchement
+\item Martingale à temps discret
+\end{itemize}
+\end{block}
+\begin{definition}[Processus stochastique]
+Un processus stochastique $\{X_t\text{ ; }t\}$ est une suite de variables aléatoires indicée sur le temps.
+\begin{itemize}
+\item Si $t\in\mathbb{N}$ alors on parle de processus stochastique en temps discret.
+\item Si $t\in\mathbb{R}_+$ alors on parle de processus stochastique en temps continu.
+\end{itemize}
+$\{X_t\text{ ; }t\}$ est une quantité qui évolue de façon aléatoire dans le temps.
+\end{definition}
+% \begin{example}
+% \begin{itemize}
+% \item La réserve financière d'une compagnie d'assurance
+% \item Le cours d'une action
+% \item Le nombre de client à un guichet
+% \item Le temps qu'il fait dehors
+% \item Le nombre d'infectés au cours d'une épidémie
+% \end{itemize}
+% \end{example}
+\begin{example}[Modèle de ruine à temps discret]
+Soit une compagnie d'assurance non-vie,
+\begin{itemize}
+\item detenant un capital initial $u>0$,
+\item récupérant $c>0$ sur chaque période d'exercice au titre des primes,
+\item indemnisant $X$, variable aléatoire positive, à ses assurés sur chaque période d'exercice.
+\end{itemize}
+Soit $\{R_t\text{ ; }t\in\mathbb{N}\}$ la valeur de la réserve financière à la fin de chaque période d'exercice. On a
+$$
+R_0=u\text{ et }R_t=u+c\times t - \sum_{k=1}^{t}X_k,\text{ }t=1,2,3,\ldots
+$$
+où $X_1,X_2,\ldots$ sont des variables aléatoires i.i.d. positives distribuées comme $X$. On s'intéresse à la probabilité de ruine avant $T$ définit par
+$$
+\psi(u,T)=\mathbb{P}(R_t<0,\text{ pour un certain }t\leq T)
+$$
+\begin{itemize}
+\item Calibrer $c$ $\Rightarrow$ tarification, typiquement
+$$
+c=\mathbb{E}(X)(1+\eta),
+$$
+avec un chargement de sécurité $\eta>0$.
+\item Calibrer $u$ $\Rightarrow$ provisionnement. Choisir $u$ grand permet d'éviter une ruine à court terme.
+\end{itemize}
+\end{example}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}[Le cours de l'action Amazon]
+Soit $\{X_t\text{ ; }t\in\mathbb{N}\}$ la valeur journalière de l'action Amazon à la clotûre du marché. On suppose que le cours de l'action
+\begin{itemize}
+\item augmente de $\alpha\%$ avec probabilité $p$
+\item diminue de $\beta\%$ avec probabilité $1-p$
+\end{itemize}
+Soit $N$ le nombre de jour d'augmentation, à l'instant $t$, l'action vaut
+$$
+X_t=(1+\alpha)^{N}(1-\beta)^{t-N}X_0
+$$
+Quelle est la loi de $N$ en fonction de $t$ et $p$?\\
+On peut raffiner le modèle en supposant q'une augmentation est plus probable si une augmentation est observée le jour d'avant. \\
+On définit le processus $\{Y_t\text{ ; }t\in\mathbb{N}\}$ indiquant si le cours de l'action augmente ou diminue.
+\begin{itemize}
+\item L'espace d'état (valeur possibles de $Y_t$) est $E=\{\text{up, down}\}$
+\item On a, pour $t\in\mathbb{N}$,
+$$
+\left(
+\begin{array}{cc}
+\mathbb{P}(Y_{t+1}=\text{ up}|Y_{t}=\text{ up})=p& \mathbb{P}(Y_{t+1}=\text{ down}|Y_{t}=\text{ up})=1-p\\
+\mathbb{P}(Y_{t+1}=\text{ up}|Y_{t}=\text{ down})=1-q& \mathbb{P}(Y_{t+1}=\text{ down}|Y_{t}=\text{ down})=q
+\end{array}
+\right)
+$$
+\end{itemize}
+Lorsque l'état du processus ne dépend que de la valeur précédente, on parle de processus de Markov. $\{Y_t\text{ ; }t\in\mathbb{N}\}$ définit une chaine de Markov. On parle de chaine de Markov cachée influençant la valeur du processus $X_t$. Déssiner le graphe de transition.
+\end{example}
+\begin{example}[Le modèle SIR]
+Soit une population de $N$ individus placés dans $3$ compartiments
+\begin{itemize}
+\item Compartiment \textbf{S} pour \textit{Susceptibles}
+\item Compartiment \textbf{I} pour \textit{Infected}
+\item Compartiment \textbf{R} pour \textit{Removed}
+\end{itemize}
+On modélise le nombre d'individus dans chaque compartiment au cours du temps via les processus $S_t$, $I_t$ et $R_t=N-(S_t+I_t)$. Le modèle évolue selon deux règles, durant chaque période,
+\begin{itemize}
+\item Chaque infecté contamine un susceptible donné avec une probabilité $p$
+\item Les infectés vont dans le compartiment \textbf{R}
+\end{itemize}
+Chaque susceptible est contaminé durant une période donnée avec une probabilité $1-(1-p)^{I_t}$, le nombre de susceptible $S_{t+1}$ à $t+1$ dépend du nombre de susceptibes $S_t$ et du nombre d'infecté $I_t$ à l'instant $t$ avec
+$$
+S_{t+1}\sim\text{Bin}(S_t, (1-p)^{I_t})
+$$
+L'épidémie s'arrête à $T$ lorsque le nombre d'infectés est $0\text{ }(I_T=0)$, on s'intéresse à la taille finale de l'épidémie donnée par $N-S_T$, soit combien de susceptible ont été contaminé. On a une fois de plus un processus $(S_t,I_t)$ avec une dépendance à l'état précédent, donc Markovien.
+\end{example}
+\end{frame}
+
+
+\end{document}

@@ -1,0 +1,597 @@
+\documentclass[8pt,notheorems]{beamer}
+\usetheme{Copenhagen}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{beamerthemesplit}
+\usepackage{graphicx}
+\usepackage{tkz-graph}
+\usepackage{color}
+\usepackage{listings}
+
+\usepackage{amsmath,amsfonts,amsthm,t1enc}
+\usepackage{fourier}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows}
+%%%<
+\usepackage{verbatim}
+%%%>
+\usetikzlibrary{automata,arrows,positioning,calc}
+\setbeamertemplate{footline}{\hfill \insertframenumber/\inserttotalframenumber}
+% \setbeamertemplate{headline}{}
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\F}{\mathcal{F}}
+
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+
+\setbeamertemplate{theorem}[ams style]
+\setbeamertemplate{theorems}[numbered]
+%\makeatletter
+%\def\th@mystyle{%
+%    \normalfont % body font
+%    \setbeamercolor{block title example}{bg=orange,fg=white}
+%    \setbeamercolor{block body example}{bg=blue!20,fg=black}
+%    \def\inserttheoremblockenv{block}
+%  }
+%\makeatother
+%\theoremstyle{mystyle}
+
+\makeatletter
+    \ifbeamer@countsect
+      \newtheorem{theorem}{\translate{Theorem}}[section]
+    \else
+      \newtheorem{theorem}{\translate{Theoreme}}
+    \fi
+    \newtheorem{corollary}{\translate{Corollaire}}
+    \newtheorem{prop}{\translate{Proposition}}
+    \newtheorem{lemma}{\translate{Lemme}}
+    \newtheorem{problem}{\translate{Probleme}}
+    \newtheorem{solution}{\translate{Solution}}
+
+    \theoremstyle{definition}
+    \newtheorem{definition}{\translate{Definition}}
+    \newtheorem{definitions}{\translate{Definitions}}
+
+    \theoremstyle{example}
+    \newtheorem{example}{\translate{Exemple}}
+    \newtheorem{remark}{\translate{Remarque}}
+    \newtheorem{examples}{\translate{Examples}}
+
+\makeatletter
+\def\th@mystyle{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange,fg=white}
+    \setbeamercolor{block body example}{bg=orange!20,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{mystyle}
+\newtheorem{fact}{Fact}
+
+
+
+
+
+    % Compatibility
+    \newtheorem{Beispiel}{Beispiel}
+    \newtheorem{Beispiele}{Beispiele}
+    \theoremstyle{plain}
+    \newtheorem{Loesung}{L\"osung}
+    \newtheorem{Satz}{Satz}
+    \newtheorem{Folgerung}{Folgerung}
+    \newtheorem{Fakt}{Fakt}
+    \newenvironment{Beweis}{\begin{proof}[Beweis.]}{\end{proof}}
+    \newenvironment{Lemma}{\begin{lemma}}{\end{lemma}}
+    \newenvironment{Proof}{\begin{proof}}{\end{proof}}
+    \newenvironment{Theorem}{\begin{theorem}}{\end{theorem}}
+    \newenvironment{Problem}{\begin{problem}}{\end{problem}}
+    \newenvironment{Corollary}{\begin{corollary}}{\end{corollary}}
+    \newenvironment{Example}{\begin{example}}{\end{example}}
+    \newenvironment{Examples}{\begin{examples}}{\end{examples}}
+    \newenvironment{Definition}{\begin{definition}}{\end{definition}}
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+% ============================================================
+% Title
+% ============================================================
+
+\title[]{MAD M1 Actuariat/ES}
+\subtitle{Chapitre III: Martingale, processus de branchement et marche aléatoire}
+\author{Pierre-Olivier Goffard}
+\institute{
+	   Université de Lyon 1\\
+	ISFA\\
+	   \texttt{pierre-olivier.goffard@univ-lyon1.fr}
+	  }
+\date{
+ISFA\\
+\today}
+\lstset{language=SAS}
+\begin{document}
+
+\frame{\titlepage}
+
+
+% ============================================================
+\section{Martingale à temps discret}
+\begin{frame}[allowframebreaks]
+\underline{I. Martingale à temps discret}\\
+\begin{definition}[Processus adapté]
+Un processus $(X_n)_{n\in \N}$ est adapté à la filtration $\mathcal{F}_n$ ($\mathcal{F}_n$-adapté), si $X_n$ est mesurable par rapport à la tribu $\mathcal{F}_n$.
+\end{definition}
+\begin{remark}
+La filtration $\sigma(X_0,\ldots,X_n)$ est la plus petite filtration rendant le processus $(X_n)_{n\in \N}$ adapté.
+\end{remark}
+\begin{definition}[martingale, sur-martingale, sous-martingale]
+Soit $(X_n)_{n\in \N}$ un processus $\mathcal{F}_n$-adapté tel que $\E(|X_n|)<\infty$ pour tout $n\in \N$. On dit que
+\begin{itemize}
+    \item Une martingale si
+    $$
+    \E(X_{n+1}|\mathcal{F}_n) = X_n,\text{ pour tout } n\in \N.
+    $$
+    \item Une sur-martingale si
+    $$
+    \E(X_{n+1}|\mathcal{F}_n) \leq X_n,\text{ pour tout } n\in \N.
+    $$
+    \item Une sous-martingale si
+    $$
+    \E(X_{n+1}|\mathcal{F}_n) \geq X_n,\text{ pour tout } n\in \N.
+    $$
+\end{itemize}
+\end{definition}
+\begin{remark}
+Une sur-martingale décroit en moyenne tandis qu'une sous-martingale croit en moyenne. On note également que si $(X_n)_{n\in \N}$ est une martingale alors
+$$
+\E(X_m|\F_n) = X_n,\text{ pour tout }0\leq n\leq m.
+$$
+On note également que cela entraine
+$$
+\E(X_m)=\E(X_n)=\E(X_0).
+$$
+\end{remark}
+\begin{example}
+\begin{enumerate}
+    \item Soit $X_1,\ldots, X_n$ une suite de v.a. i.i.d. tels que $\E(X_i) = 0$ pour tout $i\geq 1$ alors leur somme
+    $$
+    S_n = X_1+\ldots+X_n,\text{ pour tout }n\geq1,
+    $$
+    définit une martingale par rapport à la filtration $\mathcal{F}_n = \sigma(X_1,\ldots, X_n)$. En effet,
+    $$
+    \E(S_{n+1}|\F_n) =\E(S_{n}+X_{n+1}|\F_n) = S_n + \E(X_{n+1}) = S_n.
+    $$
+    \item Soit  Soit $X_1,\ldots, X_n$ une suite de v.a. positives i.i.d. tels que $\E(X_i) = 1$ pour tout $i\geq 1$ alors leur produit
+    $$
+    M_n = \prod_{i=1}^n X_i,\text{ }n\geq1,
+    $$
+    définit une martingale par rapport à la filtration $\sigma(X_1,\ldots, X_n)$. En effet,
+    $$
+    \E(M_{n+1}|\F_n) =\E(X_{n+1}M_n|\F_n) = M_n\E(X_{n+1}) = M_n.
+    $$
+    \item Soit $\xi$ une v.a. tel que $\E(|\xi|)<\infty$, le processus $M_n = \E(\xi|\F_n),\text{ }n\geq1$ qui correspond à la valeur moyenne de la variable aléatoire $\xi$ étant donnée l'information collectée $\F_n$ jusqu'a l'instant $n\geq1$, définit une martingale avec
+    $$
+    \E(M_{n+1}|\F_n) = \E(\E(\xi|\F_{n+1})|\F_n) =\E(\xi|\F_n) = M_n.
+    $$
+\end{enumerate}
+\end{example}
+\begin{definition}[Processus prévisible]
+Un processus $(H_n)_{n\in\N}$ est $\mathcal{F}_n$-prévisible si
+$$
+H_n\text{ est borné et }\mathcal{F}_{n-1}\text{-mesurable}.
+$$
+\end{definition}
+\begin{prop}
+Soit $(X_n)_{n\in\N}$ un processus adapté et $(H_n)_{n\in\N}$ un processus prévisible alors le processus définie par
+$$
+(H.X)_0 =0\text{, }(H.X)_n =H_1(X_1-X_0)+\ldots+ H_n(X_n-X_{n-1}),\text{ }n\geq1
+$$
+est une martingale (resp. une surmartingale) si $(X_n)_{n\in\N}$ est une martingale (resp. sur-martingale).
+\end{prop}
+\underline{preuve:}\\
+Il faut montrer que
+$$
+\E\left[(H.X)_{n+1} - (H.X)_{n}|\mathcal{F}_n\right]=0.
+$$
+On note que
+$$
+\E\left[(H.X)_{n+1} - (H.X)_{n}|\mathcal{F}_n\right]=\E\left[H_{n+1}(X_{n+1}-X_n)|\mathcal{F}_n\right]=0.
+$$
+$\square$
+\begin{theorem}[du temps d'arrêt optionnel]\label{theo:temps_arret}
+Soient $(X_n)_{n\in\N}$ une martingale (rsp. sur-martingale) et $\tau$ un $\mathcal{F}_n$ temps d'arrêt. Le processus $(X_{n\land \tau})_{n\in\N}$ est une martingale (resp. une sur-martingale). De plus, si $\tau$ est bornée alors
+$$
+\E(X_{\tau}) = \E(X_0).
+$$
+\end{theorem}
+\underline{preuve:}\\
+On remarque que le processus définie par
+$$
+H_{n} = \mathbb{I}_{\tau\geq n} = 1 -\mathbb{I}_{\tau\leq n-1}
+$$
+est prévisible et que
+$$
+(X_{n\land \tau})_{n\in\N} = X_0 + (H.X)_n
+$$
+est donc une martingale (si $(X_n)_{n\in\N}$ est une martingale). Comme $\tau$ est bornée alors il existe $N\in\N$ tel que $\tau\leq N$ presque surement. On en déduit que
+$$
+\E(X_{\tau})=\E(X_{\tau\land N})=\E(X_0).
+$$
+\begin{theorem}[De convergence des martingales]
+Soit $(X_n)_{n\geq0}$ une martingale positive alors 
+$$
+X_\infty := \underset{n\rightarrow\infty}{\lim} X_n\text{ existe presque surement.}
+$$
+\end{theorem}
+\end{frame}
+\section{Le processus de branchement}
+\begin{frame}[allowframebreaks]
+\underline{II. Le processus de branchement}\\
+
+Le processus de branchement permet de suivre l'évolution d'une population. Soit $X$ une variable aléatoire de comptage telle que
+$$
+\P(X = 0)>0\text{ et }\E(X)<\infty.
+$$
+$X$ correspond au nombre d'enfants d'un individu. On définit une suite (à deux indices) de variables aléatoires
+$$
+\left(X^{(n)}_r\right)_{n,r\in \N}
+$$ 
+indépendantes et distribuées comme $X$ de sorte que $X^{(n+1)}_r$ désigne le nombre de descendants (membre de la génération $n+1$) de l'individu $r$ (qui appartient à la génération $n$). Le processus $(Z_n)_{n\in \N}$ définie par 
+$$
+Z_0 =1\text{, }Z_{n+1} = X^{(n+1)}_1+\ldots+ X^{(n+1)}_{Z_n} 
+$$
+correspond à la taille de la génération $n+1$. On observe $(Z_n)_{n\in\N}$ définie une chaine de Markov puisque conditionnelement à $Z_n = z_n\in \N$, $Z_{n+1}=X^{(n+1)}_1+\ldots+ X^{(n+1)}_{z_n}$ est indépendant de $Z_0,\ldots, Z_{n-1}$. 
+\begin{prop}[Fonction génératrice des probabilités]
+La fonction génératrice des probabilités de $(Z_n)_{n\in\N}$ vérifie
+$$
+G_{Z_n}(s) = \E\left(s^{Z_n}\right) = G_{Z_{n-1}}\left[G_X(s)\right],\text{ }n\geq1.
+$$
+\end{prop} 
+\underline{preuve:}\\
+On a
+
+\begin{eqnarray*}
+G_{Z_n}(s) &=& \E\left(s^{Z_n}\right)\\
+&=& \E\left(s^{X_1^{(n)}+\ldots+ X_{Z_{n-1}}^{(n)}}\right)\\
+&=& \E\left\{\E\left(s^{X_1^{(n)}+\ldots+ X_{Z_{n-1}}^{(n)}}\right)\Big\rvert Z_{n-1}\right]\\
+&=& \E\left\{\prod_{k=1}^{Z_{n-1}}\E\left(s^{X_k^{(n)}}\right)\Big\rvert Z_{n-1}\right\}\\
+&=& \E\left\{\prod_{k=1}^{Z_{n-1}}G_X(s)\right]\\
+&=& \E\left\{G_X(s)^{Z_{n-1}}\right\} = G_{Z_{n-1}}\left[G_X(s)\right]
+\end{eqnarray*}
+\end{frame}
+\begin{frame}[allowframebreaks]
+On note 
+$$
+\pi_n := \P(Z_n = 0),\text{ }n\geq1,
+$$
+la probabilité d'extinction à la génération $n$. On a 
+\begin{equation}\label{eq:proba_extinction_recurrence}
+\pi_n = G_X(\pi_{n-1}),\text{ }n\geq1,
+\end{equation}
+et la probabilité d'une éventuelle extinction 
+$$
+\pi = \P\left(Z_n = 0,\text{ pour un }n\geq1\right)
+$$
+Comme $\{Z_{n-1} = 0\}\subset \{Z_{n} = 0\}$ alors $A_n =\{Z_{n} = 0\}$ est une suite croissante d'évènements alors $\pi$ est la plus petite solution (car la suite $\pi_n$ est croissante) de l'équation 
+\begin{equation}\label{eq:proba_extinction}
+\pi = G_X(\pi),\text{ }\pi\in[0,1].
+\end{equation}
+\begin{theorem}[Probabilité d'extinction]
+\begin{itemize}
+\item Si $\E(X)>1$ alors $\pi$ est l'unique solution de l'équation \eqref{eq:proba_extinction} entre $0$ et 1 strictement. 
+\item Si $\E(X)\leq1$ alors $\pi = 1$
+\end{itemize}
+\end{theorem}
+\underline{preuve}:\\
+La fonction $\pi\mapsto G_X(\pi)$ est une fonction strictement croissante telle que 
+$$
+G_X(0) = \P(X=0)>0\text{ et }G_X(1)=1.
+$$
+On note que $G_X'(1) = \E(X)$ ce qui donne la pente de la tangente en $\pi = 1$. On en déduit que si $\E(X)\leq1$ alors la pente est plus faible que celle de la fonction $\pi\mapsto \pi$ donc la seule solution de \eqref{eq:proba_extinction} est $\pi = 1$ sinon on peut trouver $\pi\in\left]0,1\right[$ solution de \eqref{eq:proba_extinction}.\\
+$\square$  \\
+Notons $\mu =\E(X)$
+\begin{prop}
+Le processus défini par 
+$$
+M_n = Z_n/\mu^n,n\geq 0,
+$$
+est une martingale.
+\end{prop}
+\underline{preuve:}\\
+Nous avons
+$$
+\E(M_{n+1}|M_n) =\E(Z_{n+1}/\mu^{n+1}|Z_n) =\E(Z_{n+1}|Z_n)/\mu^{n+1} =Z_n\mu/\mu^{n+1} = M_n.  
+$$
+$\square$\\
+
+D'après le théorème de convergence des martingales positives $\lim M_n  = M_\infty$ existe.  
+\begin{itemize}
+    \item Si $\mu\leq1$ alors $M_\infty = 0$ presque sûrement. Il s'agit d'une illustration du lemme de Fatou puisque 
+    $$0 = \E(M_\infty)<\lim\E(M_n) = 1.$$
+    \item Si $\mu>1$, on tente d'identifier la loi de $M_\infty$ en calculant 
+    $$
+    \lim E(e^{-\lambda M_n}) = E(e^{-\lambda M_\infty}),\lambda >0. 
+    $$
+    En effet $M_n\rightarrow M_\infty$ implique que $\E(e^{-\lambda M_n})\rightarrow\E(e^{-\lambda M_n})$ puis en notant que $e^{-\lambda M_n}<1$ on applique le théorème de convergence dominée.
+\end{itemize}
+\end{frame}
+\section{La marche aléatoire sur $\mathbb{Z}$}
+\begin{frame}[allowframebreaks]
+\underline{III. La marche aléatoire sur $\mathbb{Z}$}\\
+La marche aléatoire sur $\mathbb{Z}$ est une chaine de Markov $(X_n)_{n\in\N}$ dont l'espace d'état est $\mathbb{Z}$ définie par
+$$
+X_n=X_{n-1}+\xi_{n},\text{ }n\geq 1.
+$$
+où $\xi_1,\xi_2,\ldots,$ sont des variables aléatoires i.i.d. distribuées comme $\xi$ avec
+$$
+\Pr(\xi=1)=p\text{ et }\Pr(\xi=-1)=1-p.
+$$
+\begin{theorem}
+La marche aléatoire sur $\mathbb{Z}$ est irréductible et
+\begin{itemize}
+\item Récurrente si $p=1/2$.
+\item Transiente sinon.
+\end{itemize}
+\end{theorem}
+\underline{preuve:}\\
+Pour montrer ce résultat, on étudie la distribution du temps $S_0$ de retour à $0$. On a
+$$
+\mathbb{P}_0(S_0<\infty)=\sum_{n=1}^{+\infty}\mathbb{P}_0(S_0=n).
+$$
+On remarque que les trajectoires allant de $0$ à $0$ sont nécessairement de longueur paire et
+$$
+\mathbb{P}_0(S_0=2n+1)=0,\text{ pour } n=0,1,\ldots.
+$$
+et
+$$
+\mathbb{P}_0(S_0<\infty)=\sum_{n=1}^{+\infty}\mathbb{P}_0(S_0=2n).
+$$
+On a exactement $\binom{2n}{n}$ trajectoires possibles, celle qui nous intéresse (pour lesquels $S_0=2n$) sont celles qui ne repassent pas par $0$ entre l'instant $0$ et $2n$ (On parle d'excursions). Leur nombre est donné par
+\begin{equation}\label{eq:NombreBonnesTrajectoires}
+2\times C_{n-1}=2\times \frac{1}{n}\binom{2n-2}{n-1}
+\end{equation}
+\begin{definition}[Nombre de Catalan]
+Les nombres de Catalan sont définis par
+$$
+C_n=\frac{1}{n+1}\binom{2n}{n},\text{ pour }n\geq 0,
+$$
+et vérifie
+\begin{equation}\label{eq:RecurrenceDyckWord}
+C_{n+1}=\sum_{k=0}^{n}C_kC_{n-k}\text{ pour }n\geq1
+\end{equation}
+\end{definition}
+\begin{example}[Mots de Dyck]
+$C_n$ correspond aux nombre de mots de $2n$ lettres comprenant respectivement $n$ A et $n$ B, tels que lu de gauche à droite le nombre de $A$ demeure supérieur ou égal au nombre de $B$. La relation de récurrence \eqref{eq:RecurrenceDyckWord} s'explique par le fait qu'un mot de Dyck contenant plus de deux lettres est obtenu par la concaténation de deux mots de Dyck.
+\end{example}
+Dans le problème considéré, on s'intéresse aux nombres de mots tels que le nombre de $A$ (interprétés comme des $+1$) soit strictement supérieur au nombre de $B$ (interprétés comme des $-1$). Alors notre mot commence nécessairement par un $A$ et fini sur un $B$. La portion entre ce $A$ et ce $B$ est un mot de Dyck contenant $2n-2$ lettres. On a $C_{n-1}$ possibilités. Le facteur $2$ dans \eqref{eq:NombreBonnesTrajectoires} s'explique par la symétrie du problème puisque l'on peut considérer les trajectoires dans lesquels les $-1$ dominent les $+1$. La probabilité d'une trajectoire quelconque de longueur $2n$ contenant $n$ "$+1$" et $n$ "$-1$" est donnée par $p^{n}(1-p)^{n}$, on en déduit que
+\begin{eqnarray}
+\mathbb{P}_0(S_0<\infty)&=&\sum_{k=1}^{+\infty}\mathbb{P}_0(S_0=k)=\sum_{k=1}^{+\infty}2C_{n-1}[p(1-p)]^{n}\nonumber\\
+&=&2p(1-p)\sum_{k=0}^{+\infty}C_{n}[p(1-p)]^{n}=2p(1-p)C[p(1-p)],\label{eq:ProbaS0}
+\end{eqnarray}
+où $C(x)=\sum_{n=0}^{+\infty}C_nx^{n}$. Or, on a
+\begin{eqnarray*}
+C(x)&=&1+\sum_{n=1}^{+\infty}C_nx^{n}=1+x\sum_{n=0}^{+\infty}C_{n+1}x^{n}\\
+&=&1+x\sum_{n=0}^{+\infty}\sum_{k=0}^{n}C_kC_{n-k}x^{n}=1+x\sum_{k=0}^{+\infty}\sum_{n=k}^{n}C_kC_{n-k}x^{n}\\
+&=&1+x\sum_{k=0}^{+\infty}C_k\sum_{n=0}^{n}C_{n}x^{n+k}=1+xC(x)^{2}
+\end{eqnarray*}
+Par suite, $C(x)=\frac{1-\sqrt{1-4x}}{2x}$. En substituant dans \eqref{eq:ProbaS0}, on obtient
+$$
+\mathbb{P}_0(S_0<\infty)=1-|1-2p|
+$$
+On en déduit que si $p\neq 1/2$ alors $\mathbb{P}_0(S_0<\infty)<1$ et la chaine est transitoire sinon $\mathbb{P}_0(S_0<\infty)=1$ et la chaine est récurrente.
+\begin{remark}[Divergence lorsque $p\neq 1/2$]
+Dans le cas d'une chaine de Markov $(X_n)_{n\in\N}$ sur un espace ordonné et dénombrable (comme $\N$ ou $\mathbb{Z}$), si la chaine est transitoire alors elle diverge vers $\infty$. Par exemple dans le cas de la chaine aléatoire sur $\mathbb{Z}$, on a par la loi des grands nombre
+$$
+\frac{X_n}{n}=\frac{X_0}{n}+\frac{1}{n}\sum_{k=1}^{n}\xi_k\underset{n\rightarrow+\infty}{\longrightarrow} 2p-1.
+$$
+On en déduit que
+$$
+X_n\rightarrow\begin{cases}
+-\infty,&\text{ si }p<1/2,\\
+0,&\text{ si }p=1/2,\\
++\infty,&\text{ si }p>1/2.\\
+\end{cases}
+$$
+
+\end{remark}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{prop}\label{prop:marche_aleatoire_martingale}
+Le processus défini par 
+$$
+M_n = X_n - n(2p-1)\text{, }n\geq 0,
+$$
+est une martingale. 
+\end{prop}
+\underline{preuve:}\\
+Soit $\mathcal{F}_n = \sigma\left(\xi_i,\text{ }i\leq n\right)$ la filtration naturelle du processus $(X_n)_{n\geq0}$. On a 
+$$
+\E(M_{n+1}|\mathcal{F}_n) =\E(X_{n+1}|\mathcal{F}_n)-(2p-1) = M_n + \E(\xi_{n+1}- (2p-1)|\mathcal{F}_n)-(2p-1) = M_n.
+$$ 
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}[Le problème de la ruine du parieur]
+Un joueur entre dans un casino avec $x\$$ en poche, il paye $1\$$ pour participer,
+\begin{itemize}
+\item Il gagne et remporte $2\$$ avec une probabilité $p$
+\item Il perd avec une probabilité $q=1-p$
+\end{itemize}
+sa richesse après chaque partie est modélisée par un processus $(X_n)_{n\in\N}$. On suppose qu'il rentre chez lui si sa richesse devient nulle ou atteint un niveau $a\geq x$. On note $\phi(x,a)$ la probabilité qu'il rentre à la maison ruiné.
+\end{example}
+\begin{prop}
+La probabilité de ruine est donnée par
+$$
+\phi(x,a)=
+\begin{cases}
+\frac{(q/p)^{x}-(q/p)^{a}}{1-(q/p)^{a}},&\text{ si }p> q,\\
+\frac{a-x}{a},&\text{ si }p = q.
+\end{cases} 
+$$
+\end{prop}
+\underline{preuve 1: Analyse à un pas}\\
+On note que
+$$
+\phi(a,a)=0\text{ et }\phi(0,a)=1
+$$
+Soit $0<x<a$, lors de la première partie,
+\begin{itemize}
+\item Il perd avec probabilité $q$ et repart avec un niveau de richesse $x-1$,
+\item Il gagne avec probabilité $p$ et repart avec un niveau de richesse $x+1$.
+\end{itemize}
+On en déduit que
+\begin{equation}\label{eq:ProbaRuine1}
+\phi(x,a)= p\phi(x+1,a)+q\phi(x-1,a)
+\end{equation}
+De plus, comme $p+q=1$ alors
+\begin{equation}\label{eq:ProbaRuine2}
+\phi(x,a)= p\phi(x,a)+q\phi(x,a).
+\end{equation}
+L'opération \eqref{eq:ProbaRuine1}-\eqref{eq:ProbaRuine2} donne
+\begin{equation}\label{eq:ProbaRuine3}
+\phi(x+1,a)-\phi(x,a)= \frac{q}{p}\left[\phi(x,a)-\phi(x-1,a)\right].
+\end{equation}
+Soit
+$$
+u_k=\phi(k+1,a)-\phi(k,a),\text{ }k=0,\ldots, a-1
+$$
+Supposons que $p\neq q$, alors en remplaçant dans \eqref{eq:ProbaRuine3} cela donne
+\begin{equation}\label{eq:ProbaRuine4}
+u_k=\left(\frac{q}{p}\right)u_{k-1}=\ldots= \left(\frac{q}{p}\right)^{k}u_0.
+\end{equation}
+En sommant \eqref{eq:ProbaRuine4} pour k allant de $1$ à $a-1$, on obtient
+\begin{equation}\label{eq:ProbaRuine5}
+-\phi(1,a)=[\phi(1,a)-1]\frac{q/p-(q/p)^{a}}{1-q/p}\Leftrightarrow \phi(1,a)=\frac{q/p-(q/p)^{a}}{1-(q/p)^{a}}
+\end{equation}
+En sommant \eqref{eq:ProbaRuine4} pour k allant de $1$ à $x-1$, on obtient
+\begin{equation}\label{eq:ProbaRuine6}
+\phi(x,a)-\phi(1,a)=[\phi(1,a)-1]\frac{q/p-(q/p)^{x}}{1-q/p}
+\end{equation}
+L'insertion de \eqref{eq:ProbaRuine5} dans \eqref{eq:ProbaRuine6} donne
+$$
+\phi(x,a)=\frac{(q/p)^{x}-(q/p)^{a}}{1-(q/p)^{a}}
+$$
+Dans le cas où $p = q$, on a $u_k = u_0 =[\phi(1,a)-1],\text{ }k =1$, on applique le même raisonnement que précédemment pour trouver que 
+$$
+\phi(x,a) = \frac{a-x}{a}.
+$$
+$\square$\\
+\end{frame}
+\begin{frame}[allowframebreaks]
+\underline{preuve 2: martingale}\\
+La richesse du parieur est donnée par une marche aléatoire $(X_n)_{n\geq0}$, avec $X_0 = x$. Supposons que $p = q = 1/2$ alors $(X_n)_{n\geq1}$ est une martingale. Les temps aléatoires 
+$$
+\tau_0 = \inf\{n\geq0\text{ ; }X_n = 0\}\text{ et }\tau_a = \inf\{n\geq0\text{ ; }X_n = a\}
+$$
+sont des temps d'arrêt et donc $\tau = \min(\tau_0,\tau_a)$ est aussi un temps d'arrêt. On remarque que $\phi(x,a) = \P(\tau = \tau_0) = \P(X_\tau = 0)$. On applique le théorème \ref{theo:temps_arret}, pour trouver que 
+$$
+x= \E(X_0) = \E(X_\tau) = a \P(X_\tau = a)\Leftrightarrow \P(X_\tau = 0) = \frac{a-x}{a}.
+$$
+Supposons que $p\neq q$, on introduit une autre Martingale!
+\begin{lemma}[martingale de Wald]\label{lem:wald}
+Le processus 
+$$
+M_n = \exp\left[s(X_n - x) - n\kappa_\xi(s)\right],\text{ }n \geq 0,
+$$
+est une martingale pour tout $s>0$, où $\kappa_{\xi}(s)=\log\left[\E\left(e^{s\xi}\right)\right]$ désigne la fonction génératrice des cumulants de $\xi$.
+\end{lemma}
+\underline{preuve du lemme:}\\
+Soit $\mathcal{F}_n = \sigma(\xi_i,\text{ }i\leq n)$ la filtration naturelle du processus $(X_n)_{n\in\N}$. On a 
+\begin{eqnarray*}
+\E(M_{n+1}|\mathcal{F}_n) &=& \E\left\{\exp\left[s(X_n + \xi_{n+1} - x) - n\kappa_\xi(s)\right]\right\}\\
+  &=&\E\left[\exp\left(s\xi_{n+1}\right)\right]\exp\left[s(X_n - x) - (n+1)\kappa_\xi(s)\right]\\
+  &=&\exp\left[s(X_n - x) - n\kappa_\xi(s)\right]
+\end{eqnarray*}
+$\square$\\
+On note que l'équation $\kappa_\xi(s) = 0$ est équivalente à 
+$$
+pe^s+qe^{-s}=1
+$$ 
+et a pour solution $\gamma = \log(q/p)$. Le processus $R_n =\exp\left[\gamma(X_n - x)\right],\text{ }n\geq0$ est une martingale d'après le lemme \ref{lem:wald}. On applique le théorème du temps d'arrêt optionel \ref{theo:temps_arret} au processus $(R_n)_{n\geq0}$ avec le temps d'arrêt $\tau$, ce qui donne 
+$$
+1 = \E(R_0) =\E(R_\tau) = e^{-\gamma x}\P(R_\tau = 0)+ e^{\gamma(a-x)}\P(R_\tau = 0)
+$$
+Ce qui équivaut à 
+$$
+\phi(x,a) = \frac{e^{\gamma x}-e^{\gamma a}}{1-e^{\gamma a}} =\frac{(q/p)^x-(q/p)^{a}}{1-(q/p)^{a}}.  
+$$
+$\square$
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{example}[Le problème de la double dépense dans les transactions validées par \textit{blockchain}]
+Marie achète un bien à Julien en l'échange de $10$ BTCs.
+\begin{itemize}
+\item Julien attends que la transactions intègre un bloc, voir que plusieurs blocs soient créés avant d'expédier le bien.
+\item Une fois le bien reçu, Marie émet un transaction transférant les mêmes BTCs vers un porte-monnaie lui appartenant.
+\item Des mineurs malhonnêtes travaillent sur une chaine concurrente à la chaine de bloc principale
+\begin{itemize}
+\item[$\hookrightarrow$] les deux chaines sont identiques à la transaction frauduleuse prêt.
+\end{itemize}
+\item Si la chaine malhonnête rattrape la chaine principale (en termes de nombre de bloc) alors la transaction de Marie à Julien est remplacée par la transaction de Marie à elle-même.
+\end{itemize}
+\end{example}
+On modélise par $(X_n)_{n\in\N}$ la différence entre les nombres de blocs dans la chaine honnête et malhonnêtes à l'instant $n$, on suppose qu'à chaque instant un bloc est créé, il rejoint
+\begin{itemize}
+\item La chaine honnête avec probabilité $p$,
+\item La chaine malhonnête avec probabilité $q=1-p$.
+\end{itemize}
+On suppose que la chaine honnêtes a $x$ blocs d'avance. La probabilité de succès de la double dépense est donnée par
+$$
+\phi(x)=\mathbb{P}\left(X_n=0,\text{ pour un certain }n\in\N|X_0=x\right)=\underset{a\rightarrow+\infty}{\lim}\phi(x,a)=\left(\frac{q}{p}\right)^{x}.
+$$
+Pour plus de détails, on pourra lire le \textit{white paper} de Satoshi Nakamoto \cite{nakamoto2008bitcoin}
+
+
+\end{frame}
+\begin{frame}
+Mes notes se basent sur les documents \cite{TruquetEnsai,Nabil17,Hohn,le2006integration,williams1991probability}.
+\bibliographystyle{plain}
+\bibliography{mad_notes}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,502 @@
+\documentclass[11pt]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsopn, color}
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec}
+\usepackage{tipa}
+\usepackage{hyperref}
+
+
+
+% Style
+\setlength\parindent{0pt}
+\shadedsolutions
+
+% Define course info
+\def\semester{2019-2020}
+\def\course{Modèles Aléatoires Discrets M1}
+\def\name{P.-O. Goffard \& Rémy Poudevigne}
+%\def\quizdate{10/5, 10/6}
+\def\hwknum{}
+%\def\title{\MakeUppercase{Homework \hwknum -- quiz \quizdate }}
+\def\title{\MakeUppercase{TD 3: Chaine de Markov}}
+
+% Define commands
+\def\Bin{\operatorname{Bin}}
+\def\Geom{\operatorname{Geom}}
+\def\Pois{\operatorname{Pois}}
+\def\Exp{\operatorname{Exp}}
+\newcommand{\E}{\mathbb E}            % blackboard E
+\newcommand{\bP}{\mathbb P}            % blackboard P
+\newcommand{\Var}{\text{Var}}            % blackboard P
+\newcommand{\Om}{\Omega}            % blackboard P
+\newcommand{\om}{\omega}            % blackboard P
+\newcommand{\N}{\mathbb N}            % blackboard P
+\newcommand{\R}{\mathbb R}            % blackboard P
+\newcommand{\A}{\mathcal A}            % blackboard P
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \Z{\mathbb Z}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+
+
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+\def \limsup{\underset{n\rightarrow+\infty}{\overline{\lim}}}
+\def \liminf{\underset{n\rightarrow+\infty}{\underline{\lim}}}
+\def\euro{\mbox{\raisebox{.25ex}{{\it =}}\hspace{-.5em}{\sf C}}}
+  \everymath{\displaystyle}
+% \newcommand{\limsup}{\overline{\lim}\,}            % blackboard P
+% \newcommand{\liminf}{\underline{\lim}\,}            % blackboard P
+
+\begin{document}
+
+% Heading
+{\center \textsc{\Large\title}\\
+	\vspace*{1em}
+	\course -- \semester\\
+	\name\\
+	\vspace*{2em}
+	\hrule
+\vspace*{2em}}
+\begin{questions}
+
+\question { \bf Probabilité d'absorption}\\
+On considère une chaîne de Markov de matrice de transition $P$ et d'espace d'états $S$. On désigne par $S_T$ le sous-ensemble des états transitoires, supposé fini et non vide. Soit $C$ un sous-ensemble clos irréductible d'états récurrents.
+\begin{parts}
+\part Montrer que $\forall x\in S,\ \forall y\in S_T$, on a $\lim_{n\to \infty} P^n(x,y)=0$. \\
+
+En déduire que si $S$ est fini, la chaîne a au moins un état récurrent.
+\begin{solution}
+Montrons que $\forall x\in S,\ \forall y\in S_T,\
+P^n(x,y)\longrightarrow 1 \mbox{ quand } n\rightarrow +\infty$.\\
+Pour $y\in S_T$, soit $N(y)=\sum_{n\ge 1}{\bf 1}_y(X_n)$ le nombre
+de passages en $y$ après l'instant $0$. Pour tout $x$ de $S$, on a
+puisque $y$ est transient :
+$$
+E_x(N(y))=\sum_{n\ge 1} P^n(x,y) <\infty
+$$
+D'où $P^n(x,y)\stackrel{n\rightarrow + \infty}\longrightarrow 0$.\\
+Supposons à présent $S$ fini et sans états récurrent. Alors pour
+tout $x$ de $S$,
+$$
+\sum_y P^n(x,y)\stackrel{n\rightarrow +\infty}{\longrightarrow} 0
+$$
+puisque c'est une somme finie de termes tendant vers $0$. Or
+$$
+\sum_y P^n(x,y)=\sum_y P_x(X_n=y)=1
+$$
+Ce qui est absurde. Donc la chaîne a au moins un état récurrent.
+\end{solution}
+\part Soit $T_c$ le temps d'atteinte d'un élément dans $C$. On appelle {\it probabilité d'absorption} de $x$ par $C$ la probabilité :
+$$
+\rho_C(x)=\P_x(T_C<+\infty)
+$$
+Montrer que pour tout $x \in S_T$ on a $\rho_C(x)=\sum_{y\in C}{P(x,y)} + \sum_{y\in S_T}{P(x,y)\rho_C(y)}$.
+\begin{solution}
+Atteindre $C$ en un temps fini exige qu'au premier pas on se
+trouve soit en $C$ (et $T_C=1$), soit dans un état transitoire,
+mais jamais dans un état récurrent n'appartenant pas à $C$. D'où
+pour $x\in S_T$ :
+\begin{eqnarray}
+P_x(T_c< + \infty)&=& P_x(X_1\in C)+P_x(X_1\in S_T, T_C<+\infty)
+\nonumber \\
+ &=& \sum_{y\in C}P(x,y) + \sum_{y\in S_T}P(x,y)P_y(T_c<\infty)
+\end{eqnarray}
+\end{solution}
+\part Soit $S=\{ 1;...; 6\}$. 
+\begin{itemize}
+ \item[(i)] Compléter la matrice $P$ pour qu'elle soit une matrice de transition :
+$$
+P=\left( \begin{array}{cccccc}
+. & 1/2 & 0 & 0 & 0 & 0 \\
+1/3 & . & 0 & 0 & 0 & 0\\
+0 & 0 & . & 0 & 7/8 & 0\\
+1/4 & 1/4 & 0 & . & 1/4 & 1/4\\
+0 & 0 & 3/4 & 0 & . & 0\\
+0 & 1/5 & 0 & 1/5 & 1/5 & . \\
+\end{array} \right)
+$$
+\item[(ii)] Déterminer les états transitoires et récurrents.
+\item[(iii)] Déterminer les probabilités d'absorption des sous-ensembles clos irréductibles.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+\item Soit $S=\{ 1,...,6 \}$. La matrice de transition $P$ se
+complète aisément puisque la somme des coefficients par ligne doit
+valoir $1$ :
+$$ P=\left( \begin{array}{cccccc}
+1/2 & 1/2 & 0 & 0 & 0 & 0 \\
+1/3 & 2/3 & 0 & 0 & 0 & 0\\
+0 & 0 & 1/8 & 0 & 7/8 & 0\\
+1/4 & 1/4 & 0 & 0 & 1/4 & 1/4\\
+0 & 0 & 3/4 & 0 & 1/4 & 0\\
+0 & 1/5 & 0 & 1/5 & 1/5 & 2/5 \\
+\end{array} \right)
+$$
+\item Partant de $1$ ou $2$, la chaîne n'atteint jamais les états
+$3,4,5,6$. L'ensemble fini $\{1,2\}$ est donc clos, et comme
+$P_1(X_1=2)=1/2$ et $P_2(X_1=1)=1/3$, il est irréductible (tous
+les états communiquent) et donc récurrent. Idem pour $\{3,5\}$.
+Enfin, $P_4(X_1=1)=1/4$ et $P_6(X_1=2)=1/5$ : partant de $4$ ou
+$6$, la chaîne a une probabilité non nulle d'être absorbée dans
+$\{1,2\}$ et donc d'y rester. Donc les états $4$ et $6$ sont
+transients. Mais $P_4(X_1=6)=1/4$ et $P_6(X_1=4)=1/5$ : les états
+$4$ et $6$ communiquent. Le sous-ensemble $\{4,6\}$ est donc
+transient. D'où $S_T=\{4,6\}$ et $S_R=\{1,2\}\cup\{3,5\}$
+
+\item $\rho_c(x)=P_x(T_c=+\infty)$. Les seuls cas non triviaux
+sont les cas où $x$ est transient : $x\in S_T=\{4,6\}$. On obtient
+un système d'équations d'après la question $2$ pour le
+sous-ensemble clos irréductible $C=\{1,2\}$ :
+\begin{equation}
+\left\{
+\begin{array}{ccc}
+\rho_C(4)&=&P(4,1)+P(4,2)+P(4,6)\rho_C(6)+P(4,4)\rho_C(4) \\
+\rho_C(6)&=&P(6,1)+P(6,2)+P(6,6)\rho_C(6)+P(6,4)\rho_C(4)
+\end{array}
+ \right.
+\end{equation}
+D'où on obtient $\rho_C(4)=\frac{7}{11}$ et
+$\rho_C(6)=\frac{6}{11}$.\\
+Pour $D=\{3,5\}$, comme un état transient est forcément absorbé
+par l'un des sous-ensembles clos irréductibles, on trouve
+$\rho_C(4)+\rho_D(4)=\rho_C(6)+\rho_D(6)=1$, et ainsi
+$\rho_D(4)=\frac{4}{11}$ et $\rho_D(6)=\frac{5}{11}$.
+\end{itemize}
+\end{solution}
+\part Determiner l'ensemble des probabilités stationnaires de la chaîne de Markov.
+\begin{solution}
+On est sur un espace d'états fini, donc on a existence d'une
+mesure stationnaire. La chaîne n'est pas irréductible, donc il n'y
+a pas forcément unicité de la mesure stationnaire. Mais sur les
+sous-ensembles clos irréductibles $C$ et $D$, le théorème
+s'applique : on a unicité de $\pi_C=(\pi_C(1),\pi_C(2),0,0,0,0)$
+et $\pi_D=(0,0,\pi_D(3),0,\pi_D(5),0)$, mesures stationnaires sur
+chaque chaîne "réduite" au sous-ensemble $C$ ou $D$. que l'on peut
+calculer avec
+$$
+\left\{
+\begin{array}{ccc}
+\pi_CP=\pi_C &\mbox{ et }& \pi_C(1)+\pi_C(2)=1 \\
+\pi_DP=\pi_C &\mbox{ et }& \pi_D(3)+\pi_D(5)=1
+\end{array}
+\right. \Rightarrow \left\{
+\begin{array}{ccc}
+\pi_C(1)=\frac{2}{5} &\mbox{ et }& \pi_C(2)=\frac{3}{5} \\
+\pi_D(3)=\frac{6}{13} &\mbox{ et }& \pi_D(5)=\frac{7}{13}
+\end{array}
+\right.
+$$
+Alors, toute mesure $\lambda\pi_C +(1-\lambda)\pi_D = \pi^\lambda$
+pour $\lambda\in[0,1]$ est stationnaire (il suffit de vérifier que
+$\pi^\lambda P=\pi^\lambda$).
+\end{solution}
+\part Quelle est l'espérance du temps de retour en chaque état récurrent ?
+\begin{solution}
+Si je pars de $C$, je reste dans $C$, donc si je me
+restreins à $C$, j'ai une chaîne de Markov à 2 états,
+irréductible, et j'ai donc une unique mesure stationnaire,
+calculée à la question précédente. Idem pour $D$. Je peux donc
+calculer en appliquant la formule du cours :
+$$
+E_1(T_1)=\frac{1}{\pi_C(1)}=\frac{5}{2},\
+E_2(T_2)=\frac{1}{\pi_C(2)}=\frac{5}{3},\
+E_3(T_3)=\frac{1}{\pi_D(3)}=\frac{13}{6},\
+E_5(T_5)=\frac{1}{\pi_D(5)}=\frac{13}{7}
+$$
+\end{solution}
+\end{parts}
+
+
+\question  {\bf Dactylographe }
+\begin{parts}
+\part Un père laisse sa fille de 3 ans jouer avec son ordinateur, qui n'a plus que $N$ touches à son clavier. L'enfant tape au hasard des lettres, et le père attend avec
+impatience de la voir taper "papa" à l'écran. Quel nombre de lettres doit taper l'enfant en moyenne avant d'arriver à ce résultat ?\\
+Pour cela, on aura intérêt à considérer une chaîne de Markov sur l'ensemble des derniers caractères écrits : $\{\{\emptyset \}, \{p\}, \{pa\}, \{pap\},\{papa\}\}$. On
+est dans l'état $\{\emptyset \}$ si les derniers caractères ne sont pas $\{p\},\{pa\},\{pap\}$, ou $\{papa\}$. Il est conseillé d'imposer une transition de $\{papa\}$ vers $\{\emptyset\}$ avec probabilité $1$, et de regarder l'espérance du temps de retour de $\{papa\}$ vers lui-même.
+\begin{solution}
+On considère une chaîne de Markov à $5$ états : $E=
+\{\{\emptyset \}, \{p\}, \{pa\}, \{pap\}, \{papa\}\}$. Partant de
+$\emptyset$, l'enfant a une probabilité $1/N$ de taper un $p$, et $(N-1)/N$
+de taper une autre lettre,  donc la probabilité
+de transition de $\emptyset$ vers $p$ est $1/N$ et celle de
+$\emptyset$ vers $\emptyset$ est $(N-1)/N$. Partant de $p$, si
+l'enfant tape un $a$, on arrive en $pa$ (probabilité $1/N$), si il
+tape un $p$, on reste dans l'état $p$ (la dernière séquence tapée
+intéressante est $p$) (probabilité $1/N$), et si il tape une autre lettre,
+on retourne dans l'état $\emptyset$ (probabilité $(N-2)/N$. Avec un
+raisonnement identique pour les autres états, on trouve la matrice de transition suivante :
+$$ P=\left( \begin{array}{ccccc}
+(N-1)/N & 1/N & 0 & 0 & 0  \\
+(N-2)/N & 1/N & 1/N & 0 & 0 \\
+(N-1)/N & 0 & 0 & 1/N & 0 \\
+(N-2)/N & 1/N & 0 & 0 & 1/N \\
+1 & 0 & 0 & 0 & 0 \\
+\end{array} \right)
+$$
+Comme indiqué dans l'énoncé, on impose une transition de
+$\{papa\}$ vers $\{\emptyset\}$ avec probabilité $1$. On regarde
+ l'espérance du temps de retour de $\{papa\}$ vers
+lui-même. Pour cela, on a besoin de calculer la mesure
+stationnaire (et plus précisément, on a besoin de $\pi_5$). Il
+suffit de résoudre le système $\pi P=\pi$ qui se traduit par :
+$$
+\left\{
+\begin{array}{l}
+(N-1)\pi_1+(N-2)\pi_2+(N-1)\pi_3+(N-2)\pi_4+N\pi_5=N\pi_1\\
+\pi_1+\pi_2+\pi_4=N\pi_2\\
+\pi_2=N\pi_3\\
+\pi_3=N\pi_4\\
+\pi_4=N\pi_5\\
+\pi_1+\pi_2+\pi_3+\pi_4+\pi_5=1
+\end{array}
+\right.
+$$
+On trouve $\pi_4=N\pi_5$ puis $\pi_3=N^2\pi_5$ puis $\pi_2=N^3\pi_5$. Ensuite,
+$\pi_1+\pi_2+\pi_4=N\pi_2$ donc $\pi_1= (N^4-N^3-N)\pi_5$. Enfin, on a $\pi_1+\pi_2+\pi_3+\pi_4+\pi_5=1$ soit $(N^4-N^3-N+N^3+N^2+N+1)\pi_5=1$ soit $\pi_5=1/(N^4+N^2+1)$.\\
+Ensuite one:
+\[
+E_{\emptyset}(\tau_{papa})=E_{papa}(\tau_{papa})-1=1/\pi_5-1=N^4+N^2.
+\]
+Il faut donc attendre en moyenne un temps $N^4+N^2$ pour que l'enfant écrive le mot $papa$.
+\end{solution}
+\part Très fier des exploits de sa fille, le père se donne un mot formé de $q$ lettres \textit{distinctes}, avec $q<N$. Au bout de combien de lettres en moyenne le mot sera-t-il écrit ? 
+\begin{solution}
+Dans le cas d'un mot à $q$ lettre distinctes, la matrice est
+presque plus simple, car à chaque état $"$ cas se présentent :
+soit on tape la lettre suivante, et donc on passe à l'état suivant
+avec une probabilité $1/N$, soit on tape la première lettre du
+mot, et on passe à l'état "première lettre tapée" avec une
+probabilité $1/N$, soit on tape une autre lettre, et on se
+retrouve dans l'état $\emptyset$ avec une probabilité $(N-2)/N$.
+Cela nous permet d'obtenir la matrice de transition suivante, à
+$q+1$ lignes et $q+1$ colonnes :
+$$ P=\left( \begin{array}{ccccccc}
+\frac{N-1}{N} & \frac{1}{N} & 0 & ...& ...&... & 0  \\
+\frac{N-2}{N} & \frac{1}{N} & \frac{1}{N} & 0 & ...&... & 0 \\
+\frac{N-2}{N} & \frac{1}{N} & 0 & \frac{1}{N} & 0&... & 0 \\
+...&...&...&...&...&...&...\\
+\frac{N-2}{N} & \frac{1}{N} & 0 & ...&...& 0 & \frac{1}{N} \\
+1 & 0 & ...&...&... & 0 & 0 \\
+\end{array} \right)
+$$
+On cherche alors la mesure stationnaire, et on résoud le système
+suivant :
+$$
+\left\{
+\begin{array}{l}
+\pi_q=N\pi_{q+1}\\
+\pi_{q-1}=N\pi_q=N^2\pi_{q+1}\\
+...\\
+\pi_3=N^{q-2}\pi_{q+1}\\
+\pi_2=N^{q-1}\pi_{q+1}\\
+\frac{1}{N}\sum_{i=1}^q \pi_i=\pi_2\\
+\frac{N-1}{N}\pi_1 + \frac{N-2}{N}\sum_{i=2}^q \pi_i + \pi_{q+1} =\pi_1\\
+\sum_{i=1}^{q+1} \pi_i =1
+\end{array}
+\right.
+$$
+Ce qui nous permet d'obtenir :
+\[
+\pi_2=\frac{1}{N}\sum_{i=1}^q \pi_i=\frac{1}{N}\left(\sum_{i=1}^{q+1} \pi_i-\pi_{q+1}\right)=\frac{1}{N}\left(1-\pi_{q+1}\right)
+\]
+or $\pi_2=N^{q-1}\pi_{q+1}$ donc 
+\[
+N^{q-1}\pi_{q+1}=\frac{1-\pi_{q+1}}{N}
+\]
+soit $\pi_{q+1}=\frac{1}{N^{q}+1}$.
+Donc en moyenne, l'enfant aura besoin de taper sur le clavier
+$E_{\emptyset}(\tau_{mot})=E_{mot}(\tau_{mot})-1=\frac{1}{\pi_{q+1}}-1=N^q$ fois pour écrire le mot à $q$ lettres.
+\end{solution}
+\end{parts}
+
+
+\question { \bf Prime d'assurance véhicules}\\
+Un contrat d'assurance auto fixe $4$ niveaux de prime. La prime de base est $P_1$, sauf si aucun sinistre n'est déclaré durant l'année précédente. Dans le cas où aucun sinistre n'est déclaré durant une année, la prime baisse d'un niveau l'année suivante. Il y a $4$ niveaux de prime $P_1,P_2,P_3,P_4$. La probabilité qu'un sinistre d'un montant supérieur ou égal à $s$ milliers d'euros survienne vaut $e^{-s}$. \`A cause du caractère incitatif de la prime rabaissée, tous les sinistres ne sont pas déclarés à l'assurance. On note $s_1,s_2,s_3,s_4$ les sommes limites en dessous desquelles l'assuré-e ne déclare pas son sinistre. $s_j$ est la limite pendant l'année où la prime $P_j$ est payée.
+\begin{parts}
+\part Modéliser ce problème par une chaîne de Markov, donner la matrice de transition et classifier les états.
+\begin{solution}
+On modélise la prime payée par une chaîne de Markov à 4
+états. les probabilités de transition sont les suivantes:
+\begin{itemize}
+\item transition $i\rightarrow 1 $ si un sinistre se produit
+pendant l'année d'un montant supérieur à $s_i$. Donc la
+probabilité est $e^{-s_i}$ \item $1\rightarrow 2$ avec probabilité
+qu'il n'y ait pas de sinistre pendant l'année d'un montant
+supérieur à $s_1$, donc probabilité $1-e^{-s_1}$ \item
+$2\rightarrow 3$ avec probabilité $1-e^{-s_2}$ \item $3\rightarrow
+4$ avec probabilité $1-e^{-s_3}$ \item $4\rightarrow 4$ avec
+probabilité $1-e^{-s_4}$.
+\end{itemize}
+Ce qui nous donne la matrice de transition suivante :
+$$ Q=\left( \begin{array}{cccc}
+e^{-s_1} & 1-e^{-s_1} & 0 & 0  \\
+e^{-s_2} & 0 & 1-e^{-s_2} & 0  \\
+e^{-s_3} & 0 & 0 & 1-e^{-s_3}  \\
+e^{-s_4} & 0 & 0 & 1-e^{-s_4}
+\end{array} \right)
+$$
+La chaîne est irréductible sur un espace d'états fini :  tous les
+états communiquent. Tous les états sont positivement récurrents,
+la chaîne est apériodique.
+\end{solution}
+\part Existe-t-il une unique probabilité stationnaire ? Quelle est sa signification ? Comparer ses valeurs.
+\begin{solution}
+La chaîne est irréductible sur un espace d'états fini donc il existe une unique mesure stationnaire. Signification de $\pi$
+ : c'est la probabilité d'équilibre, la répartition moyenne des
+ assurés selon les différentes primes après plusieurs années de
+ fonctionnement, c'est-à-dire après avoir atteint un régime
+ stationnaire. Se valeurs correspondent à la probabilité pour un assuré de payer la prime i.
+ On la calcule en résolvant $\pi Q=\pi$ et $\sum \pi_i=1$, ce qui donne le système suivant :
+\[
+\left\{
+\begin{array}{c}
+\pi_1e^{-s_1}+\pi_2e^{-s_2}+\pi_3e^{-s_3}+\pi_4e^{-s_4}=\pi_1 \\
+\pi_1(1-e^{-s_1})=\pi_2 \\
+\pi_2(1-e^{-s_2})=\pi_3 \\
+\pi_3(1-e^{-s_3})+\pi_4(1-e^{-s_4})=\pi_4 \\
+\pi_1+\pi_2+\pi_3+\pi_4=1
+\end{array}\right.
+\]
+D'où
+\[
+\left\{ \begin{array}{c}
+\pi_2=\pi_1(1-e^{-s_1})  \\
+\pi_3= \pi_1(1-e^{-s_1})(1-e^{-s_2}) \\
+\pi_4= \pi_1(1-e^{-s_1})(1-e^{-s_2})(1-e^{-s_3})e^{-s_4}\\
+\pi_1= \left[1+ (1-e^{-s_1})\left[
+1+(1-e^{-s_2})(1+(1-e^{-s_3})e^{-s_4})\right]\right]^{-1}
+\end{array}
+\right.
+\]
+ On peut commenter ses valeurs en disant par exemple que  $\pi_3 <\pi_2 <
+ \pi_1$. Le calcul dépend des $s_i$ qui ne sont pas donnés dans
+ l'énoncé.
+\end{solution}
+\part Quel est le coût annuel moyen de cette police d'assurance ?
+\begin{solution}
+Le coût annuel moyen de cette  police d'assurance (en
+milliers d'euros) dépend évidemment des valeurs des $s_i$ et est
+donné par la formule suivante :
+\[
+C(s_1,s_2,s_3,s_4)= \sum_{i=1}^{4} \pi_i(P_i +m_i)
+\]
+où $\mu_i$ est la probabilité de payer la prime $P_i$, et $m_i$ le
+coût moyen des sinistres non déclarés par l'assuré :
+\[
+m_i=\int_0^{s_i}{s^e{-s}ds} =1-(1+s_i)e^{-s_i}.
+\]
+\end{solution}
+%\item Donnez la méthode pour trouver les seuils $s_1,s_2,s_3,s_4$ qui permettent d'avoir un coût de police d'assurance optimal.
+\end{parts}
+
+
+\question { \bf Evolution d'un taux de change sous contrainte}\\
+Le marché du change du Yen coté à Paris est égal à $X_0$ ($\in \mathbb{N}$, exprimé en centimes d'euros). Le taux de change est laissé libre de fluctuations tant qu'il n'atteint pas deux valeurs prédéfinies $m$ ou $M$, respectivement bornes inférieures et supérieures pour le taux de change. Sitôt que le taux de change atteint l'un de ces deux niveaux, la Banque Centrale intervient en achetant ou en vendant des Yens : quand le taux est trop bas elle achète des devises, et elle en vend quanq il est trop haut.\\
+Pour simplifier, nous supposerons que le taux fluctue sur un intervalle de $6$ centimes $(M-m=6)$.\\
+Le taux de change évolue selon la règle suivante :
+\begin{itemize}
+\item[*] Si le taux est entre les $2$ bornes à l'instant $n-1$ ($X_{n-1}\in ]m,M[$), alors à la période suivante $X_n=X_{n-1}+\xi_n$ où $\xi_n$ est une v.a. de loi uniforme sur $\{-1,0,1\}$.
+\item[*] Lorsque le taux de change atteint une de ses bornes,\\
+$X_{n-1}=m \Rightarrow X_n=m+\theta$ avec $\theta$ v.a. de loi uniforme sur $\{0,1\}$;\\
+$X_{n-1}=M \Rightarrow X_n=M+\zeta$ avec $\zeta$ v.a. de loi uniforme sur $\{0,-1\}$.
+\end{itemize}
+\begin{parts}
+\part Modéliser ce problème par une chaîne de Markov. Donner sa matrice de transition.
+\begin{solution}
+On a bien une chaîne de Markov à 7 états, donc la matrice de
+transition est :
+$$ P=\left( \begin{array}{ccccccc}
+1/2 & 1/2 & 0 & 0 & 0 & 0 & 0  \\
+1/3 & 1/3 & 1/3 & 0 & 0 & 0 & 0 \\
+0 & 1/3 & 1/3 & 1/3 & 0 & 0 & 0 \\
+0 & 0 & 1/3 & 1/3 & 1/3 & 0 & 0 \\
+0 & 0 & 0 & 1/3 & 1/3 & 1/3 & 0 \\
+0 & 0 & 0 & 0 & 1/3 & 1/3 & 1/3 \\
+0 & 0 & 0 & 0 & 0 & 1/2 & 1/2
+\end{array} \right)
+$$
+Les états sont $m,m+1,m+2,m+3,m+4,m+5,M=m+6$.
+\end{solution}
+\part Quelle est la nature de la chaîne ? Classifier les états.
+\begin{solution}
+Tous les états communiquent, on a donc une chaîne
+irréductible, donc sur un espace d'états fini, la chaîne est
+irréductible et tous les états sont positivement récurrents.
+\end{solution}
+\part Quelle est la prévision sur le taux de change à long terme ?
+\begin{solution}
+Il existe donc une unique mesure stationnaire $\pi$, qui
+représente l'évolution du taux de change à long terme. On résoud
+le système fourni par l'équation $\pi P=\pi$, et on trouve les
+valeurs de $\pi$ :
+$$
+\left\{
+\begin{array}{c}
+\pi_m=\pi_M=\frac{2}{19} \\
+\pi_{m+1}= \pi_{m+2}=\pi_{m+3}=\pi_{m+4}=\pi_{m+5}=\frac{3}{19}
+\end{array}
+\right.
+$$
+La prévision pour le taux de change est donc qu'il va suivre la
+loi $\pi$, c'est-à-dire qu'il prendra les valeurs $m$ et $M$ avec
+une probabilité $2/19$, et les autres valeurs entre les deux avec
+une probabilité $3/19$.
+\end{solution}
+\part Quelle est la  valeur la moins probable du taux de change ?
+\begin{solution}
+La  valeur la moins probable du taux de change est donc les
+deux bornes $m$ et $M$, ce qui est logique, car il y a une force
+de rappel : lorsqu'il atteint ces valeurs, on le "force" à revenir
+à l'intérieur de l'intervalle.
+\end{solution}
+\part Quel est le temps moyen de retour à la borne supérieure ? à la valeur médiane ?
+\begin{solution}
+Temps moyen de retour à la borne supérieure :
+$$
+E_M(\tau_M)=\frac{1}{\pi_M}=\frac{19}{2}=9,5
+$$
+à la valeur médiane $m+3$ :
+$$
+E_{m+3}(\tau_{m+3})=\frac{19}{3}\cong 6,3
+$$
+\end{solution}
+\end{parts}
+
+
+\end{questions}
+\end{document}

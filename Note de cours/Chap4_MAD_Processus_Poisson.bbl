@@ -1,0 +1,31 @@
+\begin{thebibliography}{1}
+
+\bibitem{AsAl10}
+S{\o}ren Asmussen and Hansj{\"o}rg Albrecher.
+\newblock {\em Ruin probabilities}.
+\newblock World Scientific Publishing Co Pte Ltd, 2010.
+
+\bibitem{goffard2018fraud}
+Pierre-Olivier Goffard.
+\newblock Fraud risk assessment within blockchain transactions.
+\newblock 2018.
+\newblock
+  \url{http://pierre-olivier.goffard.me/Publications/FraudRiskAssessmentWithinBlockChainTransaction_Goffard0218.pdf}.
+
+\bibitem{Hohn}
+Maryann Hohn.
+\newblock {\em PSTAT160A: Applied Stochastic Processes - Lecture notes}.
+\newblock 2017.
+
+\bibitem{Nabil17}
+Nabil Kazi-Tani.
+\newblock {\em Modèles aléatoires discrets - Cours scannés ISFA}.
+\newblock 2017.
+
+\bibitem{TruquetEnsai}
+Lionel Truquet.
+\newblock {\em Statistique des processus 3A - Note de cours}.
+\newblock
+  \url{http://www.ensai.fr/files/_media/documents/Enseignants%20chercheurs%20-%20doctorants/ltruquet%20-%20documents/polystatdesprocessus2.pdf}.
+
+\end{thebibliography}

@@ -1,0 +1,35 @@
+\begin{thebibliography}{1}
+
+\bibitem{Hohn}
+Maryann Hohn.
+\newblock {\em PSTAT160A: Applied Stochastic Processes - Lecture notes}.
+\newblock 2017.
+
+\bibitem{Nabil17}
+Nabil Kazi-Tani.
+\newblock {\em Modèles aléatoires discrets - Cours scannés ISFA}.
+\newblock 2017.
+
+\bibitem{le2006integration}
+Jean-Fran{\c{c}}ois Le~Gall.
+\newblock Int{\'e}gration, probabilit{\'e}s et processus al{\'e}atoires.
+\newblock {\em Ecole Normale Sup{\'e}rieure de Paris}, 2006.
+
+\bibitem{nakamoto2008bitcoin}
+Satoshi Nakamoto.
+\newblock Bitcoin: A peer-to-peer electronic cash system.
+\newblock 2008.
+\newblock \url{https://bitcoin.org/bitcoin.pdf}.
+
+\bibitem{TruquetEnsai}
+Lionel Truquet.
+\newblock {\em Statistique des processus 3A - Note de cours}.
+\newblock
+  \url{http://www.ensai.fr/files/_media/documents/Enseignants%20chercheurs%20-%20doctorants/ltruquet%20-%20documents/polystatdesprocessus2.pdf}.
+
+\bibitem{williams1991probability}
+David Williams.
+\newblock {\em Probability with martingales}.
+\newblock Cambridge university press, 1991.
+
+\end{thebibliography}

@@ -1,0 +1,94 @@
+% Encoding: UTF-8
+
+
+
+
+@book{GaHe13,
+	Address = {\url{https://cel.archives-ouvertes.fr/file/index/docid/637007/filename/mes-int-pro.pdf}},
+	Author = {Gallou{\"e}t, Thierry and Herbin, Rapha{\`e}le},
+	Date-Added = {2018-09-26 12:06:28 +0000},
+	Date-Modified = {2018-09-26 12:08:48 +0000},
+	Publisher = {Ellipses},
+	Title = {Mesure, int{\'e}gration, probabilit{\'e}s},
+	Year = {2013}}
+
+@book{BaLe07,
+	Author = {Barbe, Philippe and Ledoux, Michel},
+	Date-Added = {2018-09-26 12:05:12 +0000},
+	Date-Modified = {2018-09-26 12:05:22 +0000},
+	Publisher = {L'Editeur: EDP Sciences},
+	Title = {Probabilit{\'e}},
+	Year = {2007}}
+
+@book{GaKu11,
+	Author = {Garet, Olivier and Kurtzmann, Aline},
+	Date-Added = {2018-09-26 12:02:18 +0000},
+	Date-Modified = {2018-09-26 12:02:54 +0000},
+	Publisher = {Ellipses},
+	Title = {De l'int{\'e}gration aux probabilit{\'e}s},
+	Volume = {470},
+	Year = {2011}}
+
+@book{Ga97,
+	Author = {Gapaillard, Jacques},
+	Date-Added = {2018-09-26 12:01:29 +0000},
+	Date-Modified = {2018-09-26 12:01:37 +0000},
+	Publisher = {Masson},
+	Title = {Int{\'e}gration pour la licence: cours avec exercices corrig{\'e}s},
+	Year = {1997}}
+
+@Book{Nabil17,
+  title  = {Modèles aléatoires discrets - Cours scannés ISFA},
+  year   = {2017},
+  author = {Nabil Kazi-Tani},
+}
+
+@Article{goffard2018fraud,
+  author = {Goffard, Pierre-Olivier},
+  title  = {Fraud risk assessment within blockchain transactions},
+  year   = {2018},
+  note   = {\url{http://pierre-olivier.goffard.me/Publications/FraudRiskAssessmentWithinBlockChainTransaction_Goffard0218.pdf}},
+}
+
+@Book{AsAl10,
+  title     = {Ruin probabilities},
+  publisher = {World Scientific Publishing Co Pte Ltd},
+  year      = {2010},
+  author    = {Asmussen, S{\o}ren and Albrecher, Hansj{\"o}rg},
+}
+
+@Book{TruquetEnsai,
+  title     = {Statistique des processus 3A - Note de cours},
+  publisher = {\url{http://www.ensai.fr/files/_media/documents/Enseignants%20chercheurs%20-%20doctorants/ltruquet%20-%20documents/polystatdesprocessus2.pdf}},
+  author    = {Lionel Truquet},
+}
+
+@Book{Hohn,
+  title  = {PSTAT160A: Applied Stochastic Processes - Lecture notes},
+  year   = {2017},
+  author = {Maryann Hohn},
+}
+
+@Book{upmc,
+  title     = {Probabilités approfondies- Polycopié de cours},
+  publisher = {Université Pierre et Marie Curie},
+  year      = {2005-2006},
+  author    = {J. Lacroix and P. Priouret},
+}
+
+@Article{nakamoto2008bitcoin,
+  author    = {Nakamoto, Satoshi},
+  title     = {Bitcoin: A peer-to-peer electronic cash system},
+  year      = {2008},
+  note      = {\url{https://bitcoin.org/bitcoin.pdf}},
+  publisher = {Working Paper},
+}
+
+@Article{le2006integration,
+  author  = {Le Gall, Jean-Fran{\c{c}}ois},
+  title   = {Int{\'e}gration, probabilit{\'e}s et processus al{\'e}atoires},
+  journal = {Ecole Normale Sup{\'e}rieure de Paris},
+  year    = {2006},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

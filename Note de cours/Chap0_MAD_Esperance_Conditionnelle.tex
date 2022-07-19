@@ -1,0 +1,509 @@
+\documentclass[8pt,notheorems]{beamer}
+\usetheme{Copenhagen}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{beamerthemesplit}
+\usepackage{graphicx}
+\usepackage{tkz-graph}
+\usepackage{color}
+\usepackage{listings}
+
+\usepackage{amsmath,amsfonts,amsthm,t1enc}
+\usepackage{fourier}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows}
+%%%<
+\usepackage{verbatim}
+%%%>
+\usetikzlibrary{automata,arrows,positioning,calc}
+\setbeamertemplate{footline}{\hfill \insertframenumber/\inserttotalframenumber}
+% \setbeamertemplate{headline}{}
+\def \si {\sigma}
+\def \la {\lambda}
+\def \al {\alpha}
+% \def\e*{\end{eqnarray*}}
+\def \di{\displaystyle}
+
+\def \E{\mathbb E}
+\def \N{\mathbb N}
+\def \NZ{\mathbb{N}_0}
+\def \I{\mathbb I}
+\def \w{\widehat}
+\def \P {\mathbb P}
+\def \V{\mathbb V}
+
+
+\newcommand{\CL}{\mathbb{C}}
+\newcommand{\RL}{\mathbb{R}}
+\newcommand{\nat}{{\mathbb N}}
+\newcommand{\Laplace}{\mathscr{L}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ve}{\bm{\mathrm{e}}} % vector e
+
+\renewcommand{\L}{\mathcal{L}} % e.g. L^2 loss.
+
+\newcommand{\ih}{\mathrm{i}}
+\newcommand{\oh}{{\mathrm{o}}}
+\newcommand{\Oh}{{\mathcal{O}}}
+\newcommand{\Exp}{\mathbb{E}}
+
+\newcommand{\Norm}{\mathcal{N}}
+\newcommand{\LN}{\mathcal{LN}}
+\newcommand{\SLN}{\mathcal{SLN}}
+
+\renewcommand{\Pr}{\mathbb{P}}
+\newcommand{\Ind}{\mathbb I}
+\newcommand\bfsigma{\bm{\sigma}}
+\newcommand\bfSigma{\bm{\Sigma}}
+\newcommand\bfLambda{\bm{\Lambda}}
+\newcommand{\stimes}{{\times}}
+
+\setbeamertemplate{theorem}[ams style]
+\setbeamertemplate{theorems}[numbered]
+%\makeatletter
+%\def\th@mystyle{%
+%    \normalfont % body font
+%    \setbeamercolor{block title example}{bg=orange,fg=white}
+%    \setbeamercolor{block body example}{bg=blue!20,fg=black}
+%    \def\inserttheoremblockenv{block}
+%  }
+%\makeatother
+%\theoremstyle{mystyle}
+
+\makeatletter
+    \ifbeamer@countsect
+      \newtheorem{theorem}{\translate{Theorem}}[section]
+    \else
+      \newtheorem{theorem}{\translate{Theoreme}}
+    \fi
+    \newtheorem{corollary}{\translate{Corollaire}}
+    \newtheorem{prop}{\translate{Proposition}}
+    \newtheorem{lemma}{\translate{Lemme}}
+    \newtheorem{problem}{\translate{Probleme}}
+    \newtheorem{solution}{\translate{Solution}}
+
+    \theoremstyle{definition}
+    \newtheorem{definition}{\translate{Definition}}
+    \newtheorem{definitions}{\translate{Definitions}}
+
+    \theoremstyle{example}
+    \newtheorem{example}{\translate{Exemple}}
+    \newtheorem{remark}{\translate{Remarque}}
+    \newtheorem{examples}{\translate{Examples}}
+
+\makeatletter
+\def\th@mystyle{%
+    \normalfont % body font
+    \setbeamercolor{block title example}{bg=orange,fg=white}
+    \setbeamercolor{block body example}{bg=orange!20,fg=black}
+    \def\inserttheoremblockenv{exampleblock}
+  }
+\makeatother
+\theoremstyle{mystyle}
+\newtheorem{fact}{Fact}
+
+
+
+
+
+    % Compatibility
+    \newtheorem{Beispiel}{Beispiel}
+    \newtheorem{Beispiele}{Beispiele}
+    \theoremstyle{plain}
+    \newtheorem{Loesung}{L\"osung}
+    \newtheorem{Satz}{Satz}
+    \newtheorem{Folgerung}{Folgerung}
+    \newtheorem{Fakt}{Fakt}
+    \newenvironment{Beweis}{\begin{proof}[Beweis.]}{\end{proof}}
+    \newenvironment{Lemma}{\begin{lemma}}{\end{lemma}}
+    \newenvironment{Proof}{\begin{proof}}{\end{proof}}
+    \newenvironment{Theorem}{\begin{theorem}}{\end{theorem}}
+    \newenvironment{Problem}{\begin{problem}}{\end{problem}}
+    \newenvironment{Corollary}{\begin{corollary}}{\end{corollary}}
+    \newenvironment{Example}{\begin{example}}{\end{example}}
+    \newenvironment{Examples}{\begin{examples}}{\end{examples}}
+    \newenvironment{Definition}{\begin{definition}}{\end{definition}}
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+% ============================================================
+% Title
+% ============================================================
+
+\title[]{MAD M1 Actuariat/ES}
+\subtitle{Chapitre 0: Espérance conditionnelle}
+\author{Pierre-Olivier Goffard}
+\institute{
+	   Université de Lyon 1\\
+	ISFA\\
+	   \texttt{pierre-olivier.goffard@univ-lyon1.fr}
+	  }
+\date{
+ISFA\\
+\today}
+\lstset{language=SAS}
+\begin{document}
+
+\frame{\titlepage}
+
+
+% ============================================================
+\section{Espérance conditionelle dans le cas discret}
+\subsection{Espérance conditionnelle par rapport à un évènement}
+\begin{frame}[allowframebreaks]
+\underline{I. Définitions}\\
+\underline{1. Espérance conditionnelle par rapport à un évènement}\\
+Soit $(\Omega, \mathcal{A},\mathbb{P})$ un espace probabilisé et $B\in\mathcal{A}$ tel que 
+$$
+\mathbb{P}(B)>0
+$$
+La probabilité conditionnelle de $A\in\mathcal{A}$ sachant $B$ est définie par 
+$$
+\mathbb{P}_B(A) =\mathbb{P}(A|B) = \frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}. 
+$$
+L'espérance conditionnelle d'une variable aléatoire $X\in \mathcal{L}^1(\Omega, \mathcal{A},\Pr)$ ($\E(X)<\infty$) sachant $B$ correspond à l'espérance de $X$ par rapport à la mesure de probabilité conditionnelle $\Pr_B$. 
+\begin{definition}
+L'espérance conditionnelle de $X$ sachant $B$ est définie par
+\begin{equation}\label{eq:def_esperance_conditionnelle}
+\mathbb{E}_B(X) =\mathbb{E}(X|B) = \frac{\E(X\mathbb{I}_B)}{\mathbb{P}(B)}.
+\end{equation}
+\end{definition}
+On peut vérifier la cohérence de la définition en montrant l'identité \eqref{eq:def_esperance_conditionnelle} sur les applications mesurables étagées positives, avant de généraliser au fonctions mesurables positives par passages à la limite d'une suite croissante de fonctions étagées positives puis au fonction mesurable et intégrable par différence de fonctions mesurables positives. \\
+
+En effet, si $X = \sum_{i = 1}^n x_i\mathbb{I}_{A_i},$ où les $(A_i)_{i = 1,\ldots, n}$ forme une partition de $\Omega$ alors 
+$$
+\E(X|B) = \int_\Omega X\mathbb{P}_B = \sum_{i = 1}^n x_i\int \mathbb{I}_{A_i}\text{d}\Pr_B = \sum_{i = 1}^n x_i\Pr_B(A_i) =\frac{1}{\Pr(B)}  \int\sum_{i = 1}^n x_i\mathbb{I}_{A_i}\mathbb{I}_B\text{d}\Pr
+ = \frac{\E(X\mathbb{I}_B)}{\Pr(B)}.$$
+\begin{remark}
+On peut introduire la loi $\Pr_{X|B}$ de $X$ sachant $B$ comme mesure image de $\mathbb{P}_B$ par $X$avec 
+$$
+\Pr_{X|B}(U) =\Pr_{B}(X^{-1}(U)) = \Pr_{B}(X\in U)
+$$
+\begin{itemize}
+\item Si $X$ est une v.a. discrète, on peut introduire sa fonction de masse conditionnellement à $B$ avec 
+$$
+p_{X|B}(x) =  \Pr(X = x|B), \text{ et }\E(X|B) = \sum_x x p_{X|B}(x)
+$$
+\item Si $X$ est une v.a. continue, on peut introduire sa fonction de densité conditionnellement à $B$ notée $f_{X|B}(x)$ et 
+$$
+\E(X|B) = \int x f_{X|B}(x)\text{d}x
+$$
+\end{itemize}
+\end{remark}
+\begin{example}
+Soit 
+$$
+\Omega = \{1,2,3,4,5,6\}\text{ et }\Pr(\{\omega\}) = 1/6,\text{ }\forall \omega\in \Omega.
+$$ 
+Soit $B = $" le dé retombe sur une face paire" et $X(\omega) = \omega$. On a 
+$$
+\E(X|B) = 4.
+$$ 
+\end{example}
+\end{frame}
+\subsection{Espérance conditionnelle par rapport à une variable aléatoire discrète}
+\begin{frame}[allowframebreaks]
+\underline{2. Espérance conditionnelle par rapport à une variable aléatoire discrète}\\
+Soit $Y: \Omega\mapsto E$ une variable aléatoire à valeur dans un ensemble dénombrable $E$, et $E' = \{y\in E\text{ ; }\Pr(Y = y)>0\}$. Pour $X\in\mathcal{L}^1(\Omega,\mathcal{A},\Pr)$, on peut définir comme cas particulier de ce qui précède  
+$$
+\E(X|Y= y) = \frac{\E(X\mathbb{I}_{Y = y})}{\Pr(Y = y)}.
+$$
+\begin{definition}
+L'espérance de $X$ sachant $Y$ est définie comme la variable aléatoire réelle 
+$$
+\E(X|Y) = \varphi(Y),
+$$
+où $\varphi:E\mapsto\mathbb{R}$ est donnée par 
+$$
+\varphi(y) =
+\begin{cases}
+\E(X|Y = y),&\text{ si }y\in E',\\
+0,&\text{ si }y\in E/E'
+\end{cases}
+$$
+\end{definition}
+L'espérance conditionnelle est une variable aléatoire égale à la valeur moyenne de $X$ lorsqu'on connait $Y$ avec 
+$$
+\E(X|Y)(\omega) = \E(X|Y=y),\text{ si } Y(\omega)=y
+$$
+$\E(X|Y)$ est une fonction de $Y$ qui s'interprète comme la meilleur approximation de $X$ lorsqu'on connaît $Y$.
+\begin{remark}
+\begin{itemize}
+    \item Si $X$ est une variable aléatoire discrète d'espace d'état $F$ alors on peut définir la loi jointe du couple $(X,Y)$ avec 
+    $$
+    p_{(X,Y)}(x,y) = \Pr(X = x, Y = y) = \Pr(X = x|Y = y)\Pr(Y=y) = p_{X|Y}(x|y)p_Y(y)
+    $$
+    où $p_{X|Y}$ désigne la loi conditionnelle de $X$ sachant $Y$. On calcule l'espérance conditionnelle de $X$ sachant $Y = y$ avec 
+    $$
+    \E(X|Y = y) = \sum_{x\in F}xp_{X|Y}(x|y).
+    $$ 
+    \item Si $X$ est une v.a. continue alors on peut définir la densité conditionelle $f_{X|Y}(x|y)$ de $X$ sachant $Y = y$ qui vérifie $f_X(x) = \sum_{y \in E'}f_{X|Y(x|y)}p_Y(y)$. On calcule l'esprance conditionelle de $X$ sachant $Y = y$ avec 
+    $$
+    \E(X|Y = y) = \int x f_{X|Y}(x|y)\text{d}x.
+    $$
+\end{itemize}
+\end{remark}
+\begin{example}
+Soit 
+$$
+\Omega = \{1,2,3,4,5,6\}\text{ et }\Pr(\{\omega\}) = 1/6,\text{ }\forall \omega\in \Omega.
+$$ 
+Soient les variables aléatoires
+$$
+ Y(\omega) =\begin{cases}
+ 1,&\text{ si $\omega$ paire}\\
+ 0, &\text{ sinon}.
+ \end{cases} 
+$$ 
+et $X(\omega) = \omega$. Il vient
+$$
+\E(X|Y)(\omega)  = \E(X|Y(\omega) = y) = 
+\begin{cases}
+4,&\text{ si }Y(\omega)=1,\\
+3,&\text{ si }Y(\omega)=0.
+\end{cases}
+$$
+En effet, on a par exemple
+$$
+p_{X|Y}(x|0)=
+\begin{cases}
+1/3,&\text{ si }x\in\{1,3,5\},\\
+0,\text{ sinon}.
+\end{cases}
+$$
+et par suite
+$$
+\E(X|Y = 0) = \sum_{x=1}^6x p_{X|Y}(x|0)  = 3.
+$$
+\end{example}
+\begin{example}
+Soient $X$ et $Y$ deux variables aléatoires discrètes à valeur dans $\{1,2\}$, avec loi jointe $p_{X,Y}$ donnée par
+\begin{eqnarray*}
+p_{X,Y}(1,1)=0.5,&\text{ }&p_{X,Y}(1,2)=0.1\\
+p_{X,Y}(2,1)=0.1,&\text{ }&p_{X,Y}(2,2)=0.3
+\end{eqnarray*}
+\begin{enumerate}
+    \item Donner la loi conditionelle of $X|Y=1$
+    \item Donner L'espérance conditionnelle de $X|Y = 1$
+\end{enumerate}
+\end{example}
+\begin{example}
+Soient $X_1\sim\text{Pois}(\lambda_1)$ et $X_2\sim\text{Pois}(\lambda_2)$ indépendantes. Donner l'espérance conditionnelle $\E(X_1|X_1 + X_2 =n).$
+\end{example}
+\end{frame}
+\begin{frame}[allowframebreaks]
+\begin{prop}[Loi de l'espérance totale]
+Soit $X\in\mathcal{L}^1(\Omega,\mathcal{A},\Pr)$, et $Y$ une variable aléatoire à valeur dans un ensemble dénombrable $E$ avec $\Pr(Y = y)>0,\forall y\in E$. on a 
+$$
+\E(X) = \E(\E(X|Y)).
+$$
+\end{prop}
+\underline{preuve:}\\
+$$
+\E(\E(X|Y)) = \sum_{y\in E}\E(X|Y=y)\Pr(Y = y)= \sum_{y\in E}\frac{\E(X\mathbb{I}_{Y=y})}{\Pr(Y = y)}\Pr(Y = y)=\E\left(X\sum_{y\in E}\mathbb{I}_{Y=y}\right)=\E(X)
+$$
+\end{frame}
+\section{Espérance conditionnelle dans le cas général}
+\subsection{Définition}
+\begin{frame}[allowframebreaks]
+\underline{I. Espérance conditionnelle dans le cas général}\\
+\underline{1. Définition}\\
+Soit $X\in\mathcal{L}^1(\Omega,\mathcal{A},\Pr)$ et $\mathcal{B}$ une sous-tribu de $\mathcal{A}$.
+\begin{definition}
+Il existe une unique variable aléatoire $\E(X|\mathcal{B})$ de $\mathcal{L}^1(\Omega,\mathcal{B},\Pr)$ tel que  
+$$
+\E( X\mathbb{I}_B)=\E( \E(X|\mathcal{B}) \mathbb{I}_B),\text{ pour tout }B\in\mathcal{B}.
+$$
+On a plus généralement pour tout $Z\in\mathcal{L}^1(\Omega,\mathcal{B},\Pr)$,
+$$
+\E( XZ)=\E( \E(X|\mathcal{B}) Z).
+$$
+De plus, si $X\geq 0$ alors $\E(X|\mathcal{B})\geq 0$
+\end{definition}
+\begin{remark}
+Dans le cas particulier où $\mathcal{B} = \sigma(Y)$, on notera indifféremment 
+$$
+\E(X|Y) = \E(X|\sigma(Y)) = \E(X|\mathcal{B})  
+$$
+\end{remark}
+\begin{example}
+Soit $\Omega = ]0,1]$, $\mathcal{A} = \mathcal{B}_{]0,1]}$ et $\Pr(\text{d}\omega) = \text{d}\omega$. Soit $X\in\mathcal{L}^1(]0,1], \mathcal{B}_{]0,1]},\Pr)$ et $\mathcal{B}$ la tribu engendrée par les intervalles $B_i = ]i/n,(i+1)/n]$, pour $i = 0, n-1$.
+Notons que 
+$$
+\E(X\mathbb{I}_{B_i})=\int_{B_i}X\text{d}P
+$$
+Posons 
+$$
+x_i  = n\cdot \int_{B_i}X\text{d}P=n\cdot \int_{i/n}^{(i+1)/n}X(\omega)\text{d}\omega\text{, pour }i=0,\ldots, n-1
+$$ 
+et $W = \sum_{i=1}^n x_i\mathbb{I}_{B_i}$. On observe que
+$$
+\E(W\mathbb{I}_{B_i}) = x_i\Pr(B_i) = \frac{x_i}{n} = \int_{B_i}X\text{d}P = \E(X\mathbb{I}_{B_i}),\text{ pour tout }i = 0,\ldots, n-1.
+$$ 
+On en déduit que $\E(X|\mathcal{B}) = W$.
+\end{example}
+\end{frame}
+\subsection{Propriétés}
+\begin{frame}[allowframebreaks]
+\underline{2. Propriétés}\\
+\begin{prop}
+\begin{enumerate}
+    \item Si $X$ est $\mathcal{B}$ mesurable alors 
+    $$
+    \E(X|\mathcal{B}) = X
+    $$
+    \item L'application $X\mapsto \E(X|\mathcal{B})$ est linéaire.
+    \item $\E[\E(X|\mathcal{B})]  =\E(X)$
+    \item $X\geq X' \Rightarrow \E(X|\mathcal{B})\geq \E(X'|\mathcal{B})$
+\end{enumerate}
+\end{prop}
+\underline{preuve:}\\
+\begin{enumerate}
+    \item Résulte de l'unicité de l'espérance conditionnelle
+    \item Soit $\alpha, \alpha'\in \mathbb{R}$ et $X,X'\in\mathcal{L}^1(\Omega, \mathcal{A},\Pr)$, alors 
+    \begin{eqnarray*}
+    \E[(\alpha X+\alpha'X')\mathbb{I}_B]&=&
+    \alpha\E(X\mathbb{I}_B)+\alpha'\E(X'\mathbb{I}_B)\\
+    &=&\alpha\E(\E(X|\mathcal{B})\mathbb{I}_B)+\alpha'\E(\E(X'|\mathcal{B})\mathbb{I}_B)\\
+    &=&\E((\alpha\E(X|\mathcal{B})+\alpha'\E(X'|\mathcal{B}))\mathbb{I}_B)
+    \end{eqnarray*}
+    \item On observe simplement que
+    $$
+    \E(X) = \E(X\mathbb{I}_\Omega) = \E(\E(X|\mathcal{B})\mathbb{I}_\Omega) = \E(\E(X|\mathcal{B}))   
+    $$ 
+    \item Si $X\geq X'$ alors pour tout $B\in\mathcal{B}$
+    $$
+    X-X'\geq 0\Rightarrow \E((X-X')|\mathcal{B})\geq 0 \Rightarrow\E(X|\mathcal{B})\geq\E(X'|\mathcal{B})  
+    $$ 
+    par linéarité. 
+\end{enumerate}
+\begin{prop}
+Soient $X\in\mathcal{L}^1(\Omega, \mathcal{A}, \Pr)$ et $Y$ une variable aléatoire $\mathcal{B}$ alors 
+$$
+\E(YX|\mathcal{B}) = Y\E(X|\mathcal{B}).
+$$
+\end{prop}
+\begin{prop}
+Soient $\mathcal{B}_1, \mathcal{B}_2$ deux sous tribus de $\mathcal{A}$ telles que $\mathcal{B}_1\subset \mathcal{B}_2$   alors 
+$$
+\E(\E(X|\mathcal{B}_2)|\mathcal{B}_1) = \E(X|\mathcal{B}_1).
+$$
+\end{prop}
+\begin{theorem}
+Soit $X\in \mathcal{L}^2(\Omega, \mathcal{A}, \Pr)$ $(\E(X^2)<\infty)$, l'espérance conditionelle de $X$ sachant $\mathcal{B}$ est la projection orthogonale de $X$ sur l'espace $\mathcal{L}^2(\Omega, \mathcal{B}, \Pr)$ 
+\end{theorem}
+\begin{remark}[Interprétation de l'espérance conditionnelle]
+\begin{itemize}
+    \item Soit $Y$ une variable aléatoire et $X = (X_1,\ldots, X_n)$ un vecteur de covariable, alors 
+    $$
+    \E(Y|X_1,\ldots, X_n) = \varphi(X_1,\ldots, X_n)
+    $$
+    est appelée fonction de régression, dans le cadre de la regression linéaire  
+    $$
+    \varphi(X_1,\ldots, X_n) \approx \sum_{i= 1}^n\beta_i X_i.
+    $$
+    \item Soit $(X_t)_{t\geq 0}$ un processus stochastique alors 
+        $$
+    \E(X_{t+1}|X_1,\ldots, X_t) = \varphi(X_1,\ldots, X_t)
+    $$
+    est la meilleur prévision de $X_{t+1}$ la valeur futur du processus sachant les valeurs passées. 
+\end{itemize}
+\end{remark}
+\begin{example}
+Soient $X$, $Y_1$ et $Y_2$ v.a. telles que
+\begin{equation*}
+\mathbb{E}(Y|X_1,X_2)=5X_1+X_1X_2 \text{ et } \mathbb{E}(Y^{2}|X_1,X_2)=25X_1^{2}X_2^{2}+15
+\end{equation*}
+Calculer $\mathbb{E}\left[\left(X_1Y+X_2\right)^{2}\big\rvert X_1,X_2\right]$  
+\end{example}
+\end{frame}
+\subsection{Espérance conditionellement à une variable aléatoire continue}
+\begin{frame}[allowframebreaks]
+\underline{3. Espérance conditionellement à une variable aléatoire continue}\\
+Soient $X$ et $Y$ deux v.a. continues alors le couple $(X,Y)$ admet une densité jointe $f_{X,Y}$. On peut retrouver les densités marginale en intégrant, par exemple 
+$$
+f_X(x) = \int_{-\infty}^{+\infty}f_{X,Y}(x,y)\text{d}y. 
+$$
+Soient $h,g:\mathbb{R}\mapsto \mathbb{R}$ deux applications mesurables, on souhaite calculer $\E[h(X)|Y]$. On considère 
+\begin{eqnarray*}
+\E[h(X)g(Y)] &=& \int_{\mathbb{R}\times \mathbb{R}}h(x)g(y)f_{X,Y}(x,y)\text{d}x\text{d}y\\
+&=& \int_{\mathbb{R}}\left(\frac{1}{f_Y(y)}\int_{\mathbb{R}}h(x)f_{X,Y}(x,y)\text{d}x\right) g(y)f_Y(y)\text{d}y\\
+&=&\int_{\mathbb{R}}\varphi(y) g(y)f_Y(y)\text{d}y\\
+&=&\E[\varphi(Y)g(Y)]
+\end{eqnarray*}
+On identifie alors $\E(h(X)|Y) = \varphi(Y)$, en effet
+$$
+\E[h(X)g(Y)] = \E\{\E[h(X)g(Y)|Y]\} = \E\{g(Y)\E[h(X)|Y]\}.
+$$
+On écrit abusivement, pour tout $y\in\mathbb{R}$,
+$$
+\E[h(X)|Y=y] =  \int_{\mathbb{R}}h(x)\frac{f_{X,Y}(x,y)}{f_Y(y)}\text{d}x.
+$$
+et on définit la densité conditionnelle de $X|Y$ par 
+$$
+f_{X|Y}(x,y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}.
+$$
+\begin{example}
+Soit $(X,Y)$ un couple de v.a. de densité jointe 
+$$
+f_{X,Y}(x,y) = \begin{cases}
+\frac{1}{12}(x+2y),&x,y\in[0,2],\\
+0,\text{ sinon.}
+\end{cases}
+$$
+\begin{enumerate}
+    \item Donner la densité conditionnelle de $X|Y=y$ pour tout $y\in [0,2]$
+    \item Donner l'espérance conditionnelle $\E(X|Y = y)$ pour tout $y\in[0,2]$
+\end{enumerate}
+\end{example}
+\begin{example}
+Soient $X$ et $Y$ deux v.a. continues de densité jointe donnée par
+\begin{equation*}
+f_{X,Y}(x,y)=
+\begin{cases}
+\frac{e^{-x/y}e^{-y}}{y},&0< x< +\infty\text{, }0< y<+\infty,\\
+0,&\text{sinon}.
+\end{cases}
+\end{equation*}
+Donner l'espérance conditionnelle de $E(X|Y = y)$
+\end{example}
+\begin{remark}
+Soit $A\in\mathcal{A}$, par analogie avec la formule $\Pr(A) = \E(\mathbb{I}_A)$, on peut écrire 
+$$
+\Pr(A|\mathcal{B}) := \E(\mathbb{I}_A|\mathcal{B})
+$$
+en gardant en tête que $\Pr(A|\mathcal{B})$ est une variable aléatoire! Cela permert l'étude de la loi d'une v.a. discrète qui dépend d'une v.a. continue. Soit $N$ une variable aléatoire de comptage (à valeur entière) et $X$ une v.a. continue de densité $f_X$. On a
+\begin{eqnarray*}
+\mathbb{P}(N = n)&=&\E(\mathbb{I}_{N = n})\\
+&=&\E[\E(\mathbb{I}_{N = n}|Y)]\\
+&=&\E[\Pr(N = n|Y)]\\
+&=&\int \Pr(N = n|Y=y)f_Y(y).
+\end{eqnarray*}
+\end{remark}
+\begin{example}
+Soient $\Lambda\sim \Gamma (\alpha, \beta)$ de densité 
+$$
+f_{\Lambda}(\lambda) = \frac{e^{-\lambda/\beta}\lambda^{\alpha-1}}{\Gamma(\alpha)\beta^\alpha},\text{ }\lambda>0.
+$$
+On suppose que $N\sim\text{Pois}(\Lambda)$, donner la loi de probabilité de $N$.
+\end{example}
+\end{frame}
+\begin{frame}
+Mes notes se basent sur les documents \cite{TruquetEnsai,Nabil17,Hohn,le2006integration}.
+\bibliographystyle{plain}
+\bibliography{mad_notes}
+\end{frame}
+
+\end{document}
