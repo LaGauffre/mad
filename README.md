@@ -2,7 +2,7 @@
 
 Ce répertoire regroupe les supports de cours, planches d'exercices et annales d'examen du cours de Modèle Aléatoires Discrets (MAD) dispensé aux M1 Actuariat et M1 Econométrie et Statistique à l'UNiversité Claude Bernard Lyon 1.
 
-Ce cours propose une introduction aux processus stochastique en définissant les chaines de Markov, les martingales en temps discret et le processus de Poisson. 
+Ce cours propose une introduction aux processus stochastiques via l'étude des chaines de Markov, des martingales en temps discret et du processus de Poisson. 
 
 ### Support de cours
 
@@ -12,7 +12,7 @@ Espérance conditionelle | [Slides](/Note de cours/Chap0_MAD_Esperance_Condition
 Introduction | [Slides](/Note de cours/Chap1_MAD_Intro.pdf)
 Chaine de Markov | [Slides](/Note de cours/Chap2_MAD_Markov_Chain.pdf)
 Martingale en temps discret | [Slides](/Note de cours/Chap3_MAD_Martingale.pdf)
-Processuus de Poisson| [Slides](/Note de cours/Chap4_MAD_Processus_Poisson.pdf)
+Processus de Poisson| [Slides](/Note de cours/Chap4_MAD_Processus_Poisson.pdf)
 
 ### Travaux dirigées
 
