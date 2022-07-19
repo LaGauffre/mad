@@ -8,25 +8,28 @@ Ce cours propose une introduction aux processus stochastique en définissant les
 
 Chapitre             | Support
 -----------------   | -------------
-Espérance conditionelle | [Slides](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
-Chaine de Markov | [Slides](/Slides/BFS/Lecture1/blockastics_lec_2.pdf)
-Martingale en temps discret | [Slides](/Slides/BFS/Lecture3/blockastics_lec_3.pdf)
-Martingale en temps discret | [Slides](/Slides/BFS/Lecture3/blockastics_lec_3.pdf)
+Espérance conditionelle | [Slides](/Note de cours/Chap0_MAD_Esperance_Conditionnelle.pdf)
+Introduction | [Slides](/Note de cours/Chap1_MAD_Intro.pdf)
+Chaine de Markov | [Slides](/Note de cours/Chap2_MAD_Markov_Chain.pdf)
+Martingale en temps discret | [Slides](/Note de cours/Chap3_MAD_Martingale.pdf)
+Processuus de Poisson| [Slides](/Note de cours/Chap4_MAD_Processus_Poisson.pdf)
 
 ### Travaux dirigées
 
 Séance             | Enoncé
 -----------------   | -------------
-1 | [Slides](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
-2 | [Slides](/Slides/BFS/Lecture1/blockastics_lec_2.pdf)
-3 | [Slides](/Slides/BFS/Lecture3/blockastics_lec_3.pdf)
-4 | [Slides](/Slides/BFS/Lecture3/blockastics_lec_3.pdf)
+1 | [TD](TD/TD1_MAD_corrige.pdf)
+2 | [TD](TD/TD2_MAD_corrige.pdf)
+3 | [TD](TD/TD3_MAD_corrige.pdf)
+4 | [TD](TD/TD4_MAD_corrige.pdf)
+5 | [TD](TD/TD5_MAD_corrige.pdf)
+6 | [TD](TD/TD6_MAD_corrige.pdf)
 
 ### Annales d'examens
 
 Année            | Enoncé
 -----------------   | -------------
-2018-2019 | [Janvier](/Slides/BFS/Lecture1/blockastics_lec_1.pdf), [Juin](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
-2019-2020 | [Janvier](/Slides/BFS/Lecture1/blockastics_lec_1.pdf), [Juin](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
-2020-2021 | [Janvier](/Slides/BFS/Lecture1/blockastics_lec_1.pdf), [Juin](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
-2021-2022 | [Janvier](/Slides/BFS/Lecture1/blockastics_lec_1.pdf), [Juin](/Slides/BFS/Lecture1/blockastics_lec_1.pdf)
+2018-2019 | [Janvier](Examen/2018-2019/Exam_MAD_M1_2018-2019.pdf), [Juin](Examen/2018-2019/Rattrapage_MAD_M1_2018-2019.pdf)
+2019-2020 | [Janvier](Examen/2019-2020/Final/Exam_MAD_Janvier_2020.pdf), [Juin](Examen/2019-2020/Rattrapage/Exam_MAD_Juin_2020.pdf)
+2020-2021 | [Janvier](Examen/2020-2021/Exam_MAD_Janvier_2021.pdf), [Juin](Examen/2020-2021/Exam_MAD_Juin_2021.pdf)
+2021-2022 | [Janvier](Examen/2021-2022/M1Actu/Final/Exam_MAD_Janvier_2022_M1Actu.pdf), [Juin](Examen/2021-2022/Rattrapage/Exam_MAD_Juin_2022.pdf)
