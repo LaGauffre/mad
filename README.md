@@ -1,6 +1,6 @@
 ## Modèles Aléatoire Discrets	
 
-Ce répertoire regroupe les supports de cours, planches d'exercices et annales d'examen du cours de Modèle Aléatoires Discrets (MAD) dispensé aux M1 Actuariat et M1 Econométrie et Statistique à l'UNiversité Claude Bernard Lyon 1.
+Ce répertoire regroupe les supports de cours, planches d'exercices et annales d'examen du cours de Modèle Aléatoires Discrets (MAD) dispensé aux M1 Actuariat et M1 Econométrie et Statistique à l'Institut de Science Financières et d'Assurances (Université Claude Bernard Lyon 1).
 
 Ce cours propose une introduction aux processus stochastiques via l'étude des chaines de Markov, des martingales en temps discret et du processus de Poisson. 
 
